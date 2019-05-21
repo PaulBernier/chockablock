@@ -3,13 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "format": "prettier --write \"src/**/*.js\""
+    "start": "node server/server.js",
+    "server:serve": "nodemon server/server.js",
+    "frontend:serve": "vue-cli-service serve",
+    "frontend:build": "vue-cli-service build --modern",
+    "format": "prettier --write \"src/**/*.{js,vue}\" \"server/**/*.js\""
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "core-js": "^2.6.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.0",
+    "express-graphql": "^0.8.0",
+    "graphql": "^14.3.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuetify": "^1.5.5"
@@ -22,6 +28,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "nodemon": "^1.19.0",
     "prettier": "^1.17.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",

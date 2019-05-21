@@ -23,12 +23,23 @@
 </template>
 
 <script>
+import axios from "axios";
+
+const cli = axios.create({
+  baseURL: process.env.API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json"
+  }
+});
+
 export default {
   name: "App",
   data() {
-    return {
-      //
-    };
+    return {};
+  },
+  mounted() {
+    cli.post("/graphql", { query: "{hello}" }).then(console.log);
   }
 };
 </script>
