@@ -7,6 +7,10 @@ type Mutation {
     stopLoad: LoadConfig!
 }
 
+type Subscription {
+  loadConfigChange: LoadConfig!
+}
+
 type LoadConfig {
     targetWps: Float!,
     chainIds: [String!]!,

@@ -1,10 +1,16 @@
-const { GraphQLServer } = require("graphql-yoga");
+const { GraphQLServer, PubSub } = require("graphql-yoga");
 const { resolve } = require("path");
 const express = require("express");
 const history = require("connect-history-api-fallback");
 const { LoadGenerator } = require("./LoadGenerator");
 
 const loadGenerator = new LoadGenerator();
+const pubsub = new PubSub();
+pubsub.ee.setMaxListeners(100);
+
+loadGenerator.on("LOAD_CONFIG_CHANGE", config =>
+  pubsub.publish("LOAD_CONFIG_CHANGE", { loadConfigChange: config })
+);
 
 const server = new GraphQLServer({
   typeDefs: resolve(__dirname, "schema.graphql"),
@@ -12,7 +18,8 @@ const server = new GraphQLServer({
   context: request => {
     return {
       ...request,
-      loadGenerator
+      loadGenerator,
+      pubsub
     };
   }
 });

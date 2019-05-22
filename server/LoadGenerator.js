@@ -1,3 +1,4 @@
+const EventEmitter = require("events");
 const { FactomCli, Chain, Entry, getPublicAddress } = require("factom");
 const crypto = require("crypto");
 const uuidv4 = require("uuid/v4");
@@ -5,8 +6,10 @@ const uuidv4 = require("uuid/v4");
 const EC_ADDRESS = "Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym";
 const PUBLIC_EC_ADDRESS = getPublicAddress(EC_ADDRESS);
 
-class LoadGenerator {
+class LoadGenerator extends EventEmitter {
   constructor(opts) {
+    super();
+
     this.cli = new FactomCli(opts);
     this.running = false;
     this.config = {
@@ -38,6 +41,7 @@ class LoadGenerator {
     this.config.running = true;
     this.config.targetWps = wps;
     this.config.chainIds = chainIds;
+    this.emit("LOAD_CONFIG_CHANGE", this.config);
   }
 
   stop() {
@@ -48,6 +52,8 @@ class LoadGenerator {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
+
+    this.emit("LOAD_CONFIG_CHANGE", this.config);
   }
 }
 
