@@ -3,19 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node server/server.js",
-    "server:serve": "nodemon server/server.js",
-    "frontend:serve": "vue-cli-service serve",
-    "frontend:build": "vue-cli-service build --modern",
+    "start": "nodemon server/server.js",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --modern",
     "format": "prettier --write \"src/**/*.{js,vue}\" \"server/**/*.js\""
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "core-js": "^2.6.5",
+    "core-js": "^2.6.8",
     "cors": "^2.8.5",
-    "express": "^4.17.0",
-    "express-graphql": "^0.8.0",
-    "graphql": "^14.3.0",
+    "factom": "^1.2.1",
+    "graphql-yoga": "^1.17.4",
+    "uuid": "^3.3.2",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuetify": "^1.5.5"

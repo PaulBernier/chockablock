@@ -1,21 +1,32 @@
-const express = require("express");
+const { GraphQLServer } = require("graphql-yoga");
 const { resolve } = require("path");
-const cors = require("cors");
+const express = require("express");
 const history = require("connect-history-api-fallback");
+const { LoadGenerator } = require("./LoadGenerator");
 
-const app = express();
+const loadGenerator = new LoadGenerator();
 
-app.use(cors());
-
-// GraphQL API
-app.use("/graphql", require("./graphql"));
-
-// Frontend
-const publicPath = resolve(__dirname, "../dist");
-app.use(express.static(publicPath));
-app.use("/", history());
-
-// Start server
-app.listen(4000, "127.0.0.1", function() {
-  console.log("Running a GraphQL API server at localhost:4000/graphql");
+const server = new GraphQLServer({
+  typeDefs: resolve(__dirname, "schema.graphql"),
+  resolvers: require("./resolvers/resolvers"),
+  context: request => {
+    return {
+      ...request,
+      loadGenerator
+    };
+  }
 });
+
+server.start(
+  {
+    endpoint: "/graphql",
+    playground: "/graphql",
+    subscriptions: "/graphql",
+    cors: { origin: true }
+  },
+  () => console.log(`Server is running on http://localhost:4000`)
+);
+
+const publicPath = resolve(__dirname, "../dist");
+server.express.use(express.static(publicPath));
+server.express.use("/", history());
