@@ -24,8 +24,10 @@ class LoadGenerator extends EventEmitter {
     if (wps <= 0) {
       throw new Error(`WPS must be positive. Received: ${wps}`);
     }
-    if (nbOfChains <= 0) {
-      throw new Error(`nbOfChains must be positive. Received: ${nbOfChains}`);
+    if (nbOfChains <= 0 || !Number.isInteger(nbOfChains)) {
+      throw new Error(
+        `nbOfChains must be a positive integer. Received: ${nbOfChains}`
+      );
     }
 
     const chainIds = await createChains(this.cli, nbOfChains, EC_ADDRESS);

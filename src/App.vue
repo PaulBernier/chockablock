@@ -2,11 +2,11 @@
   <v-app>
     <v-toolbar app>
       <v-toolbar-title class="headline text-uppercase">
-        <span>Factom</span>
-        <span class="font-weight-light">Loadtest</span>
+        <span class="font-weight-medium">Factom</span>
+        <span class="font-weight-light">Loadtesting</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn flat>
+      <v-btn flat :to="{ name: 'control' }">
         <span class="mr-2">Control login</span>
       </v-btn>
     </v-toolbar>
