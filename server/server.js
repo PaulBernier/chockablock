@@ -9,7 +9,7 @@ const pubsub = new PubSub();
 pubsub.ee.setMaxListeners(100);
 
 loadGenerator.on("LOAD_CONFIG_CHANGE", config =>
-  pubsub.publish("LOAD_CONFIG_CHANGE", { loadConfigChange: config })
+  pubsub.publish("LOAD_CONFIG_CHANGE", { loadConfigChanged: config })
 );
 
 const server = new GraphQLServer({

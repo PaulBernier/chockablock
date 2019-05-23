@@ -1,41 +1,36 @@
 <template>
   <v-container fluid>
-    <v-layout wrap>
-      <v-flex xs12>Running: {{ running }}</v-flex>
-      <v-flex xs12>Target WPS: {{ targetWps }}</v-flex>
-      <v-flex xs12>Chain IDs: {{ chainIds }}</v-flex>
+    <v-layout wrap v-if="$apollo.queries.loadConfig.loading">
+      <v-flex xs12>Loading...</v-flex>
+    </v-layout>
+    <v-layout wrap v-else>
+      <v-flex xs12>Running: {{ loadConfig.running }}</v-flex>
+      <v-flex xs12>Target WPS: {{ loadConfig.targetWps }}</v-flex>
+      <v-flex xs12>Chain IDs: {{ loadConfig.chainIds }}</v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import axios from "axios";
-
-const cli = axios.create({
-  baseURL: process.env.API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json"
-  }
-});
+import LOAD_CONFIG from "../graphql/LoadConfig.gql";
+import LOAD_CONFIG_CHANGED from "../graphql/LoadConfigChanged.gql";
 
 export default {
   data() {
     return {
-      targetWps: 0,
-      running: false,
-      chainIds: []
+      loadConfig: { running: false, targetWps: 0, chainIds: [] }
     };
   },
-  async created() {
-    const {
-      data: { data }
-    } = await cli.post("/graphql", {
-      query: "{loadConfig{targetWps, running, chainIds}}"
-    });
-    this.targetWps = data.loadConfig.targetWps;
-    this.running = data.loadConfig.running;
-    this.chainIds = data.loadConfig.chainIds;
+  apollo: {
+    loadConfig: {
+      query: LOAD_CONFIG,
+      subscribeToMore: {
+        document: LOAD_CONFIG_CHANGED,
+        updateQuery: (previousResult, { subscriptionData }) => {
+          return { loadConfig: subscriptionData.data.loadConfigChanged };
+        }
+      }
+    }
   }
 };
 </script>

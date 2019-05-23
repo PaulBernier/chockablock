@@ -1,19 +1,19 @@
 type Query {
-    loadConfig: LoadConfig!
+  loadConfig: LoadConfig!
 }
 
 type Mutation {
-    startLoad(wps: Float!, nbOfChains: Int!): LoadConfig!,
-    stopLoad: LoadConfig!
+  startLoad(wps: Float!, nbOfChains: Int!): LoadConfig!
+  stopLoad: LoadConfig!
 }
 
 type Subscription {
-  loadConfigChange: LoadConfig!
+  loadConfigChanged: LoadConfig!
 }
 
 type LoadConfig {
-    targetWps: Float!,
-    chainIds: [String!]!,
-    ecAddress: String!,
-    running: Boolean!
+  targetWps: Float!
+  chainIds: [String!]!
+  ecAddress: String!
+  running: Boolean!
 }
