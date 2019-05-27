@@ -2,7 +2,10 @@ const { GraphQLServer, PubSub } = require("graphql-yoga");
 const { resolve } = require("path");
 const express = require("express");
 const history = require("connect-history-api-fallback");
+const jwt = require("jsonwebtoken");
 const { LoadGenerator } = require("./LoadGenerator");
+const users = require("./users.json");
+require("dotenv").config();
 
 const loadGenerator = new LoadGenerator();
 const pubsub = new PubSub();
@@ -12,12 +15,28 @@ loadGenerator.on("LOAD_CONFIG_CHANGE", config =>
   pubsub.publish("LOAD_CONFIG_CHANGE", { loadConfigChanged: config })
 );
 
+// Auth
+
+function getUser(req) {
+  try {
+    const { name } = jwt.verify(
+      req.request.get("Authorization"),
+      process.env.JWT_SECRET
+    );
+    return users[name];
+  } catch (e) {
+    return null;
+  }
+}
+
 const server = new GraphQLServer({
   typeDefs: resolve(__dirname, "schema.graphql"),
   resolvers: require("./resolvers/resolvers"),
+  middlewares: [require("./permissions")],
   context: request => {
     return {
       ...request,
+      user: getUser(request),
       loadGenerator,
       pubsub
     };

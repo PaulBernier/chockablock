@@ -9,11 +9,13 @@
     "start": "nodemon server/server.js"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "bcrypt": "^3.0.6",
     "core-js": "^2.6.8",
-    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
     "factom": "^1.2.1",
+    "graphql-shield": "^5.3.5",
     "graphql-yoga": "^1.17.4",
+    "jsonwebtoken": "^8.5.1",
     "subscriptions-transport-ws": "^0.9.16",
     "uuid": "^3.3.2",
     "vue": "^2.6.10",

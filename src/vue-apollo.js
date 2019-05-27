@@ -45,10 +45,10 @@ const defaultOptions = {
   // link: myLink
 
   // Override default cache
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 
   // Override the way the Authorization header is set
-  // getAuth: (tokenName) => ...
+  getAuth: tokenName => localStorage.getItem("jwt_token")
 
   // Additional ApolloClient options
   // apollo: { ... }
