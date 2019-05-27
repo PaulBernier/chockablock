@@ -11,10 +11,14 @@ import STOP_LOAD from "@/graphql/StopLoad.gql";
 
 export default {
   methods: {
-    stopLoad() {
-      this.$apollo.mutate({
-        mutation: STOP_LOAD
-      });
+    async stopLoad() {
+      try {
+        await this.$apollo.mutate({
+          mutation: STOP_LOAD
+        });
+      } catch (e) {
+        this.$emit("error", e.message);
+      }
     }
   }
 };

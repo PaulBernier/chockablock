@@ -31,9 +31,16 @@
         </v-container>
       </v-sheet>
     </v-flex>
-
-    <StopLoad v-if="loadConfig.running"></StopLoad>
-    <StartLoad v-else></StartLoad>
+    <v-flex xs12 mb-2>
+      <v-alert v-if="errorMesage" :value="true" type="error">
+        {{ errorMesage }}
+      </v-alert>
+    </v-flex>
+    <StopLoad
+      v-if="loadConfig.running"
+      @error="errorMesage = $event"
+    ></StopLoad>
+    <StartLoad v-else @error="errorMesage = $event"></StartLoad>
   </v-layout>
 </template>
 
@@ -43,6 +50,11 @@ import StopLoad from "./Control/StopLoad";
 
 export default {
   components: { StartLoad, StopLoad },
-  props: ["loadConfig"]
+  props: ["loadConfig"],
+  data() {
+    return {
+      errorMesage: ""
+    };
+  }
 };
 </script>

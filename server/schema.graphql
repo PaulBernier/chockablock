@@ -5,7 +5,7 @@ type Query {
 type Mutation {
   startLoad(wps: Float!, nbOfChains: Int!): LoadConfig!
   stopLoad: LoadConfig!
-  login(name: String!, password: String!): String
+  login(name: String!, password: String!): String!
 }
 
 type Subscription {

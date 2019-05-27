@@ -51,7 +51,7 @@ export default {
           }
         });
       } catch (e) {
-        // TODO: e.message
+        this.$emit("error", e.message);
       } finally {
         this.loading = false;
       }

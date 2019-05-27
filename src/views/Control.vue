@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout wrap v-if="$apollo.queries.loadConfig.loading">
-      <v-flex xs12>
+      <v-flex xs12 class="text-xs-center">
         <v-progress-circular
           indeterminate
           color="primary"
