@@ -2,8 +2,8 @@
   <div class="text-xs-center">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on }">
-        <v-btn flat v-on="on">
-          <span class="mr-2">Control Panel</span>
+        <v-btn flat v-on="on" class="mr-2">
+          <span>Control Panel</span>
         </v-btn>
       </template>
 

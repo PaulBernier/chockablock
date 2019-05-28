@@ -1,31 +1,33 @@
 <template>
-  <v-form @submit.prevent="startLoad">
-    <v-layout wrap text-xs-center>
-      <v-flex xs12>
-        <v-text-field
-          v-model.number="wps"
-          label="WPS"
-          min="0"
-          step="0.1"
-          box
-          type="number"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs12>
-        <v-text-field
-          v-model.number="nbOfChains"
-          label="Number of chains"
-          box
-          type="number"
-          min="1"
-          step="1"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs12>
-        <v-btn type="submit" :loading="loading" large>start loadtest</v-btn>
-      </v-flex>
-    </v-layout>
-  </v-form>
+  <v-flex xs12 sm4 offset-sm4>
+    <v-form @submit.prevent="startLoad">
+      <v-layout wrap text-xs-center>
+        <v-flex xs12>
+          <v-text-field
+            v-model.number="wps"
+            label="WPS"
+            min="0"
+            step="0.1"
+            box
+            type="number"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-text-field
+            v-model.number="nbOfChains"
+            label="Number of chains"
+            box
+            type="number"
+            min="1"
+            step="1"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-btn type="submit" :loading="loading" large>start loadtest</v-btn>
+        </v-flex>
+      </v-layout>
+    </v-form>
+  </v-flex>
 </template>
 
 <script>
