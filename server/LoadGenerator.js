@@ -3,7 +3,7 @@ const { FactomCli, Chain, Entry, getPublicAddress } = require("factom");
 const crypto = require("crypto");
 const uuidv4 = require("uuid/v4");
 
-const EC_ADDRESS = "Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym";
+const EC_ADDRESS = process.env.EC_ADDRESS;
 const PUBLIC_EC_ADDRESS = getPublicAddress(EC_ADDRESS);
 
 class LoadGenerator extends EventEmitter {

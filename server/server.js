@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const { GraphQLServer, PubSub } = require("graphql-yoga");
 const { resolve } = require("path");
 const express = require("express");
@@ -5,7 +7,6 @@ const history = require("connect-history-api-fallback");
 const jwt = require("jsonwebtoken");
 const { LoadGenerator } = require("./LoadGenerator");
 const users = require("./users.json");
-require("dotenv").config();
 
 const loadGenerator = new LoadGenerator();
 const pubsub = new PubSub();

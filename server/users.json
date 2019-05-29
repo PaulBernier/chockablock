@@ -1,17 +1,7 @@
 {
   "paul": {
     "name": "paul",
-    "password": "$2a$10$uJttDtYi3kgRiDuAr1mPmexkkNUqEWt8F8B.RwCwu2kXTtAaAiZvC",
-    "roles": ["admin"]
-  },
-  "andrew": {
-    "name": "andrew",
-    "password": "$2a$10$yUMComy3CEy97m.aMgy6rek/EUIw0oWvd51hVC6dCYrmj9yZ3AfUq",
-    "roles": ["admin"]
-  },
-  "niels": {
-    "name": "niels",
-    "password": "$2a$10$O0Rbhsq8GHqc.qYKsLOzXerqoQ81aEYxwNPsDx4Hn9pZzZO.2420G",
+    "password": "$2a$10$TgM.3Er1uhuLTzZ.BI22L.mH7laiBZlbozjfp1mhvBLIuiHT43vsK",
     "roles": ["admin"]
   }
 }
