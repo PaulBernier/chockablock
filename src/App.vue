@@ -5,8 +5,8 @@
         class="headline text-uppercase clickable"
         @click="$router.replace('/')"
       >
-        <span class="font-weight-medium">Factom</span>
-        <span class="font-weight-light">Loadtesting</span>
+        <span class="font-weight-medium">ChockaBlock</span>
+        <span class="font-weight-light">:Loadtesting</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <LoginDialog v-if="$route.path === '/'"></LoginDialog>

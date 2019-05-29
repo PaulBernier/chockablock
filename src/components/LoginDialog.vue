@@ -9,7 +9,7 @@
 
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>
-          Privacy Policy
+          Control Panel Log In
         </v-card-title>
 
         <v-card-text>
