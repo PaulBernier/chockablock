@@ -44,14 +44,25 @@ const server = new GraphQLServer({
   }
 });
 
-server.start(
-  {
-    endpoint: "/graphql",
-    playground: "/graphql",
-    subscriptions: "/graphql",
-    cors: { origin: true }
-  },
-  () => console.log(`Server is running on http://localhost:4000`)
+const serverConfig = {
+  endpoint: "/graphql",
+  subscriptions: "/graphql"
+};
+
+if (process.env.NODE_ENV === "production") {
+  serverConfig.playground = false;
+  serverConfig.cors = {
+    origin: ["https://chocka.luciap.ca", "https://chockablock.luciap.ca"]
+  };
+} else {
+  serverConfig.playground = "/graphql";
+  serverConfig.cors = {
+    origin: ["http://localhost:4000", "http://localhost:8080"]
+  };
+}
+
+server.start(serverConfig, () =>
+  console.log(`Server is running on http://localhost:4000`)
 );
 
 const publicPath = resolve(__dirname, "../dist");
