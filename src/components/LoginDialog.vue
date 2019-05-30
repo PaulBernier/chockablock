@@ -19,6 +19,7 @@
                 v-model="username"
                 label="Username"
                 required
+                autofocus
                 box
               ></v-text-field>
             </v-flex>

@@ -66,5 +66,5 @@ server.start(serverConfig, () =>
 );
 
 const publicPath = resolve(__dirname, "../dist");
-server.express.use(express.static(publicPath));
 server.express.use("/", history());
+server.express.use(express.static(publicPath));

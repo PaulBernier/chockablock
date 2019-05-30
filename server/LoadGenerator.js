@@ -75,7 +75,7 @@ function commitAndReveal(cli, entry, ecAddress) {
 }
 
 async function createChains(cli, nb, ecAddress) {
-  console.log(`Creating ${nb} chains.`);
+  console.log(`Creating ${nb} chains...`);
 
   const chains = new Array(nb).fill(uuidv4()).map(buildChain);
 
