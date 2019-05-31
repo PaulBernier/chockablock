@@ -23,7 +23,14 @@
           ></v-text-field>
         </v-flex>
         <v-flex xs12>
-          <v-btn type="submit" :loading="loading" large>start loadtest</v-btn>
+          <v-btn
+            type="submit"
+            :loading="loading"
+            large
+            class="grey--text text--darken-3"
+            color="primary"
+            >start loadtest</v-btn
+          >
         </v-flex>
       </v-layout>
     </v-form>

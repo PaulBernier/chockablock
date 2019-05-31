@@ -8,7 +8,7 @@
       </template>
 
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>
+        <v-card-title class="headline primary--text" primary-title>
           Control Panel Log In
         </v-card-title>
 
@@ -47,7 +47,12 @@
           <v-btn color="primary" flat @click="dialog = false">
             Cancel
           </v-btn>
-          <v-btn color="primary" @click="login" :loading="loading">
+          <v-btn
+            color="primary"
+            class="grey--text text--darken-3"
+            @click="login"
+            :loading="loading"
+          >
             Log In
           </v-btn>
         </v-card-actions>

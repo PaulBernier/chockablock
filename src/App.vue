@@ -1,8 +1,8 @@
 <template>
-  <v-app>
+  <v-app dark>
     <v-toolbar app>
       <v-toolbar-title
-        class="headline text-uppercase clickable"
+        class="headline primary--text clickable"
         @click="$router.replace('/')"
       >
         <span class="font-weight-medium">Chocka</span>

@@ -1,12 +1,10 @@
 <template>
-  <v-container>
-    <v-layout wrap v-if="$apollo.queries.loadConfig.loading">
+  <v-container v-if="$apollo.queries.loadConfig.loading">
+    <v-layout wrap>
       <v-flex xs12>Loading...</v-flex>
     </v-layout>
-    <v-layout wrap v-else>
-      <LoadTestState :loadConfig="loadConfig"></LoadTestState>
-    </v-layout>
   </v-container>
+  <LoadTestState v-else :loadConfig="loadConfig"></LoadTestState>
 </template>
 
 <script>

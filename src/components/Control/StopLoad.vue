@@ -1,7 +1,13 @@
 <template>
   <v-layout wrap text-xs-center>
     <v-flex xs12>
-      <v-btn @click="stopLoad" large>stop loadtest</v-btn>
+      <v-btn
+        @click="stopLoad"
+        large
+        class="grey--text text--darken-3"
+        color="primary"
+        >stop loadtest</v-btn
+      >
     </v-flex>
   </v-layout>
 </template>
