@@ -14,8 +14,8 @@ const canControl = rule()(async (parent, args, ctx) => {
 
 const permissions = shield({
   Mutation: {
-    startLoad: and(isAuthenticated, canControl),
-    stopLoad: and(isAuthenticated, canControl)
+    startTest: and(isAuthenticated, canControl),
+    stopTest: and(isAuthenticated, canControl)
   }
 });
 

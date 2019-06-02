@@ -13,14 +13,14 @@
 </template>
 
 <script>
-import STOP_LOAD from "@/graphql/StopLoad.gql";
+import STOP_TEST from "@/graphql/StopTest.gql";
 
 export default {
   methods: {
     async stopLoad() {
       try {
         await this.$apollo.mutate({
-          mutation: STOP_LOAD
+          mutation: STOP_TEST
         });
       } catch (e) {
         this.$emit("error", e.message);

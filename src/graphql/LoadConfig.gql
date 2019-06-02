@@ -1,7 +1,0 @@
-query {
-  loadConfig {
-    running
-    targetWps
-    chainIds
-  }
-}

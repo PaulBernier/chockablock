@@ -1,5 +1,0 @@
-mutation StartLoad($wps: Float!, $nbOfChains: Int!) {
-  startLoad(wps: $wps, nbOfChains: $nbOfChains) {
-    running
-  }
-}

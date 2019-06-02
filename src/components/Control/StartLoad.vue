@@ -4,8 +4,8 @@
       <v-layout wrap text-xs-center>
         <v-flex xs12>
           <v-text-field
-            v-model.number="wps"
-            label="WPS"
+            v-model.number="eps"
+            label="EPS"
             min="0"
             step="0.1"
             box
@@ -38,13 +38,13 @@
 </template>
 
 <script>
-import START_LOAD from "@/graphql/StartLoad.gql";
+import START_TEST from "@/graphql/StartTest.gql";
 
 export default {
   data() {
     return {
       nbOfChains: 50,
-      wps: 1,
+      eps: 1,
       loading: false
     };
   },
@@ -53,10 +53,9 @@ export default {
       try {
         this.loading = true;
         await this.$apollo.mutate({
-          mutation: START_LOAD,
+          mutation: START_TEST,
           variables: {
-            wps: this.wps,
-            nbOfChains: this.nbOfChains
+            loadConfig: { eps: this.eps, nbOfChains: this.nbOfChains }
           }
         });
       } catch (e) {

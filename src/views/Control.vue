@@ -1,20 +1,15 @@
 <template>
-  <v-container>
-    <v-layout wrap v-if="$apollo.queries.loadConfig.loading">
-      <v-flex xs12 class="text-xs-center">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-      </v-flex>
-    </v-layout>
-    <Control v-else :loadConfig="loadConfig"></Control>
-  </v-container>
+  <v-layout wrap v-if="$apollo.queries.loadTest.loading">
+    <v-flex xs12 text-xs-center>
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </v-flex>
+  </v-layout>
+  <Control v-else :loadTest="loadTest"></Control>
 </template>
 
 <script>
-import LOAD_CONFIG from "../graphql/LoadConfig.gql";
-import LOAD_CONFIG_CHANGED from "../graphql/LoadConfigChanged.gql";
+import LOAD_TEST from "../graphql/LoadTest.gql";
+import LOAD_TEST_CHANGED from "../graphql/LoadTestChanged.gql";
 
 import Control from "@/components/Control";
 
@@ -22,16 +17,16 @@ export default {
   components: { Control },
   data() {
     return {
-      loadConfig: { running: false, targetWps: 0, chainIds: [] }
+      loadTest: { id: "", events: [], generator: {} }
     };
   },
   apollo: {
-    loadConfig: {
-      query: LOAD_CONFIG,
+    loadTest: {
+      query: LOAD_TEST,
       subscribeToMore: {
-        document: LOAD_CONFIG_CHANGED,
+        document: LOAD_TEST_CHANGED,
         updateQuery: (previousResult, { subscriptionData }) => {
-          return { loadConfig: subscriptionData.data.loadConfigChanged };
+          return { loadTest: subscriptionData.data.loadTestChanged };
         }
       }
     }

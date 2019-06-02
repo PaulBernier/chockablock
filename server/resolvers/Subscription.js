@@ -1,9 +1,9 @@
-const loadConfigChanged = {
+const loadTestChanged = {
   subscribe: (parent, args, { pubsub }) => {
-    return pubsub.asyncIterator("LOAD_CONFIG_CHANGE");
+    return pubsub.asyncIterator("LOAD_TEST_CHANGED");
   }
 };
 
 module.exports = {
-  loadConfigChanged
+  loadTestChanged
 };

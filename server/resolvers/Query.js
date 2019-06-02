@@ -1,7 +1,7 @@
-async function loadConfig(parent, args, { loadGenerator }) {
-  return loadGenerator.config;
+async function loadTest(parent, args, { loadTestManager }) {
+  return loadTestManager.loadTest;
 }
 
 module.exports = {
-  loadConfig
+  loadTest
 };

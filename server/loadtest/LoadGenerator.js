@@ -1,4 +1,3 @@
-const EventEmitter = require("events");
 const { FactomCli, Chain, Entry, getPublicAddress } = require("factom");
 const crypto = require("crypto");
 const uuidv4 = require("uuid/v4");
@@ -6,23 +5,17 @@ const uuidv4 = require("uuid/v4");
 const EC_ADDRESS = process.env.EC_ADDRESS;
 const PUBLIC_EC_ADDRESS = getPublicAddress(EC_ADDRESS);
 
-class LoadGenerator extends EventEmitter {
+class LoadGenerator {
   constructor(opts) {
-    super();
-
     this.cli = new FactomCli(opts);
-    this.running = false;
-    this.config = {
-      ecAddress: PUBLIC_EC_ADDRESS,
-      running: false,
-      targetWps: 0,
-      chainIds: []
-    };
   }
 
-  async run({ wps = 1, nbOfChains = 100 }) {
-    if (wps <= 0) {
-      throw new Error(`WPS must be positive. Received: ${wps}`);
+  async run({ eps = 1, nbOfChains = 100, entrySize = 1024 }) {
+    if (eps <= 0) {
+      throw new Error(`EPS must be positive. Received: ${eps}`);
+    }
+    if (entrySize <= 0 || entrySize > 10240) {
+      throw new Error(`Invalid entry size: ${entrySize}`);
     }
     if (nbOfChains <= 0 || !Number.isInteger(nbOfChains)) {
       throw new Error(
@@ -34,36 +27,33 @@ class LoadGenerator extends EventEmitter {
 
     let i = 0;
     const cli = this.cli,
-      interval = 1000 / wps;
+      interval = 1000 / eps;
     this.intervalId = setInterval(function() {
       i = (i + 1) % chainIds.length;
-      add(cli, chainIds[i], EC_ADDRESS);
+      add(cli, { chainId: chainIds[i], entrySize }, EC_ADDRESS);
     }, interval);
 
-    this.config.running = true;
-    this.config.targetWps = wps;
-    this.config.chainIds = chainIds;
-    this.emit("LOAD_CONFIG_CHANGE", this.config);
+    return {
+      config: { eps, nbOfChains, entrySize },
+      data: {
+        ecAddress: PUBLIC_EC_ADDRESS,
+        chainIds
+      }
+    };
   }
 
   stop() {
-    this.config.running = false;
-    this.config.targetWps = 0;
-
     if (this.intervalId) {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
-
-    this.emit("LOAD_CONFIG_CHANGE", this.config);
   }
 }
 
-function add(cli, chainId, ecAddress) {
+function add(cli, { chainId, entrySize }, ecAddress) {
   const entry = Entry.builder()
     .chainId(chainId)
-    .extId(uuidv4(), "utf8")
-    .content(crypto.randomBytes(950))
+    .content(crypto.randomBytes(entrySize))
     .build();
 
   commitAndReveal(cli, entry, ecAddress);
@@ -95,6 +85,4 @@ function buildChain(runId) {
   return new Chain(entry);
 }
 
-module.exports = {
-  LoadGenerator
-};
+module.exports = LoadGenerator;

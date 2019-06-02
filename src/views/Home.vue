@@ -1,32 +1,32 @@
 <template>
-  <v-container v-if="$apollo.queries.loadConfig.loading">
+  <v-container v-if="$apollo.queries.loadTest.loading">
     <v-layout wrap>
       <v-flex xs12>Loading...</v-flex>
     </v-layout>
   </v-container>
-  <LoadTestState v-else :loadConfig="loadConfig"></LoadTestState>
+  <LoadTestState v-else :loadTest="loadTest"></LoadTestState>
 </template>
 
 <script>
 import LoadTestState from "@/components/LoadTestState";
 
-import LOAD_CONFIG from "../graphql/LoadConfig.gql";
-import LOAD_CONFIG_CHANGED from "../graphql/LoadConfigChanged.gql";
+import LOAD_TEST from "../graphql/LoadTest.gql";
+import LOAD_TEST_CHANGED from "../graphql/LoadTestChanged.gql";
 
 export default {
   components: { LoadTestState },
   data() {
     return {
-      loadConfig: { running: false, targetWps: 0, chainIds: [] }
+      loadTest: { id: "", events: [], generator: {} }
     };
   },
   apollo: {
-    loadConfig: {
-      query: LOAD_CONFIG,
+    loadTest: {
+      query: LOAD_TEST,
       subscribeToMore: {
-        document: LOAD_CONFIG_CHANGED,
+        document: LOAD_TEST_CHANGED,
         updateQuery: (previousResult, { subscriptionData }) => {
-          return { loadConfig: subscriptionData.data.loadConfigChanged };
+          return { loadTest: subscriptionData.data.loadTestChanged };
         }
       }
     }

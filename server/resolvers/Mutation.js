@@ -2,14 +2,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const users = require("../users.json");
 
-async function startLoad(parent, { wps, nbOfChains }, { loadGenerator }) {
-  await loadGenerator.run({ wps, nbOfChains });
-  return loadGenerator.config;
+async function startTest(parent, { loadConfig }, { loadTestManager, user }) {
+  await loadTestManager.start({ user: user.name, loadConfig });
+  return loadTestManager.loadTest;
 }
 
-function stopLoad(parent, args, { loadGenerator }) {
-  loadGenerator.stop();
-  return loadGenerator.config;
+function stopTest(parent, args, { loadTestManager, user }) {
+  loadTestManager.stop(user.name);
+  return loadTestManager.loadTest;
 }
 
 async function login(parent, { name, password }) {
@@ -28,7 +28,7 @@ async function login(parent, { name, password }) {
 }
 
 module.exports = {
-  startLoad,
-  stopLoad,
+  startTest,
+  stopTest,
   login
 };

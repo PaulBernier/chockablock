@@ -1,20 +1,51 @@
 type Query {
-  loadConfig: LoadConfig!
+  loadTest: LoadTest
 }
 
 type Mutation {
-  startLoad(wps: Float!, nbOfChains: Int!): LoadConfig!
-  stopLoad: LoadConfig!
   login(name: String!, password: String!): String!
+  startTest(loadConfig: LoadConfigInput!): LoadTest!
+  stopTest: LoadTest
 }
 
 type Subscription {
-  loadConfigChanged: LoadConfig!
+  loadTestChanged: LoadTest!
+}
+
+###########
+
+input LoadConfigInput {
+  eps: Float!
+  nbOfChains: Int!
+  entrySize: Int
+}
+
+###########
+
+type LoadTest {
+  id: String!
+  events: [LoadTestEvent!]!
+  generator: Generator!
+}
+
+type LoadTestEvent {
+  user: String!
+  type: String!
+  timestamp: Int!
+}
+
+type Generator {
+  config: LoadConfig!
+  data: GeneratorData!
 }
 
 type LoadConfig {
-  targetWps: Float!
+  eps: Float!
+  nbOfChains: Int!
+  entrySize: Int!
+}
+
+type GeneratorData {
   chainIds: [String!]!
   ecAddress: String!
-  running: Boolean!
 }

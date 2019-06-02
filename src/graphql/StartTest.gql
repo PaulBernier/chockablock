@@ -1,0 +1,5 @@
+mutation StartTest($loadConfig: LoadConfigInput!) {
+  startTest(loadConfig: $loadConfig) {
+    id
+  }
+}

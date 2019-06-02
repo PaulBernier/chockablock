@@ -1,0 +1,20 @@
+query {
+  loadTest {
+    id
+    events {
+      user
+      type
+      timestamp
+    }
+    generator {
+      config {
+        eps
+        nbOfChains
+        entrySize
+      }
+      data {
+        ecAddress
+      }
+    }
+  }
+}

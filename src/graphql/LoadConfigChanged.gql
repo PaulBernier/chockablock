@@ -1,7 +1,0 @@
-subscription {
-  loadConfigChanged {
-    running
-    targetWps
-    chainIds
-  }
-}

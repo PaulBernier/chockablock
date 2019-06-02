@@ -5,16 +5,11 @@ const { resolve } = require("path");
 const express = require("express");
 const history = require("connect-history-api-fallback");
 const jwt = require("jsonwebtoken");
-const { LoadGenerator } = require("./LoadGenerator");
 const users = require("./users.json");
 
-const loadGenerator = new LoadGenerator();
 const pubsub = new PubSub();
 pubsub.ee.setMaxListeners(100);
-
-loadGenerator.on("LOAD_CONFIG_CHANGE", config =>
-  pubsub.publish("LOAD_CONFIG_CHANGE", { loadConfigChanged: config })
-);
+const loadTestManager = require("./loadtest")(pubsub);
 
 // Auth
 
@@ -38,7 +33,7 @@ const server = new GraphQLServer({
     return {
       ...request,
       user: getUser(request),
-      loadGenerator,
+      loadTestManager,
       pubsub
     };
   }
