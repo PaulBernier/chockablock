@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
-    <v-layout flex-child wrap>
-      <v-flex xs12 lg4 d-flex>
+    <v-layout wrap>
+      <v-flex xs12 lg4>
         <NoPastLoadTest v-if="!loadTest"></NoPastLoadTest>
         <ActiveLoadTest
           v-else-if="active"
@@ -10,12 +10,8 @@
         <InactiveLoadTest v-else :loadTest="loadTest"></InactiveLoadTest>
       </v-flex>
 
-      <v-flex xs12 lg8 pa-2 d-flex>
-        <v-sheet class="d-flex" elevation="2" height="416">
-          <v-container>
-            <v-layout wrap> </v-layout>
-          </v-container>
-        </v-sheet>
+      <v-flex xs12 lg8>
+        <BlockStats></BlockStats>
       </v-flex>
     </v-layout>
   </v-container>
@@ -25,9 +21,10 @@
 import NoPastLoadTest from "./LoadTestState/NoPastLoadTest";
 import ActiveLoadTest from "./LoadTestState/ActiveLoadTest";
 import InactiveLoadTest from "./LoadTestState/InactiveLoadTest";
+import BlockStats from "./LoadTestState/BlockStats";
 
 export default {
-  components: { NoPastLoadTest, ActiveLoadTest, InactiveLoadTest },
+  components: { NoPastLoadTest, ActiveLoadTest, InactiveLoadTest, BlockStats },
   props: ["loadTest"],
   computed: {
     active() {

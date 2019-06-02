@@ -65,8 +65,6 @@ function commitAndReveal(cli, entry, ecAddress) {
 }
 
 async function createChains(cli, nb, ecAddress) {
-  console.log(`Creating ${nb} chains...`);
-
   const chains = new Array(nb).fill(uuidv4()).map(buildChain);
 
   const created = await cli.add(chains, ecAddress, { concurrency: 100 });
