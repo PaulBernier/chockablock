@@ -16,6 +16,15 @@ export default {
       },
       responsive: true,
       maintainAspectRatio: false,
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true
+            }
+          }
+        ]
+      },
       annotation: {
         annotations: [
           {
