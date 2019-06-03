@@ -2,11 +2,13 @@
   <v-app dark>
     <v-toolbar app>
       <v-toolbar-title
-        class="headline primary--text clickable"
+        class="headline primary--text"
         @click="$router.replace('/')"
       >
-        <span class="font-weight-medium">Chocka</span>
-        <span class="font-weight-light">Block</span>
+        <a href="/">
+          <span class="font-weight-medium">Chocka</span>
+          <span class="font-weight-light">Block</span>
+        </a>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <LoginDialog v-if="$route.path === '/'"></LoginDialog>
@@ -28,7 +30,7 @@ export default {
 </script>
 
 <style scoped>
-.clickable {
-  cursor: pointer;
+a {
+  text-decoration: none;
 }
 </style>
