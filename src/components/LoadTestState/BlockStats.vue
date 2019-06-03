@@ -82,10 +82,10 @@ export default {
       const labels = [],
         data = [];
 
-      for (let i = 1; i < this.blockStatHistory.length; ++i) {
+      for (let i = 0; i < this.blockStatHistory.length - 1; ++i) {
         const e = this.blockStatHistory[i];
         labels.push(e.height.toString());
-        data.push(e.timestamp - this.blockStatHistory[i - 1].timestamp);
+        data.push(this.blockStatHistory[i + 1].timestamp - e.timestamp);
       }
 
       return {
