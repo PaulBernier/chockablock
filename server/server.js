@@ -10,6 +10,7 @@ const users = require("./users.json");
 const pubsub = new PubSub();
 pubsub.ee.setMaxListeners(100);
 const loadTestManager = require("./loadtest")(pubsub);
+const blockchainMonitor = require("./blockchain_monitor")(pubsub);
 
 // Auth
 
@@ -34,6 +35,7 @@ const server = new GraphQLServer({
       ...request,
       user: getUser(request),
       loadTestManager,
+      blockchainMonitor,
       pubsub
     };
   }

@@ -2,6 +2,6 @@ subscription {
   blockStatHistoryChanged {
     height
     timestamp
-    aeps
+    entryCount
   }
 }

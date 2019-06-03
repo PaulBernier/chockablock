@@ -55,5 +55,5 @@ type GeneratorData {
 type BlockStat {
   height: Int!
   timestamp: Int!
-  aeps: Float!
+  entryCount: Int!
 }

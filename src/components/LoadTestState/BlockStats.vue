@@ -60,7 +60,7 @@ export default {
 
       this.blockStatHistory.forEach(e => {
         labels.push(e.height.toString());
-        data.push(e.aeps);
+        data.push(e.entryCount);
       });
 
       return {
