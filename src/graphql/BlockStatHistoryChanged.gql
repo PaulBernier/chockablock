@@ -3,5 +3,6 @@ subscription {
     height
     timestamp
     entryCount
+    hasElection
   }
 }

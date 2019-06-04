@@ -86,7 +86,7 @@ export default {
       for (let i = 0; i < this.blockStatHistory.length - 1; ++i) {
         const e = this.blockStatHistory[i];
         labels.push(e.height.toString());
-        backgroundColor.push("#F4B75D");
+        backgroundColor.push(e.hasElection ? "#C85D59" : "#F4B75D");
         data.push(this.blockStatHistory[i + 1].timestamp - e.timestamp);
       }
 

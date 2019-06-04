@@ -58,4 +58,5 @@ type BlockStat {
   height: Int!
   timestamp: Int!
   entryCount: Int!
+  hasElection: Boolean!
 }

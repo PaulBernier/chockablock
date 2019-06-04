@@ -34,8 +34,18 @@ class BlockchainMonitor extends EventEmitter {
   }
 
   async computeState(directoryBlock) {
-    const ebs = await Promise.map(directoryBlock.entryBlockRefs, ref =>
-      this.cli.getEntryBlock(ref.keyMR)
+    const adminBlock = await this.cli.getAdminBlock(
+      directoryBlock.adminBlockRef
+    );
+
+    const hasElection =
+      adminBlock.getEntriesOfTypes(5).length > 0 &&
+      adminBlock.getEntriesOfTypes(6).length;
+
+    const ebs = await Promise.map(
+      directoryBlock.entryBlockRefs,
+      ref => this.cli.getEntryBlock(ref.keyMR),
+      { concurrency: 25 }
     );
 
     const entryCount = ebs.reduce((acc, val) => acc + val.entryRefs.length, 0);
@@ -43,7 +53,8 @@ class BlockchainMonitor extends EventEmitter {
     return {
       height: directoryBlock.height,
       timestamp: directoryBlock.timestamp,
-      entryCount
+      entryCount,
+      hasElection
     };
   }
 

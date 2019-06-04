@@ -3,5 +3,6 @@ query {
     height
     timestamp
     entryCount
+    hasElection
   }
 }
