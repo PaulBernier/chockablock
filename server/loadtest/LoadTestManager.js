@@ -3,9 +3,9 @@ const LoadGenerator = require("./LoadGenerator");
 const LoadTest = require("./LoadTest");
 
 class LoadTestManager extends EventEmitter {
-  constructor({ factomdConfig }) {
+  constructor() {
     super();
-    this.loadGenerator = new LoadGenerator(factomdConfig);
+    this.loadGenerator = new LoadGenerator();
     this.loadTest = null;
   }
 

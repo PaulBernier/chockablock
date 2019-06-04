@@ -1,4 +1,11 @@
-const { FactomCli, Chain, Entry, getPublicAddress } = require("factom");
+const {
+  FactomCli,
+  Chain,
+  Entry,
+  getPublicAddress,
+  composeEntryCommit,
+  composeEntryReveal
+} = require("factom");
 const crypto = require("crypto");
 const uuidv4 = require("uuid/v4");
 
@@ -6,8 +13,12 @@ const EC_ADDRESS = process.env.EC_ADDRESS;
 const PUBLIC_EC_ADDRESS = getPublicAddress(EC_ADDRESS);
 
 class LoadGenerator {
-  constructor(opts) {
-    this.cli = new FactomCli(opts);
+  constructor() {
+    this.cli = new FactomCli({
+      retry: {
+        retries: 0
+      }
+    });
   }
 
   async run({ eps = 1, nbOfChains = 100, entrySize = 1024 }) {
@@ -23,14 +34,17 @@ class LoadGenerator {
       );
     }
 
+    console.log(`Creating ${nbOfChains} chains`);
     const chainIds = await createChains(this.cli, nbOfChains, EC_ADDRESS);
 
     let i = 0;
-    const cli = this.cli,
-      interval = 1000 / eps;
-    this.intervalId = setInterval(function() {
+    const interval = 1000 / eps;
+
+    console.log(`Sending entries every ${interval}ms`);
+
+    this.intervalId = setInterval(() => {
       i = (i + 1) % chainIds.length;
-      add(cli, { chainId: chainIds[i], entrySize }, EC_ADDRESS);
+      add(this.cli, { chainId: chainIds[i], entrySize }, EC_ADDRESS);
     }, interval);
 
     return {
@@ -50,24 +64,32 @@ class LoadGenerator {
   }
 }
 
-function add(cli, { chainId, entrySize }, ecAddress) {
+async function add(cli, { chainId, entrySize }, ecAddress) {
   const entry = Entry.builder()
     .chainId(chainId)
     .content(crypto.randomBytes(entrySize))
     .build();
 
-  commitAndReveal(cli, entry, ecAddress);
+  try {
+    await commitAndReveal(cli, entry, ecAddress);
+  } catch (e) {
+    console.error(`Failed to commitAndReveal: ${e.message}`);
+  }
 }
 
-function commitAndReveal(cli, entry, ecAddress) {
-  cli.commitEntry(entry, ecAddress, -1);
-  cli.revealEntry(entry, -1);
+async function commitAndReveal(cli, entry, ecAddress) {
+  await cli.factomdApi("commit-entry", {
+    message: composeEntryCommit(entry, ecAddress).toString("hex")
+  });
+  await cli.factomdApi("reveal-entry", {
+    entry: composeEntryReveal(entry).toString("hex")
+  });
 }
 
 async function createChains(cli, nb, ecAddress) {
   const chains = new Array(nb).fill(uuidv4()).map(buildChain);
 
-  const created = await cli.add(chains, ecAddress, { concurrency: 5 });
+  const created = await cli.add(chains, ecAddress, { concurrency: 10 });
 
   return created.map(c => c.chainId);
 }
