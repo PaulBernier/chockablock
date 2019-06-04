@@ -3,7 +3,10 @@ function loadTest(parent, args, { loadTestManager }) {
 }
 
 function blockStatHistory(parent, args, { blockchainMonitor }) {
-  return blockchainMonitor.history;
+  return {
+    history: blockchainMonitor.history,
+    currentBlockStartTime: blockchainMonitor.currentBlockStartTime
+  };
 }
 
 function ecBalance(parent, args, { blockchainMonitor }) {

@@ -11,7 +11,6 @@ const pubsub = new PubSub();
 pubsub.ee.setMaxListeners(100);
 const loadTestManager = require("./loadtest")(pubsub);
 const blockchainMonitor = require("./blockchain_monitor")(pubsub);
-blockchainMonitor.init();
 
 // Auth
 

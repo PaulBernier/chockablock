@@ -1,6 +1,6 @@
 type Query {
   loadTest: LoadTest
-  blockStatHistory: [BlockStat!]!
+  blockStatHistory: BlockStatHistory!
   ecBalance: Int!
 }
 
@@ -12,7 +12,7 @@ type Mutation {
 
 type Subscription {
   loadTestChanged: LoadTest!
-  blockStatHistoryChanged: [BlockStat!]!
+  blockStatHistoryChanged: BlockStatHistory!
   ecBalanceChanged: Int!
 }
 
@@ -52,6 +52,11 @@ type LoadConfig {
 type GeneratorData {
   chainIds: [String!]!
   ecAddress: String!
+}
+
+type BlockStatHistory {
+  currentBlockStartTime: Int!
+  history: [BlockStat!]!
 }
 
 type BlockStat {

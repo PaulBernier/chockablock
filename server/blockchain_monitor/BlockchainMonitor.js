@@ -15,8 +15,18 @@ class BlockchainMonitor extends EventEmitter {
     this.emitter = new FactomEventEmitter(this.cli, { interval: INTERVAL });
 
     this.emitter.on("newDirectoryBlock", async directoryBlock => {
+      this.currentBlockStartTime = await this.cli
+        .factomdApi("current-minute")
+        .then(data => parseInt(data.currentblockstarttime / 1000000000));
+
       const state = await this.computeState(directoryBlock);
       this.addState(state);
+
+      // Publish
+      this.emit("BLOCK_STAT_HISTORY_CHANGED", {
+        history: this.history,
+        currentBlockStartTime: this.currentBlockStartTime
+      });
     });
 
     this.ecBalance = 0;
@@ -30,7 +40,7 @@ class BlockchainMonitor extends EventEmitter {
   }
 
   async init() {
-    this.ecBalance = this.cli.getBalance(PUBLIC_EC_ADDRESS);
+    this.ecBalance = await this.cli.getBalance(PUBLIC_EC_ADDRESS);
   }
 
   async computeState(directoryBlock) {
@@ -63,7 +73,6 @@ class BlockchainMonitor extends EventEmitter {
     if (this.history.length > HISTORY_LENGTH) {
       this.history.shift();
     }
-    this.emit("BLOCK_STAT_HISTORY_CHANGED", this.history);
   }
 }
 

@@ -27,7 +27,7 @@ export default {
   components: { EpsChart, BlockTimeChart },
   data() {
     return {
-      blockStatHistory: [],
+      blockStatHistory: { currentBlockStartTime: 0, history: [] },
       chartOptions: {
         legend: {
           labels: {
@@ -54,14 +54,25 @@ export default {
     }
   },
   computed: {
+    history() {
+      return this.blockStatHistory.history;
+    },
     epsChartData() {
       const labels = [],
         data = [];
 
-      this.blockStatHistory.forEach(e => {
+      for (let i = 0; i < this.history.length; ++i) {
+        const e = this.history[i];
         labels.push(e.height.toString());
-        data.push(e.entryCount / 600);
-      });
+
+        if (i === this.history.length - 1) {
+          data.push(e.entryCount / (this.currentBlockStartTime - e.timestamp));
+        } else {
+          data.push(
+            e.entryCount / (this.history[i + 1].timestamp - e.timestamp)
+          );
+        }
+      }
 
       return {
         labels,
@@ -83,11 +94,16 @@ export default {
         backgroundColor = [],
         data = [];
 
-      for (let i = 0; i < this.blockStatHistory.length - 1; ++i) {
-        const e = this.blockStatHistory[i];
+      for (let i = 0; i < this.history.length; ++i) {
+        const e = this.history[i];
         labels.push(e.height.toString());
         backgroundColor.push(e.hasElection ? "#C85D59" : "#F4B75D");
-        data.push(this.blockStatHistory[i + 1].timestamp - e.timestamp);
+
+        if (i === this.history.length - 1) {
+          data.push(this.currentBlockStartTime - e.timestamp);
+        } else {
+          data.push(this.history[i + 1].timestamp - e.timestamp);
+        }
       }
 
       return {

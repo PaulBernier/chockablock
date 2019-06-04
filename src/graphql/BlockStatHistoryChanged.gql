@@ -1,8 +1,11 @@
 subscription {
   blockStatHistoryChanged {
-    height
-    timestamp
-    entryCount
-    hasElection
+    currentBlockStartTime,
+    history {
+      height
+      timestamp
+      entryCount
+      hasElection
+    }
   }
 }

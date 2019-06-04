@@ -15,5 +15,7 @@ module.exports = function(pubsub) {
     })
   );
 
+  blockchainMonitor.init();
+
   return blockchainMonitor;
 };
