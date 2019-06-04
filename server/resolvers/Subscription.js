@@ -10,7 +10,14 @@ const blockStatHistoryChanged = {
   }
 };
 
+const ecBalanceChanged = {
+  subscribe: (parent, args, { pubsub }) => {
+    return pubsub.asyncIterator("EC_BALANCE_CHANGED");
+  }
+};
+
 module.exports = {
   loadTestChanged,
-  blockStatHistoryChanged
+  blockStatHistoryChanged,
+  ecBalanceChanged
 };

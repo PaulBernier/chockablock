@@ -1,9 +1,11 @@
 const EventEmitter = require("events");
 const Promise = require("bluebird");
-const { FactomCli, FactomEventEmitter } = require("factom");
+const { FactomCli, FactomEventEmitter, getPublicAddress } = require("factom");
 
 const HISTORY_LENGTH = 72;
 const INTERVAL = process.env.NODE_ENV === "production" ? 30000 : 2000;
+const EC_ADDRESS = process.env.EC_ADDRESS;
+const PUBLIC_EC_ADDRESS = getPublicAddress(EC_ADDRESS);
 
 class BlockchainMonitor extends EventEmitter {
   constructor() {
@@ -16,6 +18,19 @@ class BlockchainMonitor extends EventEmitter {
       const state = await this.computeState(directoryBlock);
       this.addState(state);
     });
+
+    this.ecBalance = 0;
+    setInterval(async () => {
+      const balance = await this.cli.getBalance(PUBLIC_EC_ADDRESS);
+      if (this.ecBalance !== balance) {
+        this.emit("EC_BALANCE_CHANGED", balance);
+        this.ecBalance = balance;
+      }
+    }, 5000);
+  }
+
+  async init() {
+    this.ecBalance = this.cli.getBalance(PUBLIC_EC_ADDRESS);
   }
 
   async computeState(directoryBlock) {

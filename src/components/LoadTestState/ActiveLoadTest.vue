@@ -32,7 +32,7 @@
         <v-container>
           <v-layout wrap>
             <v-flex xs12 class="headline primary--text" text-xs-center mb-2>
-              00,000,000 EC
+              {{ ecBalance.toLocaleString() }} EC
             </v-flex>
             <v-flex xs12 class="subheading" text-xs-center>
               {{ generatorData.ecAddress }}
@@ -61,8 +61,27 @@
 <script>
 import moment from "moment";
 
+import EC_BALANCE from "@/graphql/EcBalance.gql";
+import EC_BALANCE_CHANGED from "@/graphql/EcBalanceChanged.gql";
+
 export default {
   props: ["loadTest"],
+  data() {
+    return {
+      ecBalance: 0
+    };
+  },
+  apollo: {
+    ecBalance: {
+      query: EC_BALANCE,
+      subscribeToMore: {
+        document: EC_BALANCE_CHANGED,
+        updateQuery: (previousResult, { subscriptionData }) => {
+          return { ecBalance: subscriptionData.data.ecBalanceChanged };
+        }
+      }
+    }
+  },
   computed: {
     started() {
       const { user, timestamp } = this.loadTest.events.find(

@@ -1,12 +1,17 @@
-async function loadTest(parent, args, { loadTestManager }) {
+function loadTest(parent, args, { loadTestManager }) {
   return loadTestManager.loadTest;
 }
 
-async function blockStatHistory(parent, args, { blockchainMonitor }) {
+function blockStatHistory(parent, args, { blockchainMonitor }) {
   return blockchainMonitor.history;
+}
+
+function ecBalance(parent, args, { blockchainMonitor }) {
+  return blockchainMonitor.ecBalance;
 }
 
 module.exports = {
   loadTest,
-  blockStatHistory
+  blockStatHistory,
+  ecBalance
 };

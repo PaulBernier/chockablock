@@ -9,5 +9,11 @@ module.exports = function(pubsub) {
     })
   );
 
+  blockchainMonitor.on("EC_BALANCE_CHANGED", balance =>
+    pubsub.publish("EC_BALANCE_CHANGED", {
+      ecBalanceChanged: balance
+    })
+  );
+
   return blockchainMonitor;
 };

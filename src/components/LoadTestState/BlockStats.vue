@@ -80,11 +80,13 @@ export default {
     },
     blockTimeChartData() {
       const labels = [],
+        backgroundColor = [],
         data = [];
 
       for (let i = 0; i < this.blockStatHistory.length - 1; ++i) {
         const e = this.blockStatHistory[i];
         labels.push(e.height.toString());
+        backgroundColor.push("#F4B75D");
         data.push(this.blockStatHistory[i + 1].timestamp - e.timestamp);
       }
 
@@ -93,11 +95,7 @@ export default {
         datasets: [
           {
             label: "Block time (seconds)",
-            backgroundColor: "#F4B75D",
-            pointBackgroundColor: "#F4B75D",
-            fill: false,
-            pointRadius: 4,
-            pointHoverRadius: 5,
+            backgroundColor,
             data
           }
         ]
