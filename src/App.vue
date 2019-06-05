@@ -5,10 +5,10 @@
         class="headline primary--text"
         @click="$router.replace('/')"
       >
-        <a href="/">
+        <router-link to="/">
           <span class="font-weight-medium">Chocka</span>
           <span class="font-weight-light">Block</span>
-        </a>
+        </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <LoginDialog v-if="$route.path === '/'"></LoginDialog>
