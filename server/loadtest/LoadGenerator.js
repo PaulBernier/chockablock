@@ -11,14 +11,15 @@ const uuidv4 = require("uuid/v4");
 
 const EC_ADDRESS = process.env.EC_ADDRESS;
 const PUBLIC_EC_ADDRESS = getPublicAddress(EC_ADDRESS);
+const NO_RETRY_STRATEGY = {
+  retry: {
+    retries: 0
+  }
+};
 
 class LoadGenerator {
   constructor() {
-    this.cli = new FactomCli({
-      retry: {
-        retries: 0
-      }
-    });
+    this.cli = new FactomCli();
   }
 
   async run({ eps = 1, nbOfChains = 100, entrySize = 1024 }) {
@@ -78,12 +79,20 @@ async function add(cli, { chainId, entrySize }, ecAddress) {
 }
 
 async function commitAndReveal(cli, entry, ecAddress) {
-  await cli.factomdApi("commit-entry", {
-    message: composeEntryCommit(entry, ecAddress).toString("hex")
-  });
-  await cli.factomdApi("reveal-entry", {
-    entry: composeEntryReveal(entry).toString("hex")
-  });
+  await cli.factomdApi(
+    "commit-entry",
+    {
+      message: composeEntryCommit(entry, ecAddress).toString("hex")
+    },
+    NO_RETRY_STRATEGY
+  );
+  await cli.factomdApi(
+    "reveal-entry",
+    {
+      entry: composeEntryReveal(entry).toString("hex")
+    },
+    NO_RETRY_STRATEGY
+  );
 }
 
 async function createChains(cli, nb, ecAddress) {
