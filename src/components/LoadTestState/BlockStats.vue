@@ -66,7 +66,10 @@ export default {
         labels.push(e.height.toString());
 
         if (i === this.history.length - 1) {
-          data.push(e.entryCount / (this.currentBlockStartTime - e.timestamp));
+          data.push(
+            e.entryCount /
+              (this.blockStatHistory.currentBlockStartTime - e.timestamp)
+          );
         } else {
           data.push(
             e.entryCount / (this.history[i + 1].timestamp - e.timestamp)
@@ -100,7 +103,7 @@ export default {
         backgroundColor.push(e.hasElection ? "#C85D59" : "#F4B75D");
 
         if (i === this.history.length - 1) {
-          data.push(this.currentBlockStartTime - e.timestamp);
+          data.push(this.blockStatHistory.currentBlockStartTime - e.timestamp);
         } else {
           data.push(this.history[i + 1].timestamp - e.timestamp);
         }
