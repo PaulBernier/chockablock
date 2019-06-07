@@ -10,10 +10,19 @@ const PUBLIC_EC_ADDRESS = getPublicAddress(EC_ADDRESS);
 class BlockchainMonitor extends EventEmitter {
   constructor() {
     super();
-    this.history = [];
     this.cli = new FactomCli();
     this.emitter = new FactomEventEmitter(this.cli, { interval: INTERVAL });
 
+    this.history = [];
+    this.ecBalance = 0;
+    this.currentBlockStartTime = 0;
+
+    // Handle errors
+    this.emitter.on("error", e =>
+      console.error(`FactomEventEmitter error: ${e.message}`)
+    );
+
+    // Process new blocks
     this.emitter.on("newDirectoryBlock", async directoryBlock => {
       this.currentBlockStartTime = await this.cli
         .factomdApi("current-minute")
@@ -22,25 +31,36 @@ class BlockchainMonitor extends EventEmitter {
       const state = await this.computeState(directoryBlock);
       this.addState(state);
 
-      // Publish
       this.emit("BLOCK_STAT_HISTORY_CHANGED", {
         history: this.history,
         currentBlockStartTime: this.currentBlockStartTime
       });
     });
 
-    this.ecBalance = 0;
+    // Poll balance
     setInterval(async () => {
-      const balance = await this.cli.getBalance(PUBLIC_EC_ADDRESS);
-      if (this.ecBalance !== balance) {
-        this.emit("EC_BALANCE_CHANGED", balance);
-        this.ecBalance = balance;
+      try {
+        const balance = await this.cli.getBalance(PUBLIC_EC_ADDRESS);
+        if (this.ecBalance !== balance) {
+          this.emit("EC_BALANCE_CHANGED", balance);
+          this.ecBalance = balance;
+        }
+      } catch (e) {
+        console.error(
+          `Failed to fetch balance of ${PUBLIC_EC_ADDRESS}: ${e.message}`
+        );
       }
     }, 5000);
   }
 
   async init() {
-    this.ecBalance = await this.cli.getBalance(PUBLIC_EC_ADDRESS);
+    try {
+      this.ecBalance = await this.cli.getBalance(PUBLIC_EC_ADDRESS);
+    } catch (e) {
+      console.error(
+        `Failed to fetch balance of ${PUBLIC_EC_ADDRESS}: ${e.message}`
+      );
+    }
   }
 
   async computeState(directoryBlock) {

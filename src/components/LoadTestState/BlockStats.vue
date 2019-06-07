@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     history() {
-      return this.blockStatHistory.history;
+      return this.blockStatHistory ? this.blockStatHistory.history : [];
     },
     epsChartData() {
       const labels = [],
