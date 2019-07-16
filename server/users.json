@@ -1,7 +1,0 @@
-{
-  "paul": {
-    "name": "paul",
-    "password": "$2a$10$7Bv3r60qmfo6U4AFABHe3uKCTdN19vl0cSBA1xzjZtZiTrzLVY426",
-    "roles": ["admin"]
-  }
-}
