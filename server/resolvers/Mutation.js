@@ -20,7 +20,7 @@ module.exports = db => ({
     if (!user) {
       throw new Error(`Unknown user ${name}`);
     }
-    console.log(user.password, password);
+
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
       throw new Error("Incorrect password");

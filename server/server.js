@@ -23,7 +23,7 @@ const jwt = require("jsonwebtoken");
         req.request.get("Authorization"),
         process.env.JWT_SECRET
       );
-      console.log("erf?");
+
       return db
         .collection("u5sers")
         .findOne({ name }, { projection: { name: 1, roles: 1 } });

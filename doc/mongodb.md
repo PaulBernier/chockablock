@@ -1,4 +1,4 @@
-docker run --name mongodb -d mongo:4.1-bionic
+docker run --name mongodb -p 27017:27017 -d mongo:4.1-bionic
 
 ```bash
 docker exec -it mongodb bash
