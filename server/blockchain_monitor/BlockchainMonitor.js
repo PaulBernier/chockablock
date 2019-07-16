@@ -8,11 +8,12 @@ const EC_ADDRESS = process.env.EC_ADDRESS;
 const PUBLIC_EC_ADDRESS = getPublicAddress(EC_ADDRESS);
 
 class BlockchainMonitor extends EventEmitter {
-  constructor() {
+  constructor(db) {
     super();
     this.cli = new FactomCli();
     this.emitter = new FactomEventEmitter(this.cli, { interval: INTERVAL });
 
+    this.db = db;
     this.history = [];
     this.ecBalance = 0;
     this.currentBlockStartTime = 0;
@@ -21,7 +22,56 @@ class BlockchainMonitor extends EventEmitter {
     this.emitter.on("error", e =>
       console.error(`FactomEventEmitter error: ${e.message}`)
     );
+  }
 
+  async init() {
+    this.ecBalance = await this.cli.getBalance(PUBLIC_EC_ADDRESS);
+
+    const dbHistory = await this.db
+      .collection("blocks")
+      .find({})
+      .sort("height", -1)
+      .limit(HISTORY_LENGTH)
+      .toArray();
+    this.history = dbHistory.reverse();
+
+    // Corner case the first time the db is empty
+    if (this.history.length > 0) {
+      await this.backfillBlocks();
+    }
+
+    await this.startListening();
+  }
+
+  async backfillBlocks() {
+    const dbHead = await this.cli.getDirectoryBlockHead();
+    const lastSavedHeight = this.history[this.history.length - 1].height;
+    if (lastSavedHeight < dbHead.height) {
+      let height = lastSavedHeight + 1;
+      console.log(`Backfilling blocks data from ${height}`);
+      let moreBlocks = true;
+      while (moreBlocks) {
+        try {
+          // The line below will throw once we passed the head of the DB chain
+          const db = await this.cli.getDirectoryBlock(height);
+          console.log(`Computing state of block ${height}`);
+          const state = await this.computeState(db);
+          await this.addState(state);
+          height++;
+        } catch (e) {
+          if (e.code === -32008) {
+            moreBlocks = false;
+          } else {
+            throw e;
+          }
+        }
+      }
+      console.log(`Done backfilling up to ${height - 1}`);
+    }
+  }
+
+  async startListening() {
+    console.log("Start listening to blockchain events");
     // Process new blocks
     this.emitter.on("newDirectoryBlock", async directoryBlock => {
       this.currentBlockStartTime = await this.cli
@@ -29,7 +79,7 @@ class BlockchainMonitor extends EventEmitter {
         .then(data => parseInt(data.currentblockstarttime / 1000000000));
 
       const state = await this.computeState(directoryBlock);
-      this.addState(state);
+      await this.addState(state);
 
       this.emit("BLOCK_STAT_HISTORY_CHANGED", {
         history: this.history,
@@ -51,16 +101,6 @@ class BlockchainMonitor extends EventEmitter {
         );
       }
     }, 5000);
-  }
-
-  async init() {
-    try {
-      this.ecBalance = await this.cli.getBalance(PUBLIC_EC_ADDRESS);
-    } catch (e) {
-      console.error(
-        `Failed to fetch balance of ${PUBLIC_EC_ADDRESS}: ${e.message}`
-      );
-    }
   }
 
   async computeState(directoryBlock) {
@@ -88,7 +128,15 @@ class BlockchainMonitor extends EventEmitter {
     };
   }
 
-  addState(state) {
+  async addState(state) {
+    if (
+      this.history.length > 0 &&
+      state.height <= this.history[this.history.length - 1].height
+    ) {
+      return;
+    }
+
+    await this.db.collection("blocks").insertOne(state);
     this.history.push(state);
     if (this.history.length > HISTORY_LENGTH) {
       this.history.shift();

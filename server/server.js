@@ -7,12 +7,13 @@ const history = require("connect-history-api-fallback");
 const jwt = require("jsonwebtoken");
 
 (async () => {
+  // Singleton DB client
   const db = await require("./mongodb");
 
   const pubsub = new PubSub();
   pubsub.ee.setMaxListeners(100);
   const loadTestManager = require("./loadtest")(pubsub);
-  const blockchainMonitor = require("./blockchain_monitor")(pubsub);
+  const blockchainMonitor = require("./blockchain_monitor")(pubsub, db);
 
   // Auth
 
