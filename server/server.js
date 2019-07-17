@@ -19,14 +19,12 @@ const jwt = require("jsonwebtoken");
 
   function getUser(req) {
     try {
-      const { name } = jwt.verify(
+      const { name, roles } = jwt.verify(
         req.request.get("Authorization"),
         process.env.JWT_SECRET
       );
 
-      return db
-        .collection("u5sers")
-        .findOne({ name }, { projection: { name: 1, roles: 1 } });
+      return { name, roles };
     } catch (e) {
       return null;
     }

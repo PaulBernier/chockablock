@@ -13,9 +13,7 @@ module.exports = db => ({
   },
 
   login: async function(parent, { name, password }) {
-    const user = await db
-      .collection("users")
-      .findOne({ name }, { projection: { name: 1, password: 1 } });
+    const user = await db.collection("users").findOne({ name });
 
     if (!user) {
       throw new Error(`Unknown user ${name}`);
@@ -26,6 +24,8 @@ module.exports = db => ({
       throw new Error("Incorrect password");
     }
 
-    return jwt.sign({ name }, process.env.JWT_SECRET, { expiresIn: "30d" });
+    return jwt.sign({ name, roles: user.roles }, process.env.JWT_SECRET, {
+      expiresIn: "30d"
+    });
   }
 });
