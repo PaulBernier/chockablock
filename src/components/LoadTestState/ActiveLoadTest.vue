@@ -6,10 +6,10 @@
           <v-layout wrap text-xs-center>
             <v-flex xs12 class="display-3 font-weight-bold" mb-4>ON</v-flex>
             <v-flex xs12 class="subheading grey--text text--darken-3">
-              Started on {{ started.timestamp | displayDate }}
+              Started on {{ loadTest.start.timestamp | displayDate }}
             </v-flex>
             <v-flex xs12 class="subheading grey--text text--darken-3"
-              >by {{ started.user }}</v-flex
+              >by {{ loadTest.start.user }}</v-flex
             >
           </v-layout>
         </v-container>
@@ -20,7 +20,8 @@
         <v-container>
           <v-layout wrap text-xs-center>
             <v-flex xs12 class="display-3 primary--text" mb-4>
-              {{ config.eps }} EPS
+              <!-- TODO: make generic -->
+              {{ loadTest.generatorConfig.eps }} EPS
             </v-flex>
             <v-flex xs12 class="subheading">Current target</v-flex>
           </v-layout>
@@ -32,10 +33,10 @@
         <v-container>
           <v-layout wrap>
             <v-flex xs12 class="headline primary--text" text-xs-center mb-2>
-              {{ ecBalance.toLocaleString() }} EC
+              {{ ecBalance.balance.toLocaleString() }} EC
             </v-flex>
             <v-flex xs12 class="subheading" text-xs-center>
-              {{ generatorData.ecAddress }}
+              {{ ecBalance.address }}
             </v-flex>
           </v-layout>
         </v-container>
@@ -45,12 +46,13 @@
       <v-sheet class="d-flex" elevation="2">
         <v-container>
           <v-layout wrap>
-            <v-flex xs12 class="headline primary--text" text-xs-center mb-4
-              >Config</v-flex
-            >
-            <v-flex xs12 class="subheading"
-              ><pre>{{ config }}</pre></v-flex
-            >
+            <v-flex xs12 class="headline primary--text" text-xs-center mb-4>
+              Config
+            </v-flex>
+
+            <v-flex xs12 class="subheading">
+              <pre>{{ config }}</pre>
+            </v-flex>
           </v-layout>
         </v-container>
       </v-sheet>
@@ -68,7 +70,7 @@ export default {
   props: ["loadTest"],
   data() {
     return {
-      ecBalance: 0
+      ecBalance: { address: "", balance: 0 }
     };
   },
   apollo: {
@@ -83,19 +85,10 @@ export default {
     }
   },
   computed: {
-    started() {
-      const { user, timestamp } = this.loadTest.events.find(
-        e => e.type === "start"
-      );
-      return { user, timestamp };
-    },
     config() {
-      const copy = { ...this.loadTest.generator.config };
+      const copy = { ...this.loadTest.generatorConfig };
       delete copy.__typename;
       return copy;
-    },
-    generatorData() {
-      return this.loadTest.generator.data;
     }
   },
   filters: {

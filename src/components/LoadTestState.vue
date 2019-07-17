@@ -28,9 +28,7 @@ export default {
   props: ["loadTest"],
   computed: {
     active() {
-      return (
-        this.loadTest && !this.loadTest.events.find(e => e.type === "stop")
-      );
+      return this.loadTest && !this.loadTest.end;
     }
   }
 };

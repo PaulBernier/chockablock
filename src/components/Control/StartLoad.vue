@@ -55,7 +55,13 @@ export default {
         await this.$apollo.mutate({
           mutation: START_TEST,
           variables: {
-            loadConfig: { eps: this.eps, nbOfChains: this.nbOfChains }
+            loadConfig: {
+              type: "constant",
+              nbOfChains: this.nbOfChains,
+              generatorConfig: {
+                eps: this.eps
+              }
+            }
           }
         });
       } catch (e) {

@@ -21,6 +21,26 @@ blocks {
     hasElection: boolean
 }
 
+loadTest {
+    start: {
+        user: string,
+        time: Date
+    },
+    end: {
+        user: string,
+        time: Date
+    },
+    authoritySet: {
+
+    },
+    type: string,
+    generatorConfig: {
+
+    },
+    chainIds: [],
+    events: [{type: string, time: Date}]
+}
+
 db.blocks.find({}).sort([["height", 1]]).limit(5).toArray()
 
 ## Indexes

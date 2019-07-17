@@ -17,7 +17,7 @@ export default {
   components: { Control },
   data() {
     return {
-      loadTest: { id: "", events: [], generator: {} }
+      loadTest: {}
     };
   },
   apollo: {

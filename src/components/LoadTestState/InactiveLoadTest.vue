@@ -19,16 +19,16 @@
             </v-flex>
             <v-flex xs12 class="subheading" mb-2>
               Started by
-              <span class="font-weight-bold">{{ started.user }}</span> on
+              <span class="font-weight-bold">{{ loadTest.start.user }}</span> on
               <span class="font-weight-bold">{{
-                started.timestamp | displayDate
+                loadTest.start.timestamp | displayDate
               }}</span>
             </v-flex>
             <v-flex xs12 class="subheading" mb-2>
               Stopped by
-              <span class="font-weight-bold">{{ stopped.user }}</span> on
+              <span class="font-weight-bold">{{ loadTest.end.user }}</span> on
               <span class="font-weight-bold">{{
-                stopped.timestamp | displayDate
+                loadTest.end.timestamp | displayDate
               }}</span>
             </v-flex>
             <v-flex xs12 class="subheading" mb-2>
@@ -54,25 +54,13 @@ import moment from "moment";
 export default {
   props: ["loadTest"],
   computed: {
-    started() {
-      const { user, timestamp } = this.loadTest.events.find(
-        e => e.type === "start"
-      );
-      return { user, timestamp };
-    },
-    stopped() {
-      const { user, timestamp } = this.loadTest.events.find(
-        e => e.type === "stop"
-      );
-      return { user, timestamp };
-    },
     duration() {
-      const start = moment(this.started.timestamp * 1000);
-      const stop = moment(this.stopped.timestamp * 1000);
-      return moment.duration(stop.diff(start)).humanize();
+      const start = moment(this.loadTest.start.timestamp * 1000);
+      const end = moment(this.loadTest.end.timestamp * 1000);
+      return moment.duration(end.diff(start)).humanize();
     },
     config() {
-      const copy = { ...this.loadTest.generator.config };
+      const copy = { ...this.loadTest.generatorConfig };
       delete copy.__typename;
       return copy;
     }

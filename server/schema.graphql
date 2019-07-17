@@ -1,7 +1,7 @@
 type Query {
   loadTest: LoadTest
   blockStatHistory: BlockStatHistory!
-  ecBalance: Int!
+  ecBalance: EcBalance!
 }
 
 type Mutation {
@@ -13,45 +13,46 @@ type Mutation {
 type Subscription {
   loadTestChanged: LoadTest!
   blockStatHistoryChanged: BlockStatHistory!
-  ecBalanceChanged: Int!
+  ecBalanceChanged: EcBalance!
 }
 
 ###########
 
 input LoadConfigInput {
-  eps: Float!
+  type: String!
   nbOfChains: Int!
+  generatorConfig: ConstantLoadConfigInput
+}
+
+input ConstantLoadConfigInput {
+  eps: Float!
   entrySize: Int
 }
 
 ###########
 
+type EcBalance {
+  address: String!
+  balance: Int!
+}
+
 type LoadTest {
-  id: String!
-  events: [LoadTestEvent!]!
-  generator: Generator!
-}
-
-type LoadTestEvent {
-  user: String!
+  _id: String!
+  start: StartStopEvent!
+  end: StartStopEvent
   type: String!
-  timestamp: Int!
-}
-
-type Generator {
-  config: LoadConfig!
-  data: GeneratorData!
-}
-
-type LoadConfig {
-  eps: Float!
-  nbOfChains: Int!
-  entrySize: Int!
-}
-
-type GeneratorData {
   chainIds: [String!]!
-  ecAddress: String!
+  generatorConfig: ConstantLoadConfig!
+}
+
+type ConstantLoadConfig {
+  eps: Float!
+  entrySize: Int
+}
+
+type StartStopEvent {
+  user: String!
+  timestamp: Int!
 }
 
 type BlockStatHistory {

@@ -7,8 +7,8 @@ module.exports = db => ({
     return loadTestManager.loadTest;
   },
 
-  stopTest: function(parent, args, { loadTestManager, user }) {
-    loadTestManager.stop(user.name);
+  stopTest: async function(parent, args, { loadTestManager, user }) {
+    await loadTestManager.stop(user.name);
     return loadTestManager.loadTest;
   },
 

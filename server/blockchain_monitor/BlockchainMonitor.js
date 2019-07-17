@@ -15,7 +15,7 @@ class BlockchainMonitor extends EventEmitter {
 
     this.db = db;
     this.history = [];
-    this.ecBalance = 0;
+    this.ecBalance = { address: PUBLIC_EC_ADDRESS, balance: 0 };
     this.currentBlockStartTime = 0;
 
     // Handle errors
@@ -25,7 +25,7 @@ class BlockchainMonitor extends EventEmitter {
   }
 
   async init() {
-    this.ecBalance = await this.cli.getBalance(PUBLIC_EC_ADDRESS);
+    this.ecBalance.balance = await this.cli.getBalance(PUBLIC_EC_ADDRESS);
 
     const dbHistory = await this.db
       .collection("blocks")
@@ -91,9 +91,9 @@ class BlockchainMonitor extends EventEmitter {
     setInterval(async () => {
       try {
         const balance = await this.cli.getBalance(PUBLIC_EC_ADDRESS);
-        if (this.ecBalance !== balance) {
-          this.emit("EC_BALANCE_CHANGED", balance);
-          this.ecBalance = balance;
+        if (this.ecBalance.balance !== balance) {
+          this.ecBalance.balance = balance;
+          this.emit("EC_BALANCE_CHANGED", this.ecBalance);
         }
       } catch (e) {
         console.error(

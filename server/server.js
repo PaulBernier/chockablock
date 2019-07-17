@@ -12,7 +12,7 @@ const jwt = require("jsonwebtoken");
 
   const pubsub = new PubSub();
   pubsub.ee.setMaxListeners(100);
-  const loadTestManager = require("./loadtest")(pubsub);
+  const loadTestManager = require("./loadtest")(pubsub, db);
   const blockchainMonitor = require("./blockchain_monitor")(pubsub, db);
 
   // Auth
@@ -39,6 +39,7 @@ const jwt = require("jsonwebtoken");
         ...request,
         user: getUser(request),
         loadTestManager,
+        db,
         blockchainMonitor,
         pubsub
       };

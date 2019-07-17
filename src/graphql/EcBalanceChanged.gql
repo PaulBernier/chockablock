@@ -1,3 +1,6 @@
 subscription {
-  ecBalanceChanged
+  ecBalanceChanged {
+    address
+    balance
+  }
 }

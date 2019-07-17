@@ -1,19 +1,20 @@
 query {
   loadTest {
-    id
-    events {
+    _id
+    start {
       user
-      type
       timestamp
     }
-    generator {
-      config {
+    end {
+      user
+      timestamp
+    }
+    type
+    chainIds
+    generatorConfig {
+      ... on ConstantLoadConfig {
         eps
-        nbOfChains
         entrySize
-      }
-      data {
-        ecAddress
       }
     }
   }

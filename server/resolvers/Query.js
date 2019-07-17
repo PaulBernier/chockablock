@@ -1,5 +1,7 @@
-function loadTest(parent, args, { loadTestManager }) {
-  return loadTestManager.loadTest;
+function loadTest(parent, args, { db }) {
+  return db
+    .collection("loadtests")
+    .findOne({}, { limit: 1, sort: { _id: -1 } });
 }
 
 function blockStatHistory(parent, args, { blockchainMonitor }) {
