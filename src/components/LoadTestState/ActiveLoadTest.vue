@@ -49,7 +49,16 @@
             <v-flex xs12 class="headline primary--text" text-xs-center mb-4>
               Config
             </v-flex>
-
+            <v-flex xs12 class="subheading" mb-2>
+              Number of chains:
+              <span class="font-weight-bold">{{
+                this.loadTest.chainIds.length
+              }}</span>
+            </v-flex>
+            <v-flex xs12 class="subheading" mb-2>
+              Type:
+              <span class="font-weight-bold">{{ this.loadTest.type }}</span>
+            </v-flex>
             <v-flex xs12 class="subheading">
               <pre>{{ config }}</pre>
             </v-flex>

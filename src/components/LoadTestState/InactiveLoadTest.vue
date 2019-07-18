@@ -35,6 +35,16 @@
               Total duration:
               <span class="font-weight-bold">{{ duration }}</span>
             </v-flex>
+            <v-flex xs12 class="subheading" mb-2>
+              Number of chains:
+              <span class="font-weight-bold">{{
+                this.loadTest.chainIds.length
+              }}</span>
+            </v-flex>
+            <v-flex xs12 class="subheading" mb-2>
+              Type:
+              <span class="font-weight-bold">{{ this.loadTest.type }}</span>
+            </v-flex>
             <v-flex xs12 class="subheading" mb-3>
               With config:
             </v-flex>

@@ -18,6 +18,14 @@ export default new Router({
       name: "control",
       component: () =>
         import(/* webpackChunkName: "control" */ "./views/Control.vue")
+    },
+    {
+      path: "/loadtest-history",
+      name: "loadtest-history",
+      component: () =>
+        import(
+          /* webpackChunkName: "loadtest-history" */ "./views/LoadTestHistory.vue"
+        )
     }
   ]
 });

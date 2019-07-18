@@ -1,5 +1,6 @@
 type Query {
   loadTest: LoadTest
+  loadTestHistory(id: String, pageSize: Int!): [LoadTest!]!
   blockStatHistory: BlockStatHistory!
   ecBalance: EcBalance!
 }

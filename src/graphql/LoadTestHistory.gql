@@ -1,0 +1,21 @@
+query loadTestHistory($lastId: String, $pageSize: Int!) {
+  loadTestHistory(id: $lastId, pageSize: $pageSize) {
+    _id
+    start {
+      user
+      timestamp
+    }
+    end {
+      user
+      timestamp
+    }
+    type
+    chainIds
+    generatorConfig {
+      ... on ConstantLoadConfig {
+        eps
+        entrySize
+      }
+    }
+  }
+}

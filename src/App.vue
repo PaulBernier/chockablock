@@ -11,6 +11,9 @@
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-btn flat to="/loadtest-history" class="mr-2">
+        <span>Load Test History</span>
+      </v-btn>
       <LoginDialog v-if="$route.path === '/'"></LoginDialog>
     </v-toolbar>
 
