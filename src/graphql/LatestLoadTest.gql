@@ -1,5 +1,5 @@
-subscription {
-  loadTestChanged {
+query {
+  latestLoadTest {
     _id
     start {
       user

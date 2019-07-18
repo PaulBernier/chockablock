@@ -1,15 +1,15 @@
 <template>
-  <v-layout wrap v-if="$apollo.queries.loadTest.loading">
+  <v-layout wrap v-if="$apollo.queries.latestLoadTest.loading">
     <v-flex xs12 text-xs-center>
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </v-flex>
   </v-layout>
-  <Control v-else :loadTest="loadTest"></Control>
+  <Control v-else :loadTest="latestLoadTest"></Control>
 </template>
 
 <script>
-import LOAD_TEST from "../graphql/LoadTest.gql";
-import LOAD_TEST_CHANGED from "../graphql/LoadTestChanged.gql";
+import LATEST_LOAD_TEST from "../graphql/LatestLoadTest.gql";
+import LATEST_LOAD_TEST_CHANGED from "../graphql/LatestLoadTestChanged.gql";
 
 import Control from "@/components/Control";
 
@@ -17,16 +17,18 @@ export default {
   components: { Control },
   data() {
     return {
-      loadTest: {}
+      latestLoadTest: {}
     };
   },
   apollo: {
-    loadTest: {
-      query: LOAD_TEST,
+    latestLoadTest: {
+      query: LATEST_LOAD_TEST,
       subscribeToMore: {
-        document: LOAD_TEST_CHANGED,
+        document: LATEST_LOAD_TEST_CHANGED,
         updateQuery: (previousResult, { subscriptionData }) => {
-          return { loadTest: subscriptionData.data.loadTestChanged };
+          return {
+            latestLoadTest: subscriptionData.data.latestLoadTestChanged
+          };
         }
       }
     }

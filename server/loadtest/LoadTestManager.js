@@ -14,6 +14,20 @@ class LoadTestManager extends EventEmitter {
     this.loadTest = null;
   }
 
+  async init() {
+    const latestLoadTest = await this.db
+      .collection("loadtests")
+      .findOne({}, { limit: 1, sort: { _id: -1 } });
+
+    if (latestLoadTest) {
+      this.loadTest = new LoadTest(latestLoadTest);
+      if (this.loadTest.isActive()) {
+        this.loadTest.stopBy("ADMIN");
+        await this.loadTestChanged();
+      }
+    }
+  }
+
   async start({ user, loadConfig }) {
     if (this.loadTest && this.loadTest.isActive()) {
       throw new Error("A load test is already running");
@@ -68,9 +82,7 @@ class LoadTestManager extends EventEmitter {
     if (this.loadTest._id) {
       await this.db
         .collection("loadtests")
-        .replaceOne({ _id: this.loadTest._id }, this.loadTest, {
-          upsert: true
-        });
+        .replaceOne({ _id: this.loadTest._id }, this.loadTest);
     } else {
       await this.db.collection("loadtests").insertOne(this.loadTest);
     }

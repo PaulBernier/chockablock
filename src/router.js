@@ -26,6 +26,14 @@ export default new Router({
         import(
           /* webpackChunkName: "loadtest-history" */ "./views/LoadTestHistory.vue"
         )
+    },
+    {
+      path: "/loadtest/:id",
+      name: "loadtest-details",
+      component: () =>
+        import(
+          /* webpackChunkName: "loadtest-details" */ "./views/LoadTestDetails.vue"
+        )
     }
   ]
 });

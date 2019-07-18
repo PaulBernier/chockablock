@@ -1,6 +1,16 @@
 class LoadTest {
-  constructor() {
-    this.events = [];
+  constructor(obj) {
+    if (obj) {
+      this._id = obj._id;
+      this.start = obj.start;
+      this.end = obj.end;
+      this.events = obj.events;
+      this.generatorConfig = obj.generatorConfig;
+      this.chainIds = obj.chainIds;
+      this.type = obj.type;
+    } else {
+      this.events = [];
+    }
   }
 
   startBy(user) {

@@ -15,25 +15,27 @@
     </v-layout>
     <v-layout wrap v-else>
       <v-flex xs12 v-for="loadTest in loadTestHistory" :key="loadTest._id" my-3>
-        <v-sheet elevation="4">
-          <v-layout wrap pa-3>
-            <v-flex xs1 class="primary--text" mb-3>Start</v-flex>
-            <v-flex xs5 mb-3>
-              {{ loadTest.start.timestamp | displayDate }}
-            </v-flex>
-            <v-flex xs1 class="primary--text">Duration</v-flex>
-            <v-flex xs5>
-              {{ getDuration(loadTest) }}
-            </v-flex>
-            <v-flex xs1 class="primary--text">Type</v-flex>
-            <v-flex xs5>{{ loadTest.type }}</v-flex>
-            <v-flex xs1 class="primary--text">Config</v-flex>
+        <router-link :to="'loadtest/' + loadTest._id">
+          <v-sheet elevation="4">
+            <v-layout wrap pa-3>
+              <v-flex xs1 class="primary--text" mb-3>Start</v-flex>
+              <v-flex xs5 mb-3>
+                {{ loadTest.start.timestamp | displayDate }}
+              </v-flex>
+              <v-flex xs1 class="primary--text">Duration</v-flex>
+              <v-flex xs5>
+                {{ getDuration(loadTest) }}
+              </v-flex>
+              <v-flex xs1 class="primary--text">Type</v-flex>
+              <v-flex xs5>{{ loadTest.type }}</v-flex>
+              <v-flex xs1 class="primary--text">Config</v-flex>
 
-            <v-flex xs5>
-              <pre>{{ getConfig(loadTest) }}</pre>
-            </v-flex>
-          </v-layout>
-        </v-sheet>
+              <v-flex xs5>
+                <pre>{{ getConfig(loadTest) }}</pre>
+              </v-flex>
+            </v-layout>
+          </v-sheet>
+        </router-link>
       </v-flex>
       <v-flex xs12 text-xs-center>
         <v-btn v-if="showMoreEnabled" @click="showMore">
@@ -51,7 +53,6 @@ import moment from "moment";
 const PAGE_SIZE = 10;
 
 export default {
-  name: "app",
   data: () => ({
     loadTestHistory: [],
     showMoreEnabled: true
@@ -116,3 +117,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+a {
+  text-decoration: none;
+}
+</style>

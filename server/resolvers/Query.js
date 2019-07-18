@@ -1,9 +1,7 @@
 const { ObjectID } = require("mongodb");
 
-function loadTest(parent, args, { db }) {
-  return db
-    .collection("loadtests")
-    .findOne({}, { limit: 1, sort: { _id: -1 } });
+function latestLoadTest(parent, args, { loadTestManager }) {
+  return loadTestManager.loadTest;
 }
 
 async function loadTestHistory(parent, { id, pageSize }, { db }) {
@@ -28,7 +26,7 @@ function ecBalance(parent, args, { blockchainMonitor }) {
 }
 
 module.exports = {
-  loadTest,
+  latestLoadTest,
   loadTestHistory,
   blockStatHistory,
   ecBalance
