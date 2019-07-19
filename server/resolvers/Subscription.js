@@ -4,7 +4,7 @@ const latestLoadTestChanged = {
   }
 };
 
-const blockStatHistoryChanged = {
+const latestBlockStatHistoryChanged = {
   subscribe: (parent, args, { pubsub }) => {
     return pubsub.asyncIterator("BLOCK_STAT_HISTORY_CHANGED");
   }
@@ -18,6 +18,6 @@ const ecBalanceChanged = {
 
 module.exports = {
   latestLoadTestChanged,
-  blockStatHistoryChanged,
+  latestBlockStatHistoryChanged,
   ecBalanceChanged
 };

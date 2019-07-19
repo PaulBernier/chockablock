@@ -1,6 +1,6 @@
-subscription {
-  blockStatHistoryChanged {
-    currentBlockStartTime,
+query {
+  latestBlockStatHistory {
+    nextBlockStartTime
     history {
       height
       timestamp

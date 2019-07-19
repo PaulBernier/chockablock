@@ -20,14 +20,11 @@
 import EpsChart from "./BlockStats/EpsChart";
 import BlockTimeChart from "./BlockStats/BlockTimeChart";
 
-import BLOCK_STAT_HISTORY from "@/graphql/BlockStatHistory.gql";
-import BLOCK_STAT_HISTORY_CHANGED from "@/graphql/BlockStatHistoryChanged.gql";
-
 export default {
   components: { EpsChart, BlockTimeChart },
+  props: ["blockStatHistory"],
   data() {
     return {
-      blockStatHistory: { currentBlockStartTime: 0, history: [] },
       chartOptions: {
         legend: {
           labels: {
@@ -39,19 +36,6 @@ export default {
         maintainAspectRatio: false
       }
     };
-  },
-  apollo: {
-    blockStatHistory: {
-      query: BLOCK_STAT_HISTORY,
-      subscribeToMore: {
-        document: BLOCK_STAT_HISTORY_CHANGED,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return {
-            blockStatHistory: subscriptionData.data.blockStatHistoryChanged
-          };
-        }
-      }
-    }
   },
   computed: {
     history() {
@@ -68,7 +52,7 @@ export default {
         if (i === this.history.length - 1) {
           data.push(
             e.entryCount /
-              (this.blockStatHistory.currentBlockStartTime - e.timestamp)
+              (this.blockStatHistory.nextBlockStartTime - e.timestamp)
           );
         } else {
           data.push(
@@ -103,7 +87,7 @@ export default {
         backgroundColor.push(e.hasElection ? "#C85D59" : "#F4B75D");
 
         if (i === this.history.length - 1) {
-          data.push(this.blockStatHistory.currentBlockStartTime - e.timestamp);
+          data.push(this.blockStatHistory.nextBlockStartTime - e.timestamp);
         } else {
           data.push(this.history[i + 1].timestamp - e.timestamp);
         }

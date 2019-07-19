@@ -14,10 +14,10 @@ async function loadTestHistory(parent, { id, pageSize }, { db }) {
     .toArray();
 }
 
-function blockStatHistory(parent, args, { blockchainMonitor }) {
+function latestBlockStatHistory(parent, args, { blockchainMonitor }) {
   return {
     history: blockchainMonitor.history,
-    currentBlockStartTime: blockchainMonitor.currentBlockStartTime
+    nextBlockStartTime: blockchainMonitor.nextBlockStartTime
   };
 }
 
@@ -28,6 +28,6 @@ function ecBalance(parent, args, { blockchainMonitor }) {
 module.exports = {
   latestLoadTest,
   loadTestHistory,
-  blockStatHistory,
+  latestBlockStatHistory,
   ecBalance
 };

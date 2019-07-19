@@ -1,7 +1,7 @@
 type Query {
   latestLoadTest: LoadTest
   loadTestHistory(id: String, pageSize: Int!): [LoadTest!]!
-  blockStatHistory: BlockStatHistory!
+  latestBlockStatHistory: BlockStatHistory!
   ecBalance: EcBalance!
 }
 
@@ -13,7 +13,7 @@ type Mutation {
 
 type Subscription {
   latestLoadTestChanged: LoadTest!
-  blockStatHistoryChanged: BlockStatHistory!
+  latestBlockStatHistoryChanged: BlockStatHistory!
   ecBalanceChanged: EcBalance!
 }
 
@@ -57,7 +57,7 @@ type StartStopEvent {
 }
 
 type BlockStatHistory {
-  currentBlockStartTime: Int!
+  nextBlockStartTime: Int!
   history: [BlockStat!]!
 }
 

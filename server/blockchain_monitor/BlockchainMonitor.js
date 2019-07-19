@@ -16,7 +16,7 @@ class BlockchainMonitor extends EventEmitter {
     this.db = db;
     this.history = [];
     this.ecBalance = { address: PUBLIC_EC_ADDRESS, balance: 0 };
-    this.currentBlockStartTime = 0;
+    this.nextBlockStartTime = 0;
 
     // Handle errors
     this.emitter.on("error", e =>
@@ -74,7 +74,7 @@ class BlockchainMonitor extends EventEmitter {
     console.log("Start listening to blockchain events");
     // Process new blocks
     this.emitter.on("newDirectoryBlock", async directoryBlock => {
-      this.currentBlockStartTime = await this.cli
+      this.nextBlockStartTime = await this.cli
         .factomdApi("current-minute")
         .then(data => parseInt(data.currentblockstarttime / 1000000000));
 
@@ -83,7 +83,7 @@ class BlockchainMonitor extends EventEmitter {
 
       this.emit("BLOCK_STAT_HISTORY_CHANGED", {
         history: this.history,
-        currentBlockStartTime: this.currentBlockStartTime
+        nextBlockStartTime: this.nextBlockStartTime
       });
     });
 

@@ -5,7 +5,7 @@ module.exports = function(pubsub, db) {
 
   blockchainMonitor.on("BLOCK_STAT_HISTORY_CHANGED", blockStatHistory =>
     pubsub.publish("BLOCK_STAT_HISTORY_CHANGED", {
-      blockStatHistoryChanged: blockStatHistory
+      latestBlockStatHistoryChanged: blockStatHistory
     })
   );
 

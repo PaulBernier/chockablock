@@ -15,7 +15,7 @@
     </v-layout>
     <v-layout wrap v-else>
       <v-flex xs12 v-for="loadTest in loadTestHistory" :key="loadTest._id" my-3>
-        <router-link :to="'loadtest/' + loadTest._id">
+        <router-link :to="loadTest.end ? 'loadtest/' + loadTest._id : '/'">
           <v-sheet elevation="4">
             <v-layout wrap pa-3>
               <v-flex xs1 class="primary--text" mb-3>Start</v-flex>

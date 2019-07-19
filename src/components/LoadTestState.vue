@@ -11,7 +11,7 @@
       </v-flex>
 
       <v-flex xs12 lg8>
-        <BlockStats></BlockStats>
+        <LatestBlockStats></LatestBlockStats>
       </v-flex>
     </v-layout>
   </v-container>
@@ -21,10 +21,15 @@
 import NoPastLoadTest from "./LoadTestState/NoPastLoadTest";
 import ActiveLoadTest from "./LoadTestState/ActiveLoadTest";
 import InactiveLoadTest from "./LoadTestState/InactiveLoadTest";
-import BlockStats from "./LoadTestState/BlockStats";
+import LatestBlockStats from "./LoadTestState/LatestBlockStats";
 
 export default {
-  components: { NoPastLoadTest, ActiveLoadTest, InactiveLoadTest, BlockStats },
+  components: {
+    NoPastLoadTest,
+    ActiveLoadTest,
+    InactiveLoadTest,
+    LatestBlockStats
+  },
   props: ["loadTest"],
   computed: {
     active() {
