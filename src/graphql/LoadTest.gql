@@ -1,0 +1,21 @@
+query loadTest($id: String) {
+  loadTest(id: $id) {
+    _id
+    start {
+      user
+      timestamp
+    }
+    end {
+      user
+      timestamp
+    }
+    type
+    chainIds
+    generatorConfig {
+      ... on ConstantLoadConfig {
+        eps
+        entrySize
+      }
+    }
+  }
+}

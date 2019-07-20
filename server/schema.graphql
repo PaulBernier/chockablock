@@ -1,7 +1,9 @@
 type Query {
   latestLoadTest: LoadTest
+  loadTest(id: String): LoadTest
   loadTestHistory(id: String, pageSize: Int!): [LoadTest!]!
   latestBlockStatHistory: BlockStatHistory!
+  blockStatHistory(startTimestamp: Int!, endTimestamp: Int!): BlockStatHistory!
   ecBalance: EcBalance!
 }
 

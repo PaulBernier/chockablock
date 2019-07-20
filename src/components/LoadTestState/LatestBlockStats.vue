@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import BlockStats from "./BlockStats";
+import BlockStats from "@/components/BlockStats";
 
 import LATEST_BLOCK_STAT_HISTORY from "@/graphql/LatestBlockStatHistory.gql";
 import LATEST_BLOCK_STAT_HISTORY_CHANGED from "@/graphql/LatestBlockStatHistoryChanged.gql";

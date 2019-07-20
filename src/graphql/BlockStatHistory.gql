@@ -1,0 +1,11 @@
+query blockStatHistory($startTimestamp: Int!, $endTimestamp: Int!) {
+  blockStatHistory (startTimestamp: $startTimestamp, endTimestamp: $endTimestamp) {
+    nextBlockStartTime
+    history {
+      height
+      timestamp
+      entryCount
+      hasElection
+    }
+  }
+}

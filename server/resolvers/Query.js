@@ -4,6 +4,14 @@ function latestLoadTest(parent, args, { loadTestManager }) {
   return loadTestManager.loadTest;
 }
 
+async function loadTest(parent, { id }, { db }) {
+  if (ObjectID.isValid(id)) {
+    return db.collection("loadtests").findOne({ _id: new ObjectID(id) });
+  }
+
+  return null;
+}
+
 async function loadTestHistory(parent, { id, pageSize }, { db }) {
   const query = ObjectID.isValid(id) ? { _id: { $lt: new ObjectID(id) } } : {};
   return db
@@ -21,13 +29,41 @@ function latestBlockStatHistory(parent, args, { blockchainMonitor }) {
   };
 }
 
+async function blockStatHistory(
+  parent,
+  { startTimestamp, endTimestamp },
+  { db }
+) {
+  const history = await db
+    .collection("blocks")
+    .find({ timestamp: { $gte: startTimestamp, $lte: endTimestamp } })
+    .toArray();
+
+  let nextBlockStartTime = 0;
+  if (history.length > 0) {
+    const nextHeight = history[history.length - 1].height + 1;
+    const nextBlock = await db
+      .collection("blocks")
+      .findOne({ height: nextHeight });
+    if (nextBlock) {
+      nextBlockStartTime = nextBlock.timestamp;
+    } else {
+      nextBlockStartTime = history[history.length - 1].timestamp;
+    }
+  }
+
+  return { history, nextBlockStartTime };
+}
+
 function ecBalance(parent, args, { blockchainMonitor }) {
   return blockchainMonitor.ecBalance;
 }
 
 module.exports = {
+  loadTest,
   latestLoadTest,
   loadTestHistory,
+  blockStatHistory,
   latestBlockStatHistory,
   ecBalance
 };

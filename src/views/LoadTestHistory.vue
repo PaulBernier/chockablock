@@ -14,6 +14,9 @@
       </v-flex>
     </v-layout>
     <v-layout wrap v-else>
+      <v-flex xs12 class="headline" mb-4 text-xs-center>
+        Load Test History
+      </v-flex>
       <v-flex xs12 v-for="loadTest in loadTestHistory" :key="loadTest._id" my-3>
         <router-link :to="loadTest.end ? 'loadtest/' + loadTest._id : '/'">
           <v-sheet elevation="4">

@@ -47,6 +47,7 @@ db.blocks.find({}).sort([["height", 1]]).limit(5).toArray()
 
 db.users.createIndex( { "name": 1 }, { unique: true } )
 db.blocks.createIndex( { "height": 1 }, { unique: true } )
+db.blocks.createIndex( { "timestamp": 1 })
 
 ## Commands
 
