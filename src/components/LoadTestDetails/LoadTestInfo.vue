@@ -2,7 +2,7 @@
   <v-sheet elevation="2">
     <v-container>
       <v-layout wrap>
-        <v-flex xs12 text-xs-center class="title" mb-5>
+        <v-flex xs12 text-xs-center class="title primary--text" mb-5>
           {{ loadTest._id }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
@@ -44,7 +44,6 @@
     </v-container>
   </v-sheet>
 </template>
-
 
 <script>
 import moment from "moment";
