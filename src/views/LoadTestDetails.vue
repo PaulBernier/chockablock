@@ -50,8 +50,8 @@ export default {
     blockTimeRange() {
       if (this.loadTest) {
         return {
-          start: this.loadTest.start.timestamp - 600,
-          end: this.loadTest.end.timestamp + 600
+          start: this.loadTest.start.timestamp - 1800,
+          end: this.loadTest.end.timestamp + 1800
         };
       } else {
         return {
