@@ -66,12 +66,43 @@
         </v-container>
       </v-sheet>
     </v-flex>
+    <v-flex xs12 pa-2>
+      <v-sheet class="d-flex" elevation="2">
+        <v-container>
+          <v-layout wrap>
+            <v-flex xs12 class="headline primary--text" text-xs-center mb-4>
+              Authority Set
+            </v-flex>
+            <v-flex xs12 class="subheading">
+              <div>
+                <span class="font-weight-bold">
+                  Leaders: {{ loadTest.authoritySet.leaders }}
+                </span>
+              </div>
+              <ul>
+                <li v-for="v in leaderVersions" :key="v.version">
+                  {{ v.version }}: {{ v.count }}
+                </li>
+              </ul>
+              <div>
+                <span class="font-weight-bold">
+                  Audits: {{ loadTest.authoritySet.audits }}
+                </span>
+              </div>
+              <ul>
+                <li v-for="v in auditVersions" :key="v.version">
+                  {{ v.version }}: {{ v.count }}
+                </li>
+              </ul>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-sheet>
+    </v-flex>
   </v-layout>
 </template>
 
 <script>
-import moment from "moment";
-
 import EC_BALANCE from "@/graphql/EcBalance.gql";
 import EC_BALANCE_CHANGED from "@/graphql/EcBalanceChanged.gql";
 
@@ -98,6 +129,24 @@ export default {
       const copy = { ...this.loadTest.generatorConfig };
       delete copy.__typename;
       return copy;
+    },
+    auditVersions() {
+      return this.loadTest.authoritySet.auditVersions
+        .map(function(d) {
+          const copy = { ...d };
+          delete copy.__typename;
+          return copy;
+        })
+        .sort((a, b) => b.count - a.count);
+    },
+    leaderVersions() {
+      return this.loadTest.authoritySet.leaderVersions
+        .map(function(d) {
+          const copy = { ...d };
+          delete copy.__typename;
+          return copy;
+        })
+        .sort((a, b) => b.count - a.count);
     }
   }
 };
