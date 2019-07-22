@@ -46,6 +46,20 @@ type LoadTest {
   type: String!
   chainIds: [String!]!
   generatorConfig: ConstantLoadConfig!
+  authoritySet: AuthoritySetInfo
+}
+
+type AuthoritySetInfo {
+  leaders: Int!
+  audits: Int!
+  mainVersion: String!
+  auditVersions: [NodeVersion!]!
+  leaderVersions: [NodeVersion!]!
+}
+
+type NodeVersion {
+  version: String!
+  count: Int!
 }
 
 type ConstantLoadConfig {

@@ -21,21 +21,26 @@
         <router-link :to="loadTest.end ? 'loadtest/' + loadTest._id : '/'">
           <v-sheet elevation="4">
             <v-layout wrap pa-3>
-              <v-flex xs1 class="primary--text" mb-3>Start</v-flex>
-              <v-flex xs5 mb-3>
-                {{ loadTest.start.timestamp | displayDate }}
-              </v-flex>
-              <v-flex xs1 class="primary--text">Duration</v-flex>
-              <v-flex xs5>
-                {{ getDuration(loadTest) }}
-              </v-flex>
-              <v-flex xs1 class="primary--text">Type</v-flex>
-              <v-flex xs5>{{ loadTest.type }}</v-flex>
-              <v-flex xs1 class="primary--text">Config</v-flex>
-
-              <v-flex xs5>
-                <pre>{{ getConfig(loadTest) }}</pre>
-              </v-flex>
+              <v-layout wrap xs6>
+                <v-flex xs2 class="primary--text">Start</v-flex>
+                <v-flex xs10>
+                  {{ loadTest.start.timestamp | displayDate }}
+                </v-flex>
+                <v-flex xs2 class="primary--text">Type</v-flex>
+                <v-flex xs10>{{ loadTest.type }}</v-flex>
+                <v-flex xs2 class="primary--text">Main version</v-flex>
+                <v-flex xs10>{{ loadTest.authoritySet.mainVersion }}</v-flex>
+              </v-layout>
+              <v-layout wrap xs6>
+                <v-flex xs2 class="primary--text">Duration</v-flex>
+                <v-flex xs10>
+                  {{ getDuration(loadTest) }}
+                </v-flex>
+                <v-flex xs2 class="primary--text">Config</v-flex>
+                <v-flex xs10>
+                  <pre>{{ getConfig(loadTest) }}</pre>
+                </v-flex>
+              </v-layout>
             </v-layout>
           </v-sheet>
         </router-link>
@@ -111,11 +116,6 @@ export default {
           };
         }
       });
-    }
-  },
-  filters: {
-    displayDate(timestamp) {
-      return moment(timestamp * 1000).format("YYYY-MM-DD HH:mm:ss ([GMT]Z)");
     }
   }
 };

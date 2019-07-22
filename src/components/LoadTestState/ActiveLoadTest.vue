@@ -99,11 +99,6 @@ export default {
       delete copy.__typename;
       return copy;
     }
-  },
-  filters: {
-    displayDate(timestamp) {
-      return moment(timestamp * 1000).format("YYYY-MM-DD HH:mm:ss ([GMT]Z)");
-    }
   }
 };
 </script>

@@ -6,39 +6,54 @@
           {{ loadTest._id }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
-          Started by
-          <span class="font-weight-bold">{{ loadTest.start.user }}</span>
-          on
-          <span class="font-weight-bold">{{
-            loadTest.start.timestamp | displayDate
-          }}</span>
+          <span class="primary--text">Started</span> by
+          {{ loadTest.start.user }}
+          on {{ loadTest.start.timestamp | displayDate }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
-          Stopped by
-          <span class="font-weight-bold">{{ loadTest.end.user }}</span> on
-          <span class="font-weight-bold">{{
-            loadTest.end.timestamp | displayDate
-          }}</span>
+          <span class="primary--text">Stopped</span> by
+          {{ loadTest.end.user }} on {{ loadTest.end.timestamp | displayDate }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
-          Total duration:
-          <span class="font-weight-bold">{{ duration }}</span>
+          <span class=" primary--text">Total duration: </span>{{ duration }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
-          Number of chains:
-          <span class="font-weight-bold">{{
-            this.loadTest.chainIds.length
-          }}</span>
+          <span class=" primary--text">Number of chains: </span>
+          {{ loadTest.chainIds.length }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
-          Type:
-          <span class="font-weight-bold">{{ this.loadTest.type }}</span>
+          <span class=" primary--text">Type: </span>{{ loadTest.type }}
+        </v-flex>
+        <v-flex xs12 class="subheading primary--text" mb-3>
+          Config:
         </v-flex>
         <v-flex xs12 class="subheading" mb-3>
-          With config:
+          <pre>{{ config }}</pre>
+        </v-flex>
+        <v-flex xs12 class="subheading primary--text" mb-3>
+          Authority Set:
         </v-flex>
         <v-flex xs12 class="subheading">
-          <pre>{{ config }}</pre>
+          <div>
+            <span class="font-weight-bold">
+              Leaders: {{ loadTest.authoritySet.leaders }}
+            </span>
+          </div>
+          <ul>
+            <li v-for="v in leaderVersions" :key="v.version">
+              {{ v.version }}: {{ v.count }}
+            </li>
+          </ul>
+          <div>
+            <span class="font-weight-bold">
+              Audits: {{ loadTest.authoritySet.audits }}
+            </span>
+          </div>
+          <ul>
+            <li v-for="v in auditVersions" :key="v.version">
+              {{ v.version }}: {{ v.count }}
+            </li>
+          </ul>
         </v-flex>
       </v-layout>
     </v-container>
@@ -60,11 +75,24 @@ export default {
       const copy = { ...this.loadTest.generatorConfig };
       delete copy.__typename;
       return copy;
-    }
-  },
-  filters: {
-    displayDate(timestamp) {
-      return moment(timestamp * 1000).format("YYYY-MM-DD HH:mm:ss ([GMT]Z)");
+    },
+    auditVersions() {
+      return this.loadTest.authoritySet.auditVersions
+        .map(function(d) {
+          const copy = { ...d };
+          delete copy.__typename;
+          return copy;
+        })
+        .sort((a, b) => b.count - a.count);
+    },
+    leaderVersions() {
+      return this.loadTest.authoritySet.leaderVersions
+        .map(function(d) {
+          const copy = { ...d };
+          delete copy.__typename;
+          return copy;
+        })
+        .sort((a, b) => b.count - a.count);
     }
   }
 };

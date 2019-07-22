@@ -1,6 +1,7 @@
 const EventEmitter = require("events");
 const ConstantLoadGenerator = require("./ConstantLoadGenerator");
 const LoadTest = require("./LoadTest");
+const { getAuthoritySetStats } = require("./authority-set");
 const { FactomCli, Entry, Chain } = require("factom");
 const uuidv4 = require("uuid/v4");
 
@@ -61,12 +62,13 @@ class LoadTestManager extends EventEmitter {
     loadTest.type = loadConfig.type;
     loadTest.chainIds = chainIds;
     loadTest.generatorConfig = generatorConfig;
-
+    // Save authority set stats at the start of the loadtest
+    loadTest.authoritySet = await getAuthoritySetStats();
     this.loadTest = loadTest;
 
     await this.loadGenerator.run(generatorConfig, chainIds);
 
-    this.loadTestChanged();
+    await this.loadTestChanged();
   }
 
   async stop(user) {

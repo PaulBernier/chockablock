@@ -11,6 +11,9 @@ query loadTestHistory($lastId: String, $pageSize: Int!) {
     }
     type
     chainIds
+    authoritySet {
+      mainVersion
+    }
     generatorConfig {
       ... on ConstantLoadConfig {
         eps
