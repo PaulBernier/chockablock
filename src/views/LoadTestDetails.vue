@@ -6,6 +6,12 @@
         </v-progress-circular>
       </v-flex>
     </v-layout>
+    <v-layout wrap v-else-if="!loadTest" text-xs-center class="subheading">
+      <v-flex xs12
+        >No load test with ID
+        <span class="primary--text">{{ loadtestId }}</span> found.</v-flex
+      >
+    </v-layout>
     <LoadTestDetails
       v-else-if="loadTest.end"
       :loadTest="loadTest"
@@ -38,6 +44,13 @@ export default {
   computed: {
     loadtestId() {
       return this.$route.params.id;
+    }
+  },
+  watch: {
+    loadTest() {
+      if (this.loadTest && !this.loadTest.end) {
+        this.$router.replace("/");
+      }
     }
   }
 };
