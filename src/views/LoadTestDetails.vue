@@ -9,7 +9,7 @@
     <v-layout wrap v-else-if="!loadTest" text-xs-center class="subheading">
       <v-flex xs12
         >No load test with ID
-        <span class="primary--text">{{ loadtestId }}</span> found.</v-flex
+        <span class="primary--text">"{{ loadtestId }}"</span> found.</v-flex
       >
     </v-layout>
     <LoadTestDetails
@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     loadtestId() {
-      return this.$route.params.id;
+      return this.$route.params.id.trim();
     }
   },
   watch: {
