@@ -47,7 +47,11 @@
         <v-container>
           <v-layout wrap>
             <v-flex xs12 class="headline primary--text" text-xs-center mb-4>
-              Config
+              Info
+            </v-flex>
+            <v-flex xs12 class="subheading" mb-2>
+              Test ID:
+              <span class="font-weight-bold">{{ this.loadTest._id }}</span>
             </v-flex>
             <v-flex xs12 class="subheading" mb-2>
               Number of chains:
@@ -56,7 +60,7 @@
               }}</span>
             </v-flex>
             <v-flex xs12 class="subheading" mb-2>
-              Type:
+              Load type:
               <span class="font-weight-bold">{{ this.loadTest.type }}</span>
             </v-flex>
             <v-flex xs12 class="subheading">

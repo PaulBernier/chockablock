@@ -52,7 +52,14 @@ db.blocks.createIndex( { "timestamp": 1 })
 ## Commands
 
 Add/update user:
-require('bcrypt').hashSync('aaaaaaaa', 12)
+require('bcrypt').hashSync('gwPPStRr', 12)
 
-db.users.insertOne({name: 'paul', password: '$2b$12$lj58fv7mI2I/99ps01E/tevT3olHNUzrlCJuhkW.NCYIEPz8Ra54a', roles: ['admin']});
+db.users.insertOne({name: 'brian', password: '$2b$12$zBgVuFIJHesH3lwFiWvrOuAAWPTfbbJiR9mF8EHDq0eH2LiKaUoMq', roles: ['admin']});
+
+
 db.users.updateOne({ name : "paul" }, { $set: { password : "$2b$12$s3Hoi9hfrQSu3Vj9Z.Yek.HvtwpasQQbeJsGasW0tCCjGZncMlHPG" } });
+
+niels:YKekdY2y
+steven:LfMsTGEh
+andrew:puTrZGHJ
+brian:gwPPStRr

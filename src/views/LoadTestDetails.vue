@@ -6,28 +6,20 @@
         </v-progress-circular>
       </v-flex>
     </v-layout>
-    <v-layout wrap v-else>
-      <v-flex xs12 lg4 pa-2
-        ><LoadTestInfo :loadTest="loadTest"></LoadTestInfo>
-      </v-flex>
-      <v-flex xs12 lg8
-        ><TimeRangeBlockStats
-          :startTimestamp="blockTimeRange.start"
-          :endTimestamp="blockTimeRange.end"
-        ></TimeRangeBlockStats
-      ></v-flex>
-    </v-layout>
+    <LoadTestDetails
+      v-else-if="loadTest.end"
+      :loadTest="loadTest"
+    ></LoadTestDetails>
   </v-container>
 </template>
 
 <script>
-import LoadTestInfo from "@/components/LoadTestDetails/LoadTestInfo";
-import TimeRangeBlockStats from "@/components/LoadTestDetails/TimeRangeBlockStats";
+import LoadTestDetails from "@/components/LoadTestDetails";
 
 import LOAD_TEST from "@/graphql/LoadTest.gql";
 
 export default {
-  components: { LoadTestInfo, TimeRangeBlockStats },
+  components: { LoadTestDetails },
   data() {
     return {
       loadTest: {}
@@ -46,19 +38,6 @@ export default {
   computed: {
     loadtestId() {
       return this.$route.params.id;
-    },
-    blockTimeRange() {
-      if (this.loadTest) {
-        return {
-          start: this.loadTest.start.timestamp - 1800,
-          end: this.loadTest.end.timestamp + 1200
-        };
-      } else {
-        return {
-          start: 0,
-          end: 0
-        };
-      }
     }
   }
 };
