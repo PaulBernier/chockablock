@@ -7,7 +7,7 @@ async function getAuthoritySetStats() {
   );
 
   // Use Luciap node as reference for the authority set composition
-  const refNode = data.find(d => d.owner === "Luciap-Testnet2");
+  const refNode = data.find(d => d.owner === "Luciap-Testnet3");
   const refAuthoritySet = JSON.parse(refNode.fd_authset);
   const leaderIds = new Set(refAuthoritySet.leaders.map(l => l.id));
   const auditIds = new Set(refAuthoritySet.audits.map(a => a.id));
