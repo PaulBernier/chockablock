@@ -30,7 +30,9 @@
                   <v-flex xs3 class="primary--text">Type</v-flex>
                   <v-flex xs9>{{ loadTest.type }}</v-flex>
                   <v-flex xs3 class="primary--text">Main version</v-flex>
-                  <v-flex xs9 v-if="loadTest.authoritySet">{{ loadTest.authoritySet.mainVersion }}</v-flex>
+                  <v-flex xs9 v-if="loadTest.authoritySet">{{
+                    loadTest.authoritySet.mainVersion
+                  }}</v-flex>
                   <v-flex xs9 v-else>-</v-flex>
                 </v-layout>
               </v-flex>
