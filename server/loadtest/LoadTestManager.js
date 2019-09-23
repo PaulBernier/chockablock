@@ -103,7 +103,9 @@ async function createChains(cli, nb, ecAddress) {
 
   const chains = new Array(nb).fill(uuidv4()).map(buildChain);
 
-  const created = await cli.add(chains, ecAddress, { concurrency: 10 });
+  const created = await cli.add(chains, ecAddress, { concurrency: 20 });
+
+  console.log("Chains created");
 
   return created.map(c => c.chainId);
 }

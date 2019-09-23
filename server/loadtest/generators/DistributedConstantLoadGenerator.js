@@ -20,18 +20,17 @@ class DistributedConstantLoadGenerator extends DistributedLoadGenerator {
       throw new Error("No load agent connected");
     }
 
-    const agentEps = eps / agentCount;
-    const interval = 1000 / agentEps;
     console.log(
       `DistributedConstantLoadGenerator: ${agentCount} load agents connected`
     );
-    console.log(`Each agent submitting an entry every ${interval}ms`);
 
     const jobs = [];
     const chainIdChunks = chunk(
       this.chainIds,
       Math.ceil(this.chainIds.length / agentCount)
     );
+
+    const agentEps = eps / agentCount;
 
     for (let i = 0; i < agentCount; ++i) {
       jobs.push({
@@ -42,7 +41,8 @@ class DistributedConstantLoadGenerator extends DistributedLoadGenerator {
       });
     }
 
-    console.log(jobs)
+    console.log("Load jobs:");
+    console.log(jobs);
 
     lac.startLoad(jobs);
   }
