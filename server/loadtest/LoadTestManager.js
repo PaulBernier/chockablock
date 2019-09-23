@@ -1,6 +1,7 @@
 const EventEmitter = require("events");
-const ConstantLoadGenerator = require("./ConstantLoadGenerator");
+const DistributedConstantLoadGenerator = require("./generators/DistributedConstantLoadGenerator");
 const LoadTest = require("./LoadTest");
+const LoadAgentCoordinator = require("./LoadAgentCoordinator");
 const { getAuthoritySetStats } = require("./authority-set");
 const { FactomCli, Entry, Chain } = require("factom");
 const uuidv4 = require("uuid/v4");
@@ -12,6 +13,7 @@ class LoadTestManager extends EventEmitter {
     super();
     this.db = db;
     this.cli = new FactomCli();
+    this.loadAgentCoordinator = new LoadAgentCoordinator();
     this.loadTest = null;
   }
 
@@ -45,7 +47,10 @@ class LoadTestManager extends EventEmitter {
 
     switch (type) {
       case "constant":
-        this.loadGenerator = new ConstantLoadGenerator(this.cli, chainIds);
+        this.loadGenerator = new DistributedConstantLoadGenerator(
+          this.loadAgentCoordinator,
+          chainIds
+        );
         break;
       default:
         throw new Error(`Unknown load generator type [${type}]`);

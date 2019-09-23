@@ -20,27 +20,32 @@
       <v-flex xs12 v-for="loadTest in loadTestHistory" :key="loadTest._id" my-3>
         <router-link :to="'loadtest/' + loadTest._id">
           <v-sheet elevation="4">
-            <v-layout wrap pa-3>
-              <v-layout wrap xs6>
-                <v-flex xs2 class="primary--text">Start</v-flex>
-                <v-flex xs10>
-                  {{ loadTest.start.timestamp | displayDate }}
-                </v-flex>
-                <v-flex xs2 class="primary--text">Type</v-flex>
-                <v-flex xs10>{{ loadTest.type }}</v-flex>
-                <v-flex xs2 class="primary--text">Main version</v-flex>
-                <v-flex xs10>{{ loadTest.authoritySet.mainVersion }}</v-flex>
-              </v-layout>
-              <v-layout wrap xs6>
-                <v-flex xs2 class="primary--text">Duration</v-flex>
-                <v-flex xs10>
-                  {{ getDuration(loadTest) }}
-                </v-flex>
-                <v-flex xs2 class="primary--text">Config</v-flex>
-                <v-flex xs10>
-                  <pre>{{ getConfig(loadTest) }}</pre>
-                </v-flex>
-              </v-layout>
+            <v-layout row wrap pa-3>
+              <v-flex d-flex xs12 sm6>
+                <v-layout row wrap>
+                  <v-flex xs3 class="primary--text">Start</v-flex>
+                  <v-flex xs9>
+                    {{ loadTest.start.timestamp | displayDate }}
+                  </v-flex>
+                  <v-flex xs3 class="primary--text">Type</v-flex>
+                  <v-flex xs9>{{ loadTest.type }}</v-flex>
+                  <v-flex xs3 class="primary--text">Main version</v-flex>
+                  <v-flex xs9 v-if="loadTest.authoritySet">{{ loadTest.authoritySet.mainVersion }}</v-flex>
+                  <v-flex xs9 v-else>-</v-flex>
+                </v-layout>
+              </v-flex>
+              <v-flex d-flex xs12 sm6>
+                <v-layout row wrap>
+                  <v-flex xs3 class="primary--text">Duration</v-flex>
+                  <v-flex xs9>
+                    {{ getDuration(loadTest) }}
+                  </v-flex>
+                  <v-flex xs3 class="primary--text">Config</v-flex>
+                  <v-flex xs9>
+                    <pre>{{ getConfig(loadTest) }}</pre>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
             </v-layout>
           </v-sheet>
         </router-link>

@@ -30,7 +30,8 @@
     "vue-apollo": "^3.0.0-rc.2",
     "vue-chartjs": "^3.4.2",
     "vue-router": "^3.0.7",
-    "vuetify": "^1.5.16"
+    "vuetify": "^1.5.16",
+    "ws": "^7.1.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.9.2",
