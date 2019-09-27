@@ -14,10 +14,13 @@ class DistributedConstantLoadGenerator extends DistributedLoadGenerator {
 
   async run({ eps, entrySize }) {
     const lac = this.loadAgentCoordinator;
-    const agentCount = lac.getAgentCount();
+    const agents = lac.getConnectedAgents();
+    const agentCount = agents.length;
 
     if (agentCount === 0) {
       throw new Error("No load agent connected");
+    } else {
+      console.log(`${agentCount} agents connected: ${agents}`);
     }
 
     console.log(

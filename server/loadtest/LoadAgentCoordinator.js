@@ -32,14 +32,14 @@ class LoadAgentCoordinator {
     }, 30000);
   }
 
-  getAgentCount() {
-    return [...this.wss.clients].filter(
-      client => client.readyState === WebSocket.OPEN
-    ).length;
+  getConnectedAgents() {
+    return [...this.wss.clients]
+      .filter(client => client.readyState === WebSocket.OPEN)
+      .map(c => c.agentId);
   }
 
   startLoad(jobs) {
-    const agentCount = this.getAgentCount();
+    const agentCount = this.getConnectedAgents().length;
     if (jobs.length > agentCount) {
       throw new Error(
         `Cannot dispatch ${jobs.length} start load jobs to only ${agentCount}`
