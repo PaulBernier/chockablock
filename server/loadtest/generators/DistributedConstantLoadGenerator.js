@@ -23,10 +23,6 @@ class DistributedConstantLoadGenerator extends DistributedLoadGenerator {
       console.log(`${agentCount} agents connected: ${agents}`);
     }
 
-    console.log(
-      `DistributedConstantLoadGenerator: ${agentCount} load agents connected`
-    );
-
     const jobs = [];
     const chainIdChunks = chunk(
       this.chainIds,
