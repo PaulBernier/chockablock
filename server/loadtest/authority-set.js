@@ -14,14 +14,19 @@ async function getAuthoritySetStats() {
 
   // Get versions of authority set
   const auditVersions = [],
-    leaderVersions = [];
+    leaderVersions = [],
+    notFound = new Set([...leaderIds, ...auditIds]);
   data.forEach(function(d) {
     if (leaderIds.has(d.fd_id)) {
+      notFound.delete(d.fd_id);
       leaderVersions.push(d.version);
     } else if (auditIds.has(d.fd_id)) {
+      notFound.delete(d.fd_id);
       auditVersions.push(d.version);
     }
   });
+
+  console.log(notFound);
 
   const mainVersion = Object.entries(
     groupBy([...auditVersions, ...leaderVersions])
@@ -60,3 +65,4 @@ async function getAuthoritySetStats() {
 module.exports = {
   getAuthoritySetStats
 };
+getAuthoritySetStats();
