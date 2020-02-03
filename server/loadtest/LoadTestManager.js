@@ -61,6 +61,7 @@ class LoadTestManager extends EventEmitter {
     const generatorConfig = this.loadGenerator.getConfig(
       loadConfig.generatorConfig
     );
+    console.log("Generator config", generatorConfig);
 
     const loadTest = new LoadTest();
     loadTest.startBy(user);
@@ -71,6 +72,7 @@ class LoadTestManager extends EventEmitter {
     loadTest.authoritySet = await getAuthoritySetStats();
     this.loadTest = loadTest;
 
+    console.log("Running load generator");
     await this.loadGenerator.run(generatorConfig, chainIds);
 
     await this.loadTestChanged();
