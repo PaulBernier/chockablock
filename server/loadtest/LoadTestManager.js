@@ -109,7 +109,7 @@ async function createChains(cli, nb, ecAddress) {
 
   console.log("Chains created");
 
-  return created.map(c => c.chainId);
+  return created.map((c) => c.chainId);
 }
 
 function buildChain(runId) {

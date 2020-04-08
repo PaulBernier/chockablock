@@ -12,7 +12,7 @@ export default {
   props: ["startTimestamp", "endTimestamp"],
   data() {
     return {
-      blockStatHistory: { nextBlockStartTime: 0, history: [] }
+      blockStatHistory: { nextBlockStartTime: 0, history: [] },
     };
   },
   apollo: {
@@ -21,10 +21,10 @@ export default {
         query: BLOCK_STAT_HISTORY,
         variables: {
           startTimestamp: this.startTimestamp,
-          endTimestamp: this.endTimestamp
-        }
+          endTimestamp: this.endTimestamp,
+        },
       };
-    }
-  }
+    },
+  },
 };
 </script>

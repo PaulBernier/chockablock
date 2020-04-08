@@ -27,13 +27,13 @@ export default {
   props: ["loadTest"],
   data() {
     return {
-      errorMesage: ""
+      errorMesage: "",
     };
   },
   computed: {
     active() {
       return this.loadTest && !this.loadTest.end;
-    }
-  }
+    },
+  },
 };
 </script>

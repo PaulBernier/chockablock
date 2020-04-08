@@ -28,7 +28,7 @@ import LoginDialog from "@/components/LoginDialog";
 
 export default {
   components: { LoginDialog },
-  name: "App"
+  name: "App",
 };
 </script>
 

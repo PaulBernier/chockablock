@@ -15,8 +15,8 @@ const canControl = rule()(async (parent, args, ctx) => {
 const permissions = shield({
   Mutation: {
     startTest: and(isAuthenticated, canControl),
-    stopTest: and(isAuthenticated, canControl)
-  }
+    stopTest: and(isAuthenticated, canControl),
+  },
 });
 
 module.exports = permissions;

@@ -19,7 +19,7 @@ class BlockchainMonitor extends EventEmitter {
     this.nextBlockStartTime = 0;
 
     // Handle errors
-    this.emitter.on("error", e =>
+    this.emitter.on("error", (e) =>
       console.error(`FactomEventEmitter error: ${e.message}`)
     );
   }
@@ -73,17 +73,17 @@ class BlockchainMonitor extends EventEmitter {
   async startListening() {
     console.log("Start listening to blockchain events");
     // Process new blocks
-    this.emitter.on("newDirectoryBlock", async directoryBlock => {
+    this.emitter.on("newDirectoryBlock", async (directoryBlock) => {
       this.nextBlockStartTime = await this.cli
         .factomdApi("current-minute")
-        .then(data => parseInt(data.currentblockstarttime / 1000000000));
+        .then((data) => parseInt(data.currentblockstarttime / 1000000000));
 
       const state = await this.computeState(directoryBlock);
       await this.addState(state);
 
       this.emit("BLOCK_STAT_HISTORY_CHANGED", {
         history: this.history,
-        nextBlockStartTime: this.nextBlockStartTime
+        nextBlockStartTime: this.nextBlockStartTime,
       });
     });
 
@@ -114,7 +114,7 @@ class BlockchainMonitor extends EventEmitter {
 
     const ebs = await Promise.map(
       directoryBlock.entryBlockRefs,
-      ref => this.cli.getEntryBlock(ref.keyMR),
+      (ref) => this.cli.getEntryBlock(ref.keyMR),
       { concurrency: 25 }
     );
 
@@ -124,7 +124,7 @@ class BlockchainMonitor extends EventEmitter {
       height: directoryBlock.height,
       timestamp: directoryBlock.timestamp,
       entryCount,
-      hasElection
+      hasElection,
     };
   }
 

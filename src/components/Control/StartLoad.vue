@@ -45,7 +45,7 @@ export default {
     return {
       nbOfChains: 50,
       eps: 1,
-      loading: false
+      loading: false,
     };
   },
   methods: {
@@ -59,17 +59,17 @@ export default {
               type: "constant",
               nbOfChains: this.nbOfChains,
               generatorConfig: {
-                eps: this.eps
-              }
-            }
-          }
+                eps: this.eps,
+              },
+            },
+          },
         });
       } catch (e) {
         this.$emit("error", e.message);
       } finally {
         this.loading = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>

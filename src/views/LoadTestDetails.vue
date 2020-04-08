@@ -28,7 +28,7 @@ export default {
   components: { LoadTestDetails },
   data() {
     return {
-      loadTest: {}
+      loadTest: {},
     };
   },
   apollo: {
@@ -36,22 +36,22 @@ export default {
       return {
         query: LOAD_TEST,
         variables: {
-          id: this.loadtestId
-        }
+          id: this.loadtestId,
+        },
       };
-    }
+    },
   },
   computed: {
     loadtestId() {
       return this.$route.params.id.trim();
-    }
+    },
   },
   watch: {
     loadTest() {
       if (this.loadTest && !this.loadTest.end) {
         this.$router.replace("/");
       }
-    }
-  }
+    },
+  },
 };
 </script>

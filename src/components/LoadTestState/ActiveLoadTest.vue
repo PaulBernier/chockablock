@@ -114,7 +114,7 @@ export default {
   props: ["loadTest"],
   data() {
     return {
-      ecBalance: { address: "", balance: 0 }
+      ecBalance: { address: "", balance: 0 },
     };
   },
   apollo: {
@@ -124,9 +124,9 @@ export default {
         document: EC_BALANCE_CHANGED,
         updateQuery: (previousResult, { subscriptionData }) => {
           return { ecBalance: subscriptionData.data.ecBalanceChanged };
-        }
-      }
-    }
+        },
+      },
+    },
   },
   computed: {
     config() {
@@ -136,7 +136,7 @@ export default {
     },
     auditVersions() {
       return this.loadTest.authoritySet.auditVersions
-        .map(function(d) {
+        .map(function (d) {
           const copy = { ...d };
           delete copy.__typename;
           return copy;
@@ -145,13 +145,13 @@ export default {
     },
     leaderVersions() {
       return this.loadTest.authoritySet.leaderVersions
-        .map(function(d) {
+        .map(function (d) {
           const copy = { ...d };
           delete copy.__typename;
           return copy;
         })
         .sort((a, b) => b.count - a.count);
-    }
-  }
+    },
+  },
 };
 </script>

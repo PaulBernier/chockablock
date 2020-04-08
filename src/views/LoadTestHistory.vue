@@ -70,23 +70,23 @@ const PAGE_SIZE = 10;
 export default {
   data: () => ({
     loadTestHistory: [],
-    showMoreEnabled: true
+    showMoreEnabled: true,
   }),
   apollo: {
     loadTestHistory: {
       query: LOAD_TEST_HISTORY,
       variables: {
         lastId: "",
-        pageSize: PAGE_SIZE
-      }
-    }
+        pageSize: PAGE_SIZE,
+      },
+    },
   },
   computed: {
     lastId() {
       return this.loadTestHistory.length === 0
         ? ""
         : this.loadTestHistory[this.loadTestHistory.length - 1]._id;
-    }
+    },
   },
   methods: {
     getDuration(loadTest) {
@@ -106,7 +106,7 @@ export default {
       this.$apollo.queries.loadTestHistory.fetchMore({
         variables: {
           lastId: this.lastId,
-          pageSize: PAGE_SIZE
+          pageSize: PAGE_SIZE,
         },
         // Transform the previous result with new data
         updateQuery: (previousResult, { fetchMoreResult }) => {
@@ -118,13 +118,13 @@ export default {
           return {
             loadTestHistory: [
               ...previousResult.loadTestHistory,
-              ...newLoadTests
-            ]
+              ...newLoadTests,
+            ],
           };
-        }
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

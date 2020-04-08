@@ -4,8 +4,8 @@ const crypto = require("crypto");
 const EC_ADDRESS = process.env.EC_ADDRESS;
 const NO_RETRY_STRATEGY = {
   retry: {
-    retries: 0
-  }
+    retries: 0,
+  },
 };
 
 class LoadGenerator {
@@ -37,14 +37,14 @@ async function commitAndReveal(cli, entry, ecAddress) {
   await cli.factomdApi(
     "commit-entry",
     {
-      message: composeEntryCommit(entry, ecAddress).toString("hex")
+      message: composeEntryCommit(entry, ecAddress).toString("hex"),
     },
     NO_RETRY_STRATEGY
   );
   await cli.factomdApi(
     "reveal-entry",
     {
-      entry: composeEntryReveal(entry).toString("hex")
+      entry: composeEntryReveal(entry).toString("hex"),
     },
     NO_RETRY_STRATEGY
   );

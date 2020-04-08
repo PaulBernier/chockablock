@@ -1,7 +1,6 @@
 const LoadGenerator = require("./LoadGenerator");
 
 class ConstantLoadGenerator extends LoadGenerator {
-
   getConfig({ eps = 1, entrySize = 1024 }) {
     if (eps <= 0) {
       throw new Error(`EPS must be positive. Received: ${eps}`);

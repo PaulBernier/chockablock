@@ -7,12 +7,12 @@ import moment from "moment";
 
 Vue.config.productionTip = false;
 
-Vue.filter("displayDate", function(timestamp) {
+Vue.filter("displayDate", function (timestamp) {
   return moment(timestamp * 1000).format("YYYY-MM-DD HH:mm:ss ([GMT]Z)");
 });
 
 new Vue({
   router,
   apolloProvider: createProvider(),
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

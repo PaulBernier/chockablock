@@ -73,7 +73,7 @@ export default {
       dialog: false,
       username: "",
       password: "",
-      errorMesage: ""
+      errorMesage: "",
     };
   },
   methods: {
@@ -84,8 +84,8 @@ export default {
           mutation: LOG_IN,
           variables: {
             name: this.username,
-            password: this.password
-          }
+            password: this.password,
+          },
         });
         localStorage.setItem("jwt_token", data.login);
         this.dialog = false;
@@ -95,7 +95,7 @@ export default {
       } finally {
         this.loading = false;
       }
-    }
+    },
   },
   watch: {
     async dialog() {
@@ -106,15 +106,15 @@ export default {
           const { data } = await this.$apollo.query({
             query: VERIFY_AUTH,
             variables: {
-              token
-            }
+              token,
+            },
           });
           if (data.verifyAuth) {
             this.$router.push({ name: "control" });
           }
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>

@@ -22,13 +22,13 @@ export default {
   components: {
     ActiveLoadTest,
     InactiveLoadTest,
-    LatestBlockStats
+    LatestBlockStats,
   },
   props: ["loadTest"],
   computed: {
     active() {
       return this.loadTest && !this.loadTest.end;
-    }
-  }
+    },
+  },
 };
 </script>

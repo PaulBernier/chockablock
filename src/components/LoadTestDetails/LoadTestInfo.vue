@@ -15,14 +15,14 @@
           {{ loadTest.end.user }} on {{ loadTest.end.timestamp | displayDate }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
-          <span class=" primary--text">Total duration: </span>{{ duration }}
+          <span class="primary--text">Total duration: </span>{{ duration }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
-          <span class=" primary--text">Number of chains: </span>
+          <span class="primary--text">Number of chains: </span>
           {{ loadTest.chainIds.length }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
-          <span class=" primary--text">Type: </span>{{ loadTest.type }}
+          <span class="primary--text">Type: </span>{{ loadTest.type }}
         </v-flex>
         <v-flex xs12 class="subheading primary--text" mb-3>
           Config:
@@ -78,7 +78,7 @@ export default {
     },
     auditVersions() {
       return this.loadTest.authoritySet.auditVersions
-        .map(function(d) {
+        .map(function (d) {
           const copy = { ...d };
           delete copy.__typename;
           return copy;
@@ -87,13 +87,13 @@ export default {
     },
     leaderVersions() {
       return this.loadTest.authoritySet.leaderVersions
-        .map(function(d) {
+        .map(function (d) {
           const copy = { ...d };
           delete copy.__typename;
           return copy;
         })
         .sort((a, b) => b.count - a.count);
-    }
-  }
+    },
+  },
 };
 </script>

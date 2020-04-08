@@ -17,7 +17,7 @@ export default {
   components: { Control },
   data() {
     return {
-      latestLoadTest: {}
+      latestLoadTest: {},
     };
   },
   apollo: {
@@ -27,11 +27,11 @@ export default {
         document: LATEST_LOAD_TEST_CHANGED,
         updateQuery: (previousResult, { subscriptionData }) => {
           return {
-            latestLoadTest: subscriptionData.data.latestLoadTestChanged
+            latestLoadTest: subscriptionData.data.latestLoadTestChanged,
           };
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 };
 </script>

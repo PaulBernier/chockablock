@@ -29,12 +29,12 @@ export default {
         legend: {
           labels: {
             fontColor: "grey",
-            fontSize: 14
-          }
+            fontSize: 14,
+          },
         },
         responsive: true,
-        maintainAspectRatio: false
-      }
+        maintainAspectRatio: false,
+      },
     };
   },
   computed: {
@@ -71,9 +71,9 @@ export default {
             fill: false,
             pointRadius: 4,
             pointHoverRadius: 5,
-            data
-          }
-        ]
+            data,
+          },
+        ],
       };
     },
     blockTimeChartData() {
@@ -99,11 +99,11 @@ export default {
           {
             label: "Block time (seconds)",
             backgroundColor,
-            data
-          }
-        ]
+            data,
+          },
+        ],
       };
-    }
-  }
+    },
+  },
 };
 </script>

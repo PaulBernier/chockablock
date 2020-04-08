@@ -12,7 +12,7 @@ export default {
   components: { BlockStats },
   data() {
     return {
-      latestBlockStatHistory: { nextBlockStartTime: 0, history: [] }
+      latestBlockStatHistory: { nextBlockStartTime: 0, history: [] },
     };
   },
   apollo: {
@@ -23,11 +23,11 @@ export default {
         updateQuery: (previousResult, { subscriptionData }) => {
           return {
             latestBlockStatHistory:
-              subscriptionData.data.latestBlockStatHistoryChanged
+              subscriptionData.data.latestBlockStatHistoryChanged,
           };
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 };
 </script>

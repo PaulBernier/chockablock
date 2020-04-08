@@ -36,7 +36,7 @@ class DistributedConstantLoadGenerator extends DistributedLoadGenerator {
         type: "constant",
         eps: agentEps,
         entrySize,
-        chainIds: chainIdChunks[i]
+        chainIds: chainIdChunks[i],
       });
     }
 

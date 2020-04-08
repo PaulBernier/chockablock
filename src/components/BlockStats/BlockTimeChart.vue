@@ -11,8 +11,8 @@ export default {
       legend: {
         labels: {
           fontColor: "grey",
-          fontSize: 14
-        }
+          fontSize: 14,
+        },
       },
       responsive: true,
       maintainAspectRatio: false,
@@ -20,10 +20,10 @@ export default {
         yAxes: [
           {
             ticks: {
-              beginAtZero: true
-            }
-          }
-        ]
+              beginAtZero: true,
+            },
+          },
+        ],
       },
       annotation: {
         annotations: [
@@ -33,11 +33,11 @@ export default {
             scaleID: "y-axis-0",
             value: 600,
             borderColor: "#C85D59",
-            borderWidth: 2
-          }
-        ]
-      }
+            borderWidth: 2,
+          },
+        ],
+      },
     });
-  }
+  },
 };
 </script>

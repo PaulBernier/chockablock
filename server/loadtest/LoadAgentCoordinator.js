@@ -34,8 +34,8 @@ class LoadAgentCoordinator {
 
   getConnectedAgents() {
     return [...this.wss.clients]
-      .filter(client => client.readyState === WebSocket.OPEN)
-      .map(c => c.agentId);
+      .filter((client) => client.readyState === WebSocket.OPEN)
+      .map((c) => c.agentId);
   }
 
   startLoad(jobs) {
@@ -52,7 +52,7 @@ class LoadAgentCoordinator {
         client.send(
           JSON.stringify({
             command: "start-load",
-            params: jobs[i]
+            params: jobs[i],
           })
         );
         ++i;

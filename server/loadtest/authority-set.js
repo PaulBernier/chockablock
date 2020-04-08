@@ -16,7 +16,7 @@ async function getAuthoritySetStats() {
   const auditVersions = [],
     leaderVersions = [],
     notFound = new Set([...leaderIds, ...auditIds]);
-  data.forEach(function(d) {
+  data.forEach(function (d) {
     if (leaderIds.has(d.fd_id)) {
       notFound.delete(d.fd_id);
       leaderVersions.push(d.version);

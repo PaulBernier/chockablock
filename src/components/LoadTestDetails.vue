@@ -23,9 +23,9 @@ export default {
     blockTimeRange() {
       return {
         start: this.loadTest.start.timestamp - 1800,
-        end: this.loadTest.end.timestamp + 1200
+        end: this.loadTest.end.timestamp + 1200,
       };
-    }
-  }
+    },
+  },
 };
 </script>

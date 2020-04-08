@@ -34,32 +34,32 @@ const jwt = require("jsonwebtoken");
     typeDefs: resolve(__dirname, "schema.graphql"),
     resolvers: require("./resolvers/resolvers")(db),
     middlewares: [require("./permissions")],
-    context: request => {
+    context: (request) => {
       return {
         ...request,
         user: getUser(request),
         loadTestManager,
         db,
         blockchainMonitor,
-        pubsub
+        pubsub,
       };
-    }
+    },
   });
 
   const serverConfig = {
     endpoint: "/graphql",
-    subscriptions: "/graphql"
+    subscriptions: "/graphql",
   };
 
   if (process.env.NODE_ENV === "production") {
     serverConfig.playground = false;
     serverConfig.cors = {
-      origin: ["https://chocka.luciap.ca", "https://chockablock.luciap.ca"]
+      origin: ["https://chocka.luciap.ca", "https://chockablock.luciap.ca"],
     };
   } else {
     serverConfig.playground = "/graphql";
     serverConfig.cors = {
-      origin: ["http://localhost:4000", "http://localhost:8080"]
+      origin: ["http://localhost:4000", "http://localhost:8080"],
     };
   }
 

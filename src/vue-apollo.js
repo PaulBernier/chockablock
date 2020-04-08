@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueApollo from "vue-apollo";
 import {
   createApolloClient,
-  restartWebsockets
+  restartWebsockets,
 } from "vue-cli-plugin-apollo/graphql-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 
@@ -48,7 +48,7 @@ const defaultOptions = {
   cache: new InMemoryCache(),
 
   // Override the way the Authorization header is set
-  getAuth: () => localStorage.getItem("jwt_token")
+  getAuth: () => localStorage.getItem("jwt_token"),
 
   // Additional ApolloClient options
   // apollo: { ... }
@@ -62,7 +62,7 @@ export function createProvider(options = {}) {
   // Create apollo client
   const { apolloClient, wsClient } = createApolloClient({
     ...defaultOptions,
-    ...options
+    ...options,
   });
   apolloClient.wsClient = wsClient;
 
@@ -71,8 +71,8 @@ export function createProvider(options = {}) {
     defaultClient: apolloClient,
     defaultOptions: {
       $query: {
-        fetchPolicy: "network-only"
-      }
+        fetchPolicy: "network-only",
+      },
     },
     errorHandler(error) {
       // eslint-disable-next-line no-console
@@ -81,7 +81,7 @@ export function createProvider(options = {}) {
         "background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;",
         error.message
       );
-    }
+    },
   });
 
   return apolloProvider;

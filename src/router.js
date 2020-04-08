@@ -11,13 +11,13 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
     },
     {
       path: "/control",
       name: "control",
       component: () =>
-        import(/* webpackChunkName: "control" */ "./views/Control.vue")
+        import(/* webpackChunkName: "control" */ "./views/Control.vue"),
     },
     {
       path: "/loadtest-history",
@@ -25,7 +25,7 @@ export default new Router({
       component: () =>
         import(
           /* webpackChunkName: "loadtest-history" */ "./views/LoadTestHistory.vue"
-        )
+        ),
     },
     {
       path: "/loadtest/:id",
@@ -33,7 +33,7 @@ export default new Router({
       component: () =>
         import(
           /* webpackChunkName: "loadtest-details" */ "./views/LoadTestDetails.vue"
-        )
-    }
-  ]
+        ),
+    },
+  ],
 });

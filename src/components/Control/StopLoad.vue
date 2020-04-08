@@ -20,12 +20,12 @@ export default {
     async stopLoad() {
       try {
         await this.$apollo.mutate({
-          mutation: STOP_TEST
+          mutation: STOP_TEST,
         });
       } catch (e) {
         this.$emit("error", e.message);
       }
-    }
-  }
+    },
+  },
 };
 </script>
