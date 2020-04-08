@@ -25,7 +25,7 @@ module.exports = db => ({
     }
 
     return jwt.sign({ name, roles: user.roles }, process.env.JWT_SECRET, {
-      expiresIn: "30d"
+      expiresIn: "3y"
     });
   }
 });
