@@ -1,0 +1,3 @@
+query verifyAuth($token: String!) {
+  verifyAuth (token: $token)
+}

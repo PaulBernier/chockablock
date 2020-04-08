@@ -7,10 +7,10 @@ async function getAuthoritySetStats() {
   );
 
   // Use Luciap node as reference for the authority set composition
-  const refNode = data.find(d => d.owner === "Luciap-Testnet3");
+  const refNode = data.find((d) => d.owner === "Luciap-Testnet3");
   const refAuthoritySet = JSON.parse(refNode.fd_authset);
-  const leaderIds = new Set(refAuthoritySet.leaders.map(l => l.id));
-  const auditIds = new Set(refAuthoritySet.audits.map(a => a.id));
+  const leaderIds = new Set(refAuthoritySet.leaders.map((l) => l.id));
+  const auditIds = new Set(refAuthoritySet.audits.map((a) => a.id));
 
   // Get versions of authority set
   const auditVersions = [],
@@ -26,7 +26,9 @@ async function getAuthoritySetStats() {
     }
   });
 
-  console.log(notFound);
+  if (notFound.size > 0) {
+    console.log(`Identities not found:`, notFound);
+  }
 
   const mainVersion = Object.entries(
     groupBy([...auditVersions, ...leaderVersions])
@@ -58,11 +60,11 @@ async function getAuthoritySetStats() {
     audits: auditIds.size,
     mainVersion,
     auditVersions: auditVersionsStats,
-    leaderVersions: leaderVersionsStats
+    leaderVersions: leaderVersionsStats,
   };
 }
 
 module.exports = {
-  getAuthoritySetStats
+  getAuthoritySetStats,
 };
 getAuthoritySetStats();

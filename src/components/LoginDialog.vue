@@ -63,6 +63,7 @@
 
 <script>
 import LOG_IN from "@/graphql/LogIn.gql";
+import VERIFY_AUTH from "@/graphql/VerifyAuth.gql";
 
 export default {
   name: "LoginDialog",
@@ -97,11 +98,20 @@ export default {
     }
   },
   watch: {
-    dialog() {
+    async dialog() {
       this.errorMesage = "";
       if (this.dialog) {
-        if (localStorage.getItem("jwt_token")) {
-          this.$router.push({ name: "control" });
+        const token = localStorage.getItem("jwt_token");
+        if (token) {
+          const { data } = await this.$apollo.query({
+            query: VERIFY_AUTH,
+            variables: {
+              token
+            }
+          });
+          if (data.verifyAuth) {
+            this.$router.push({ name: "control" });
+          }
         }
       }
     }

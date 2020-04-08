@@ -1,4 +1,5 @@
 type Query {
+  verifyAuth(token: String!): Boolean!
   latestLoadTest: LoadTest
   loadTest(id: String): LoadTest
   loadTestHistory(id: String, pageSize: Int!): [LoadTest!]!

@@ -1,7 +1,17 @@
 const { ObjectID } = require("mongodb");
+const jwt = require("jsonwebtoken");
 
 function latestLoadTest(parent, args, { loadTestManager }) {
   return loadTestManager.loadTest;
+}
+
+async function verifyAuth(parent, { token }) {
+  try {
+    jwt.verify(token, process.env.JWT_SECRET);
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
 async function loadTest(parent, { id }, { db }) {
@@ -25,7 +35,7 @@ async function loadTestHistory(parent, { id, pageSize }, { db }) {
 function latestBlockStatHistory(parent, args, { blockchainMonitor }) {
   return {
     history: blockchainMonitor.history,
-    nextBlockStartTime: blockchainMonitor.nextBlockStartTime
+    nextBlockStartTime: blockchainMonitor.nextBlockStartTime,
   };
 }
 
@@ -60,10 +70,11 @@ function ecBalance(parent, args, { blockchainMonitor }) {
 }
 
 module.exports = {
+  verifyAuth,
   loadTest,
   latestLoadTest,
   loadTestHistory,
   blockStatHistory,
   latestBlockStatHistory,
-  ecBalance
+  ecBalance,
 };
