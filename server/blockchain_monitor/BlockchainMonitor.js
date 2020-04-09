@@ -27,6 +27,7 @@ class BlockchainMonitor extends EventEmitter {
   async init() {
     this.ecBalance.balance = await this.cli.getBalance(PUBLIC_EC_ADDRESS);
 
+    // Populate initial history
     const dbHistory = await this.db
       .collection("blocks")
       .find({})
@@ -34,6 +35,11 @@ class BlockchainMonitor extends EventEmitter {
       .limit(HISTORY_LENGTH)
       .toArray();
     this.history = dbHistory.reverse();
+
+    // Populate initial nextBlockStartTime
+    this.nextBlockStartTime = await this.cli
+      .factomdApi("current-minute")
+      .then((data) => parseInt(data.currentblockstarttime / 1000000000));
 
     // Corner case the first time the db is empty
     if (this.history.length > 0) {
