@@ -19,6 +19,8 @@ export default {
   methods: {
     async stopLoad() {
       try {
+        // Clear previous error message if any
+        this.$emit("error", "");
         await this.$apollo.mutate({
           mutation: STOP_TEST,
         });

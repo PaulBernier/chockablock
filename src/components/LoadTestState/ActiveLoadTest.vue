@@ -35,7 +35,7 @@
             <v-flex xs12 class="headline primary--text" text-xs-center mb-2>
               {{ ecBalance.balance.toLocaleString() }} EC
             </v-flex>
-            <v-flex xs12 class="subheading" text-xs-center>
+            <v-flex xs12 class="subheading break-word" text-xs-center>
               {{ ecBalance.address }}
             </v-flex>
           </v-layout>

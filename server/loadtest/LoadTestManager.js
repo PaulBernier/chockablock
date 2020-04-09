@@ -25,7 +25,7 @@ class LoadTestManager extends EventEmitter {
     if (latestLoadTest) {
       this.loadTest = new LoadTest(latestLoadTest);
       if (this.loadTest.isActive()) {
-        this.loadTest.stopBy("ADMIN");
+        this.loadTest.stopBy("AUTO");
         await this.loadTestChanged();
       }
     }
@@ -73,7 +73,12 @@ class LoadTestManager extends EventEmitter {
     this.loadTest = loadTest;
 
     console.log("Running load generator");
-    await this.loadGenerator.run(generatorConfig, chainIds);
+    try {
+      await this.loadGenerator.run(generatorConfig, chainIds);
+    } catch (e) {
+      this.loadTest.stopBy("AUTO");
+      throw e;
+    }
 
     await this.loadTestChanged();
   }

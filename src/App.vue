@@ -32,8 +32,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 a {
   text-decoration: none;
+}
+.break-word {
+  word-break: break-all;
 }
 </style>

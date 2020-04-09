@@ -51,6 +51,8 @@ export default {
   methods: {
     async startLoad() {
       try {
+        // Clear previous error message if any
+        this.$emit("error", "");
         this.loading = true;
         await this.$apollo.mutate({
           mutation: START_TEST,
