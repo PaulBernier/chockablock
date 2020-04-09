@@ -7,6 +7,7 @@ module.exports = (async function () {
   const client = new MongoClient(URL, {
     poolSize: 10,
     useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
 
   console.log(`Connecting to DB ${URL}`);
