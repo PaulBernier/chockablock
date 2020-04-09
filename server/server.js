@@ -2,6 +2,8 @@ require("dotenv").config();
 
 const { GraphQLServer, PubSub } = require("graphql-yoga");
 const { resolve } = require("path");
+const express = require("express");
+const history = require("connect-history-api-fallback");
 const jwt = require("jsonwebtoken");
 
 (async () => {
@@ -64,4 +66,8 @@ const jwt = require("jsonwebtoken");
   server.start(serverConfig, () =>
     console.log(`Server is running on http://localhost:4000`)
   );
+
+  const publicPath = resolve(__dirname, "../dist");
+  server.express.use("/", history());
+  server.express.use(express.static(publicPath));
 })();
