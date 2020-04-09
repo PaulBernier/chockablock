@@ -67,7 +67,7 @@ const jwt = require("jsonwebtoken");
     console.log(`Server is running on http://localhost:4000`)
   );
 
-  const publicPath = resolve(__dirname, "../dist");
+  const publicPath = resolve(__dirname, "../www");
   server.express.use("/", history());
   server.express.use(express.static(publicPath));
 })();
