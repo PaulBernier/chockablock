@@ -66,7 +66,8 @@ export default {
         datasets: [
           {
             label: "Average Entry Per Second",
-            backgroundColor: "#F4B75D",
+            borderColor: "#F4B75D",
+            borderWidth: 1,
             pointBackgroundColor: "#F4B75D",
             fill: false,
             pointRadius: 4,
