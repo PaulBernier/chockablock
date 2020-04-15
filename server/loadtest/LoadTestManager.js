@@ -1,7 +1,6 @@
 const EventEmitter = require("events");
 const DistributedConstantLoadGenerator = require("./generators/DistributedConstantLoadGenerator");
 const LoadTest = require("./LoadTest");
-const LoadAgentCoordinator = require("./LoadAgentCoordinator");
 const { getAuthoritySetStats } = require("./authority-set");
 const { FactomCli, Entry, Chain } = require("factom");
 const uuidv4 = require("uuid/v4");
@@ -9,11 +8,11 @@ const uuidv4 = require("uuid/v4");
 const EC_ADDRESS = process.env.EC_ADDRESS;
 
 class LoadTestManager extends EventEmitter {
-  constructor(db) {
+  constructor({ db, loadAgentCoordinator }) {
     super();
     this.db = db;
     this.cli = new FactomCli();
-    this.loadAgentCoordinator = new LoadAgentCoordinator();
+    this.loadAgentCoordinator = loadAgentCoordinator;
     this.loadTest = null;
   }
 
@@ -101,6 +100,7 @@ class LoadTestManager extends EventEmitter {
       await this.db.collection("loadtests").insertOne(this.loadTest);
     }
 
+    // Emit event for GraphQL subscriptions (via PubSub)
     this.emit("LOAD_TEST_CHANGED", this.loadTest);
   }
 }

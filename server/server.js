@@ -10,9 +10,13 @@ const jwt = require("jsonwebtoken");
   // Singleton DB client
   const db = await require("./mongodb");
 
+  // Instanciate services
   const pubsub = new PubSub();
   pubsub.ee.setMaxListeners(100);
-  const loadTestManager = require("./loadtest")(pubsub, db);
+  const { loadTestManager, loadAgentCoordinator } = require("./loadtest")(
+    pubsub,
+    db
+  );
   const blockchainMonitor = require("./blockchain_monitor")(pubsub, db);
 
   // Auth
@@ -34,13 +38,16 @@ const jwt = require("jsonwebtoken");
     typeDefs: resolve(__dirname, "schema.graphql"),
     resolvers: require("./resolvers/resolvers")(db),
     middlewares: [require("./permissions")],
+    // Inject services into GraphQL context
+    // and user info
     context: (request) => {
       return {
         ...request,
         user: getUser(request),
         loadTestManager,
-        db,
+        loadAgentCoordinator,
         blockchainMonitor,
+        db,
         pubsub,
       };
     },

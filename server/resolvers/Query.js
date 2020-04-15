@@ -69,8 +69,8 @@ function ecBalance(parent, args, { blockchainMonitor }) {
   return blockchainMonitor.ecBalance;
 }
 
-function agents(parent, args, { loadTestManager }) {
-  return loadTestManager.loadAgentCoordinator.getConnectedAgents();
+function agents(parent, args, { loadAgentCoordinator }) {
+  return loadAgentCoordinator.getConnectedAgents();
 }
 
 module.exports = {

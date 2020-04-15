@@ -9,7 +9,7 @@
         </v-flex>
       </v-layout>
       <v-layout wrap v-else>
-        <v-flex xs12>
+        <v-flex xs12 mb-2>
           <div>Agents curently connected ({{ agents.length }}):</div>
         </v-flex>
         <v-flex xs12>
@@ -44,6 +44,6 @@ export default {
         },
       },
     },
-  }
+  },
 };
 </script>
