@@ -69,6 +69,10 @@ function ecBalance(parent, args, { blockchainMonitor }) {
   return blockchainMonitor.ecBalance;
 }
 
+function agents(parent, args, { loadTestManager }) {
+  return loadTestManager.loadAgentCoordinator.getConnectedAgents();
+}
+
 module.exports = {
   verifyAuth,
   loadTest,
@@ -77,4 +81,5 @@ module.exports = {
   blockStatHistory,
   latestBlockStatHistory,
   ecBalance,
+  agents,
 };

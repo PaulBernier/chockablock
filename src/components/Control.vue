@@ -1,16 +1,33 @@
 <template>
   <v-layout wrap>
-    <v-container>
-      <v-flex xs12 mb-2>
-        <v-alert v-if="errorMesage" :value="true" type="error">
-          {{ errorMesage }}
-        </v-alert>
-      </v-flex>
+    <v-container fluid>
       <v-layout wrap>
-        <StopLoad v-if="active" @error="errorMesage = $event"></StopLoad>
-        <StartLoad v-else @error="errorMesage = $event"></StartLoad>
+        <v-flex xs12 mb-2>
+          <v-alert v-if="errorMesage" :value="true" type="error">
+            {{ errorMesage }}
+          </v-alert>
+        </v-flex>
+        <v-flex xs12 lg4 mb-2 pa-2>
+          <ConnectedAgents></ConnectedAgents>
+        </v-flex>
+        <v-flex xs12 lg8 mb-2 pa-2>
+          <v-sheet elevation="2">
+            <v-container fluid>
+              <v-layout wrap>
+                <StopLoad
+                  v-if="active"
+                  @error="errorMesage = $event"
+                ></StopLoad>
+                <StartLoad v-else @error="errorMesage = $event"></StartLoad>
+              </v-layout>
+            </v-container>
+          </v-sheet>
+        </v-flex>
       </v-layout>
     </v-container>
+    <v-flex xs12>
+      <v-divider></v-divider>
+    </v-flex>
     <v-flex xs12 mb-5>
       <LoadTestState :loadTest="loadTest"></LoadTestState>
     </v-flex>
@@ -18,12 +35,16 @@
 </template>
 
 <script>
+import AGENTS from "@/graphql/Agents.gql";
+import AGENTS_CHANGED from "@/graphql/AgentsChanged.gql";
+
 import LoadTestState from "@/components/LoadTestState";
+import ConnectedAgents from "./Control/ConnectedAgents";
 import StartLoad from "./Control/StartLoad";
 import StopLoad from "./Control/StopLoad";
 
 export default {
-  components: { StartLoad, StopLoad, LoadTestState },
+  components: { ConnectedAgents, StartLoad, StopLoad, LoadTestState },
   props: ["loadTest"],
   data() {
     return {

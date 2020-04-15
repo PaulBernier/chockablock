@@ -6,6 +6,7 @@ type Query {
   latestBlockStatHistory: BlockStatHistory!
   blockStatHistory(startTimestamp: Int!, endTimestamp: Int!): BlockStatHistory!
   ecBalance: EcBalance!
+  agents: [Agent!]!
 }
 
 type Mutation {
@@ -18,6 +19,8 @@ type Subscription {
   latestLoadTestChanged: LoadTest!
   latestBlockStatHistoryChanged: BlockStatHistory!
   ecBalanceChanged: EcBalance!
+  agentsChanged: [Agent!]!
+
 }
 
 ###########
@@ -34,6 +37,10 @@ input ConstantLoadConfigInput {
 }
 
 ###########
+
+type Agent {
+  name: String!
+}
 
 type EcBalance {
   address: String!

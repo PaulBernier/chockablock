@@ -3,7 +3,7 @@
     <v-toolbar app>
       <v-toolbar-title
         class="headline primary--text"
-        @click="$router.replace('/')"
+        @click="$router.replace('/', () => {})"
       >
         <router-link to="/">
           <span class="font-weight-medium">Chocka</span>

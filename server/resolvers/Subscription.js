@@ -16,8 +16,15 @@ const ecBalanceChanged = {
   },
 };
 
+const agentsChanged = {
+  subscribe: (parent, args, { pubsub }) => {
+    return pubsub.asyncIterator("AGENTS_CHANGED");
+  },
+};
+
 module.exports = {
   latestLoadTestChanged,
   latestBlockStatHistoryChanged,
   ecBalanceChanged,
+  agentsChanged,
 };

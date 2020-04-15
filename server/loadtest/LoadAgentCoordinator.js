@@ -1,4 +1,5 @@
 const WebSocket = require("ws");
+const EventEmitter = require("events");
 
 function noop() {}
 
@@ -6,24 +7,36 @@ function heartbeat() {
   this.isAlive = true;
 }
 
-class LoadAgentCoordinator {
+class LoadAgentCoordinator extends EventEmitter {
   constructor() {
+    super();
+    const that = this;
+
     this.wss = new WebSocket.Server({ port: 4007 });
 
     this.wss.on("connection", function connection(ws, req) {
-      const agentId = req.headers.agentid || "";
-      console.log(`New agent connected: ${agentId}`);
+      const agentName = req.headers.agent_name || "";
+      console.log(`New agent connected [${agentName}]`);
       ws.isAlive = true;
-      ws.agentId = agentId;
+      ws.agentName = agentName;
+
       ws.on("pong", heartbeat);
+      ws.on("close", () => {
+        console.log(`Agent disconnected: [${ws.agentName}]`);
+        that._agentsChanged();
+      });
+
+      that._agentsChanged();
     });
 
     // Keep alive connection with agents
     setInterval(() => {
       this.wss.clients.forEach(function each(ws) {
         if (ws.isAlive === false) {
-          console.log(`Terminating connection with ${ws.agentId}`);
-          return ws.terminate();
+          console.log(`Terminating connection with ${ws.agentName}`);
+
+          ws.terminate();
+          return;
         }
 
         ws.isAlive = false;
@@ -35,7 +48,9 @@ class LoadAgentCoordinator {
   getConnectedAgents() {
     return [...this.wss.clients]
       .filter((client) => client.readyState === WebSocket.OPEN)
-      .map((c) => c.agentId);
+      .map((c) => ({
+        name: c.agentName,
+      }));
   }
 
   startLoad(jobs) {
@@ -78,6 +93,11 @@ class LoadAgentCoordinator {
         client.send(serialized);
       }
     });
+  }
+
+  async _agentsChanged() {
+    // Emit event for GraphQL subscriptions (via PubSub)
+    this.emit("AGENTS_CHANGED", this.getConnectedAgents());
   }
 }
 
