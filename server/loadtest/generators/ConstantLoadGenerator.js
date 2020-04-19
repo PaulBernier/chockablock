@@ -1,33 +1,39 @@
-const LoadGenerator = require("./LoadGenerator");
+const DistributedLoadGenerator = require("./DistributedLoadGenerator");
 
-class ConstantLoadGenerator extends LoadGenerator {
-  getConfig({ eps = 1, entrySize = 1024 }) {
-    if (eps <= 0) {
+class ConstantLoadGenerator extends DistributedLoadGenerator {
+  validateConfig({ eps }) {
+    if (typeof eps !== "number" || eps <= 0) {
       throw new Error(`EPS must be positive. Received: ${eps}`);
     }
-    if (entrySize <= 0 || entrySize > 10240) {
-      throw new Error(`Invalid entry size: ${entrySize}`);
-    }
-
-    return { eps, entrySize };
   }
 
-  async run({ eps, entrySize }) {
-    const interval = 1000 / eps;
+  buildAgentJobs({ eps }, agentCount) {
+    const jobs = [];
+    const chunkSize = Math.ceil(this.chainIds.length / agentCount);
+    const chainIdChunks = chunk(this.chainIds, chunkSize);
+    const entrySizeRange = { min: 32, max: 10240 };
 
-    console.log(`ConstantLoadGenerator: sending entries every ${interval}ms`);
+    const agentEps = eps / agentCount;
 
-    this.intervalId = setInterval(() => {
-      this.add({ entrySize });
-    }, interval);
-  }
-
-  stop() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
+    for (let i = 0; i < agentCount; ++i) {
+      jobs.push({
+        type: "constant",
+        esAddress: process.env.EC_ADDRESS,
+        chainIds: chainIdChunks[i],
+        entrySizeRange,
+        params: {
+          eps: agentEps,
+        },
+      });
     }
+
+    return jobs;
   }
 }
+
+const chunk = (arr, size) =>
+  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    arr.slice(i * size, i * size + size)
+  );
 
 module.exports = ConstantLoadGenerator;

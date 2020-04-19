@@ -1,5 +1,5 @@
 const EventEmitter = require("events");
-const DistributedConstantLoadGenerator = require("./generators/DistributedConstantLoadGenerator");
+const ConstantLoadGenerator = require("./generators/ConstantLoadGenerator");
 const LoadTest = require("./LoadTest");
 const { getAuthoritySetStats } = require("./authority-set");
 const { FactomCli, Entry, Chain } = require("factom");
@@ -34,7 +34,7 @@ class LoadTestManager extends EventEmitter {
     if (this.loadTest && this.loadTest.isActive()) {
       throw new Error("A load test is already running");
     }
-    const { type, nbOfChains } = loadConfig;
+    const { type, nbOfChains, generatorConfig } = loadConfig;
 
     if (nbOfChains <= 0 || !Number.isInteger(nbOfChains)) {
       throw new Error(
@@ -46,7 +46,7 @@ class LoadTestManager extends EventEmitter {
 
     switch (type) {
       case "constant":
-        this.loadGenerator = new DistributedConstantLoadGenerator(
+        this.loadGenerator = new ConstantLoadGenerator(
           this.loadAgentCoordinator,
           chainIds
         );
@@ -55,11 +55,7 @@ class LoadTestManager extends EventEmitter {
         throw new Error(`Unknown load generator type [${type}]`);
     }
 
-    // getConfig is responsible for validating config requests
-    // And returning a fully populated config (with defaults if necessary)
-    const generatorConfig = this.loadGenerator.getConfig(
-      loadConfig.generatorConfig
-    );
+    this.loadGenerator.validateConfig(generatorConfig);
     console.log("Generator config", generatorConfig);
 
     const loadTest = new LoadTest();
@@ -106,7 +102,7 @@ class LoadTestManager extends EventEmitter {
 }
 
 async function createChains(cli, nb, ecAddress) {
-  console.log(`Creating ${nb} chains`);
+  console.log(`Creating ${nb} chains...`);
 
   const chains = new Array(nb).fill(uuidv4()).map(buildChain);
 
