@@ -11,6 +11,7 @@ subscription {
     }
     type
     chainIds
+    agentsCount
     authoritySet {
       leaders
       audits
@@ -26,7 +27,6 @@ subscription {
     generatorConfig {
       ... on ConstantLoadConfig {
         eps
-        entrySize
       }
     }
   }

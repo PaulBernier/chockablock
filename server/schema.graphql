@@ -33,7 +33,6 @@ input LoadConfigInput {
 
 input ConstantLoadConfigInput {
   eps: Float!
-  entrySize: Int
 }
 
 ###########
@@ -53,6 +52,7 @@ type LoadTest {
   end: StartStopEvent
   type: String!
   chainIds: [String!]!
+  agentsCount: Int!
   generatorConfig: ConstantLoadConfig!
   authoritySet: AuthoritySetInfo
 }
@@ -72,7 +72,6 @@ type NodeVersion {
 
 type ConstantLoadConfig {
   eps: Float!
-  entrySize: Int
 }
 
 type StartStopEvent {

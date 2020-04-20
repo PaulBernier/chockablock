@@ -8,6 +8,7 @@ class LoadTest {
       this.generatorConfig = obj.generatorConfig;
       this.chainIds = obj.chainIds;
       this.type = obj.type;
+      this.agentsCount = obj.agentsCount;
     } else {
       this.events = [];
     }

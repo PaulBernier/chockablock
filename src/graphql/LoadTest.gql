@@ -11,6 +11,7 @@ query loadTest($id: String) {
     }
     type
     chainIds
+    agentsCount
     authoritySet {
       leaders
       audits
@@ -26,7 +27,6 @@ query loadTest($id: String) {
     generatorConfig {
       ... on ConstantLoadConfig {
         eps
-        entrySize
       }
     }
   }

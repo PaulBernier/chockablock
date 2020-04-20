@@ -51,17 +51,21 @@
             </v-flex>
             <v-flex xs12 class="subheading" mb-2>
               Test ID:
-              <span class="font-weight-bold">{{ this.loadTest._id }}</span>
+              <span class="font-weight-bold">{{ loadTest._id }}</span>
             </v-flex>
             <v-flex xs12 class="subheading" mb-2>
               Number of chains:
               <span class="font-weight-bold">{{
-                this.loadTest.chainIds.length
+                loadTest.chainIds.length
               }}</span>
             </v-flex>
             <v-flex xs12 class="subheading" mb-2>
+              Number of load agents:
+              <span class="font-weight-bold">{{ loadTest.agentsCount }}</span>
+            </v-flex>
+            <v-flex xs12 class="subheading" mb-2>
               Load type:
-              <span class="font-weight-bold">{{ this.loadTest.type }}</span>
+              <span class="font-weight-bold">{{ loadTest.type }}</span>
             </v-flex>
             <v-flex xs12 class="subheading">
               <pre>{{ config }}</pre>

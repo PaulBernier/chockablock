@@ -17,7 +17,6 @@ query loadTestHistory($lastId: String, $pageSize: Int!) {
     generatorConfig {
       ... on ConstantLoadConfig {
         eps
-        entrySize
       }
     }
   }

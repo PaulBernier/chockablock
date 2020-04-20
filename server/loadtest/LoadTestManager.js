@@ -31,6 +31,7 @@ class LoadTestManager extends EventEmitter {
   }
 
   async start({ user, loadConfig }) {
+    // User input validation
     if (this.loadTest && this.loadTest.isActive()) {
       throw new Error("A load test is already running");
     }
@@ -42,6 +43,7 @@ class LoadTestManager extends EventEmitter {
       );
     }
 
+    // Chains creation
     const chainIds = await createChains(this.cli, nbOfChains, EC_ADDRESS);
 
     switch (type) {
@@ -63,18 +65,14 @@ class LoadTestManager extends EventEmitter {
     loadTest.type = loadConfig.type;
     loadTest.chainIds = chainIds;
     loadTest.generatorConfig = generatorConfig;
+    loadTest.agentsCount = this.loadAgentCoordinator.getConnectedAgents().length;
     // Save authority set stats at the start of the loadtest
     loadTest.authoritySet = await getAuthoritySetStats();
-    this.loadTest = loadTest;
 
     console.log("Running load generator");
-    try {
-      await this.loadGenerator.run(generatorConfig, chainIds);
-    } catch (e) {
-      this.loadTest.stopBy("AUTO");
-      throw e;
-    }
+    await this.loadGenerator.run(generatorConfig);
 
+    this.loadTest = loadTest;
     await this.loadTestChanged();
   }
 

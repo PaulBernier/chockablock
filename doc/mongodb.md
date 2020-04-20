@@ -37,6 +37,7 @@ loadTest {
     generatorConfig: {
 
     },
+    agentsCount: int,
     chainIds: [],
     events: [{type: string, time: Date}]
 }

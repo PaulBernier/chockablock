@@ -22,6 +22,10 @@
           {{ loadTest.chainIds.length }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
+          <span class="primary--text">Number of load agents: </span>
+          {{ loadTest.agentsCount }}
+        </v-flex>
+        <v-flex xs12 class="subheading" mb-2>
           <span class="primary--text">Type: </span>{{ loadTest.type }}
         </v-flex>
         <v-flex xs12 class="subheading primary--text" mb-3>
