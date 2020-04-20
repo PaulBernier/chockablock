@@ -45,5 +45,10 @@ export default {
       },
     },
   },
+  watch: {
+    agents() {
+      this.$emit("update:agentsCount", this.agents.length);
+    },
+  },
 };
 </script>

@@ -27,6 +27,7 @@
             type="submit"
             :loading="loading"
             large
+            :disabled="!canBeStarted"
             class="grey--text text--darken-3"
             color="primary"
             >start loadtest</v-btn
@@ -41,12 +42,18 @@
 import START_TEST from "@/graphql/StartTest.gql";
 
 export default {
+  props: ["agentsCount"],
   data() {
     return {
       nbOfChains: 50,
       eps: 1,
       loading: false,
     };
+  },
+  computed: {
+    canBeStarted() {
+      return this.agentsCount > 0;
+    },
   },
   methods: {
     async startLoad() {

@@ -8,7 +8,7 @@
           </v-alert>
         </v-flex>
         <v-flex xs12 lg4 mb-2 pa-2>
-          <ConnectedAgents></ConnectedAgents>
+          <ConnectedAgents :agentsCount.sync="agentsCount"></ConnectedAgents>
         </v-flex>
         <v-flex xs12 lg8 mb-2 pa-2>
           <v-sheet elevation="2">
@@ -18,7 +18,11 @@
                   v-if="active"
                   @error="errorMesage = $event"
                 ></StopLoad>
-                <StartLoad v-else @error="errorMesage = $event"></StartLoad>
+                <StartLoad
+                  v-else
+                  @error="errorMesage = $event"
+                  :agentsCount="agentsCount"
+                ></StartLoad>
               </v-layout>
             </v-container>
           </v-sheet>
@@ -48,6 +52,7 @@ export default {
   props: ["loadTest"],
   data() {
     return {
+      agentsCount: 0,
       errorMesage: "",
     };
   },
