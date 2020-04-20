@@ -67,4 +67,3 @@ async function getAuthoritySetStats() {
 module.exports = {
   getAuthoritySetStats,
 };
-getAuthoritySetStats();
