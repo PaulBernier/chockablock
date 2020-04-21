@@ -28,7 +28,13 @@ type Subscription {
 input LoadConfigInput {
   type: String!
   nbOfChains: Int!
-  generatorConfig: ConstantLoadConfigInput
+  entrySizeRange: IntRangeInput!
+  typeConfig: ConstantLoadConfigInput
+}
+
+input IntRangeInput {
+  min: Int!
+  max: Int!
 }
 
 input ConstantLoadConfigInput {
@@ -51,6 +57,7 @@ type LoadTest {
   start: StartStopEvent!
   end: StartStopEvent
   type: String!
+  entrySizeRange: IntRange!
   chainIds: [String!]!
   agentsCount: Int!
   generatorConfig: ConstantLoadConfig!
@@ -89,4 +96,9 @@ type BlockStat {
   timestamp: Int!
   entryCount: Int!
   hasElection: Boolean!
+}
+
+type IntRange {
+  min: Int!
+  max: Int!
 }

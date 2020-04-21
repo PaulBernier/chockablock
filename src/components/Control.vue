@@ -13,17 +13,12 @@
         <v-flex xs12 lg8 mb-2 pa-2>
           <v-sheet elevation="2">
             <v-container fluid>
-              <v-layout wrap>
-                <StopLoad
-                  v-if="active"
-                  @error="errorMesage = $event"
-                ></StopLoad>
-                <StartLoad
-                  v-else
-                  @error="errorMesage = $event"
-                  :agentsCount="agentsCount"
-                ></StartLoad>
-              </v-layout>
+              <StopLoad v-if="active" @error="errorMesage = $event"></StopLoad>
+              <StartLoad
+                v-else
+                @error="errorMesage = $event"
+                :agentsCount="agentsCount"
+              ></StartLoad>
             </v-container>
           </v-sheet>
         </v-flex>

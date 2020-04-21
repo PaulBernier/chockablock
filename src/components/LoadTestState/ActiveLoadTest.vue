@@ -6,7 +6,7 @@
           <v-layout wrap text-xs-center>
             <v-flex xs12 class="display-3 font-weight-bold" mb-4>ON</v-flex>
             <v-flex xs12 class="subheading grey--text text--darken-3">
-              Started on {{ loadTest.start.timestamp | displayDate }}
+              Started on {{ loadTest.start.timestamp | formatDate }}
             </v-flex>
             <v-flex xs12 class="subheading grey--text text--darken-3"
               >by {{ loadTest.start.user }}</v-flex
@@ -50,25 +50,12 @@
               Info
             </v-flex>
             <v-flex xs12 class="subheading" mb-2>
-              Test ID:
-              <span class="font-weight-bold">{{ loadTest._id }}</span>
+              <span class="font-weight-bold">Test ID:</span>
+              {{ loadTest._id }}
             </v-flex>
             <v-flex xs12 class="subheading" mb-2>
-              Number of chains:
-              <span class="font-weight-bold">{{
-                loadTest.chainIds.length
-              }}</span>
-            </v-flex>
-            <v-flex xs12 class="subheading" mb-2>
-              Number of load agents:
-              <span class="font-weight-bold">{{ loadTest.agentsCount }}</span>
-            </v-flex>
-            <v-flex xs12 class="subheading" mb-2>
-              Load type:
-              <span class="font-weight-bold">{{ loadTest.type }}</span>
-            </v-flex>
-            <v-flex xs12 class="subheading">
-              <pre>{{ config }}</pre>
+              <span class="font-weight-bold">Settings:</span>
+              <TypedLoadConfigList :loadTest="loadTest"></TypedLoadConfigList>
             </v-flex>
           </v-layout>
         </v-container>
@@ -111,11 +98,14 @@
 </template>
 
 <script>
+import TypedLoadConfigList from "@/components/TypedLoadConfigList";
+
 import EC_BALANCE from "@/graphql/EcBalance.gql";
 import EC_BALANCE_CHANGED from "@/graphql/EcBalanceChanged.gql";
 
 export default {
   props: ["loadTest"],
+  components: { TypedLoadConfigList },
   data() {
     return {
       ecBalance: { address: "", balance: 0 },
@@ -133,11 +123,6 @@ export default {
     },
   },
   computed: {
-    config() {
-      const copy = { ...this.loadTest.generatorConfig };
-      delete copy.__typename;
-      return copy;
-    },
     auditVersions() {
       return this.loadTest.authoritySet.auditVersions
         .map(function (d) {

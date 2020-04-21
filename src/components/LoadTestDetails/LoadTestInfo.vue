@@ -8,33 +8,20 @@
         <v-flex xs12 class="subheading" mb-2>
           <span class="primary--text">Started</span> by
           {{ loadTest.start.user }}
-          on {{ loadTest.start.timestamp | displayDate }}
+          on {{ loadTest.start.timestamp | formatDate }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
           <span class="primary--text">Stopped</span> by
-          {{ loadTest.end.user }} on {{ loadTest.end.timestamp | displayDate }}
+          {{ loadTest.end.user }} on {{ loadTest.end.timestamp | formatDate }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
-          <span class="primary--text">Total duration: </span>{{ duration }}
+          <span class="primary--text">Duration: </span>{{ duration }}
         </v-flex>
         <v-flex xs12 class="subheading" mb-2>
-          <span class="primary--text">Number of chains: </span>
-          {{ loadTest.chainIds.length }}
+          <span class="primary--text">Settings</span>
+          <TypedLoadConfigList :loadTest="loadTest"></TypedLoadConfigList>
         </v-flex>
-        <v-flex xs12 class="subheading" mb-2>
-          <span class="primary--text">Number of load agents: </span>
-          {{ loadTest.agentsCount }}
-        </v-flex>
-        <v-flex xs12 class="subheading" mb-2>
-          <span class="primary--text">Type: </span>{{ loadTest.type }}
-        </v-flex>
-        <v-flex xs12 class="subheading primary--text" mb-3>
-          Config:
-        </v-flex>
-        <v-flex xs12 class="subheading" mb-3>
-          <pre>{{ config }}</pre>
-        </v-flex>
-        <v-flex xs12 class="subheading primary--text" mb-3>
+        <v-flex xs12 class="subheading primary--text" mb-2>
           Authority Set:
         </v-flex>
         <v-flex xs12 class="subheading">
@@ -67,18 +54,16 @@
 <script>
 import moment from "moment";
 
+import TypedLoadConfigList from "@/components/TypedLoadConfigList";
+
 export default {
   props: ["loadTest"],
+  components: { TypedLoadConfigList },
   computed: {
     duration() {
       const start = moment(this.loadTest.start.timestamp * 1000);
       const end = moment(this.loadTest.end.timestamp * 1000);
       return moment.duration(end.diff(start)).humanize();
-    },
-    config() {
-      const copy = { ...this.loadTest.generatorConfig };
-      delete copy.__typename;
-      return copy;
     },
     auditVersions() {
       return this.loadTest.authoritySet.auditVersions

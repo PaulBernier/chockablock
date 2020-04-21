@@ -25,11 +25,13 @@
                 <v-layout row wrap>
                   <v-flex xs3 class="primary--text">Start</v-flex>
                   <v-flex xs9>
-                    {{ loadTest.start.timestamp | displayDate }}
+                    {{ loadTest.start.timestamp | formatDate }}
                   </v-flex>
-                  <v-flex xs3 class="primary--text">Type</v-flex>
-                  <v-flex xs9>{{ loadTest.type }}</v-flex>
-                  <v-flex xs3 class="primary--text">Main version</v-flex>
+                  <v-flex xs3 class="primary--text">Duration</v-flex>
+                  <v-flex xs9>
+                    {{ getDuration(loadTest) }}
+                  </v-flex>
+                  <v-flex xs3 class="primary--text">Version tested</v-flex>
                   <v-flex xs9 v-if="loadTest.authoritySet">{{
                     loadTest.authoritySet.mainVersion
                   }}</v-flex>
@@ -38,13 +40,11 @@
               </v-flex>
               <v-flex d-flex xs12 sm6>
                 <v-layout row wrap>
-                  <v-flex xs3 class="primary--text">Duration</v-flex>
+                  <v-flex xs3 class="primary--text">Settings</v-flex>
                   <v-flex xs9>
-                    {{ getDuration(loadTest) }}
-                  </v-flex>
-                  <v-flex xs3 class="primary--text">Config</v-flex>
-                  <v-flex xs9>
-                    <pre>{{ getConfig(loadTest) }}</pre>
+                    <TypedLoadConfigList
+                      :loadTest="loadTest"
+                    ></TypedLoadConfigList>
                   </v-flex>
                 </v-layout>
               </v-flex>
@@ -62,12 +62,15 @@
 </template>
 
 <script>
-import LOAD_TEST_HISTORY from "../graphql/LoadTestHistory.gql";
 import moment from "moment";
+
+import TypedLoadConfigList from "@/components/TypedLoadConfigList";
+import LOAD_TEST_HISTORY from "../graphql/LoadTestHistory.gql";
 
 const PAGE_SIZE = 10;
 
 export default {
+  components: { TypedLoadConfigList },
   data: () => ({
     loadTestHistory: [],
     showMoreEnabled: true,

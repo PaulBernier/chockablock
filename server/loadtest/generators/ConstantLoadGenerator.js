@@ -11,7 +11,6 @@ class ConstantLoadGenerator extends DistributedLoadGenerator {
     const jobs = [];
     const chunkSize = Math.ceil(this.chainIds.length / agentCount);
     const chainIdChunks = chunk(this.chainIds, chunkSize);
-    const entrySizeRange = { min: 32, max: 10240 };
 
     const agentEps = eps / agentCount;
 
@@ -20,7 +19,7 @@ class ConstantLoadGenerator extends DistributedLoadGenerator {
         type: "constant",
         esAddress: process.env.EC_ADDRESS,
         chainIds: chainIdChunks[i],
-        entrySizeRange,
+        entrySizeRange: this.entrySizeRange,
         params: {
           eps: agentEps,
         },

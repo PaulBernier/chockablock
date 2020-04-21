@@ -11,6 +11,11 @@ query loadTestHistory($lastId: String, $pageSize: Int!) {
     }
     type
     chainIds
+    agentsCount
+    entrySizeRange {
+      min
+      max
+    }
     authoritySet {
       mainVersion
     }

@@ -31,49 +31,71 @@ class LoadTestManager extends EventEmitter {
   }
 
   async start({ user, loadConfig }) {
+    console.log(`New load test request received from [${user}]:`);
+    console.log(loadConfig);
+
     // User input validation
     if (this.loadTest && this.loadTest.isActive()) {
       throw new Error("A load test is already running");
     }
-    const { type, nbOfChains, generatorConfig } = loadConfig;
 
-    if (nbOfChains <= 0 || !Number.isInteger(nbOfChains)) {
-      throw new Error(
-        `nbOfChains must be a positive integer. Received: ${nbOfChains}`
-      );
-    }
+    // Doesn't validate type specific configuration (i.e not loadConfig.typeConfig)
+    this.validateGenericLoadConfig(loadConfig);
 
     // Chains creation
-    const chainIds = await createChains(this.cli, nbOfChains, EC_ADDRESS);
+    const chainIds = await createChains(this.cli, loadConfig.nbOfChains);
 
-    switch (type) {
+    switch (loadConfig.type) {
       case "constant":
         this.loadGenerator = new ConstantLoadGenerator(
           this.loadAgentCoordinator,
-          chainIds
+          chainIds,
+          loadConfig.entrySizeRange
         );
         break;
       default:
-        throw new Error(`Unknown load generator type [${type}]`);
+        throw new Error(`Unknown load generator type [${loadConfig.type}]`);
     }
-
-    this.loadGenerator.validateConfig(generatorConfig);
-    console.log("Generator config", generatorConfig);
 
     const loadTest = new LoadTest();
     loadTest.startBy(user);
     loadTest.type = loadConfig.type;
     loadTest.chainIds = chainIds;
-    loadTest.generatorConfig = generatorConfig;
+    loadTest.entrySizeRange = loadConfig.entrySizeRange;
+    loadTest.generatorConfig = loadConfig.typeConfig;
     loadTest.agentsCount = this.loadAgentCoordinator.getConnectedAgents().length;
     // Save authority set stats at the start of the loadtest
     loadTest.authoritySet = await getAuthoritySetStats();
 
-    console.log("Running load generator");
-    await this.loadGenerator.run(generatorConfig);
+    await this.loadGenerator.run(loadConfig.typeConfig);
+    console.log("Load generator now running");
 
     this.loadTest = loadTest;
     await this.loadTestChanged();
+  }
+
+  validateGenericLoadConfig(loadConfig) {
+    const { nbOfChains, entrySizeRange } = loadConfig;
+
+    if (!Number.isInteger(nbOfChains) || nbOfChains <= 0) {
+      throw new Error(
+        `nbOfChains must be a positive integer. Received: ${nbOfChains}`
+      );
+    }
+
+    if (!entrySizeRange) {
+      throw new Error("Missing entry size range config");
+    }
+
+    if (
+      entrySizeRange.min < 32 ||
+      entrySizeRange.max > 10240 ||
+      entrySizeRange.min > entrySizeRange.max
+    ) {
+      throw new Error(
+        `Entry size range must be within [32, 10240] (received [${entrySizeRange.min}, ${entrySizeRange.max}])`
+      );
+    }
   }
 
   async stop(user) {
@@ -99,12 +121,12 @@ class LoadTestManager extends EventEmitter {
   }
 }
 
-async function createChains(cli, nb, ecAddress) {
+async function createChains(cli, nb) {
   console.log(`Creating ${nb} chains...`);
 
   const chains = new Array(nb).fill(uuidv4()).map(buildChain);
 
-  const created = await cli.add(chains, ecAddress, { concurrency: 20 });
+  const created = await cli.add(chains, EC_ADDRESS, { concurrency: 20 });
 
   console.log("Chains created");
 

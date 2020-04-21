@@ -11,6 +11,10 @@ subscription {
     }
     type
     chainIds
+    entrySizeRange {
+      min
+      max
+    }
     agentsCount
     authoritySet {
       leaders

@@ -7,8 +7,12 @@ import moment from "moment";
 
 Vue.config.productionTip = false;
 
-Vue.filter("displayDate", function (timestamp) {
+Vue.filter("formatDate", function (timestamp) {
   return moment(timestamp * 1000).format("YYYY-MM-DD HH:mm:ss ([GMT]Z)");
+});
+
+Vue.filter("formatRange", function (range) {
+  return `[${range.min}, ${range.max}]`;
 });
 
 new Vue({

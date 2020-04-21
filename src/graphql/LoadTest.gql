@@ -12,6 +12,10 @@ query loadTest($id: String) {
     type
     chainIds
     agentsCount
+    entrySizeRange {
+      min
+      max
+    }
     authoritySet {
       leaders
       audits

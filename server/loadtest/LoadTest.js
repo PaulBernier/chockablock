@@ -1,17 +1,6 @@
 class LoadTest {
   constructor(obj) {
-    if (obj) {
-      this._id = obj._id;
-      this.start = obj.start;
-      this.end = obj.end;
-      this.events = obj.events;
-      this.generatorConfig = obj.generatorConfig;
-      this.chainIds = obj.chainIds;
-      this.type = obj.type;
-      this.agentsCount = obj.agentsCount;
-    } else {
-      this.events = [];
-    }
+    Object.assign(this, obj);
   }
 
   startBy(user) {
@@ -30,10 +19,6 @@ class LoadTest {
 
   isActive() {
     return !this.end;
-  }
-
-  addEvent({ type }) {
-    this.events.push({ type, timestamp: parseInt(Date.now() / 1000) });
   }
 }
 
