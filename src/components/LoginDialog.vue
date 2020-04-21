@@ -1,12 +1,6 @@
 <template>
   <div class="text-xs-center">
     <v-dialog v-model="dialog" width="500">
-      <template v-slot:activator="{ on }">
-        <v-btn flat v-on="on" class="mr-2">
-          <span>Control Panel</span>
-        </v-btn>
-      </template>
-
       <v-card>
         <v-card-title class="headline primary--text" primary-title>
           Control Panel Log In
@@ -63,7 +57,6 @@
 
 <script>
 import LOG_IN from "@/graphql/LogIn.gql";
-import VERIFY_AUTH from "@/graphql/VerifyAuth.gql";
 
 export default {
   name: "LoginDialog",
@@ -77,6 +70,10 @@ export default {
     };
   },
   methods: {
+    display() {
+      this.errorMesage = "";
+      this.dialog = true;
+    },
     async login() {
       try {
         this.loading = true;
@@ -94,25 +91,6 @@ export default {
         this.errorMesage = e.message;
       } finally {
         this.loading = false;
-      }
-    },
-  },
-  watch: {
-    async dialog() {
-      this.errorMesage = "";
-      if (this.dialog) {
-        const token = localStorage.getItem("jwt_token");
-        if (token) {
-          const { data } = await this.$apollo.query({
-            query: VERIFY_AUTH,
-            variables: {
-              token,
-            },
-          });
-          if (data.verifyAuth) {
-            this.$router.push({ name: "control" });
-          }
-        }
       }
     },
   },

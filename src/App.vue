@@ -14,7 +14,10 @@
       <v-btn flat to="/loadtest-history" class="mr-2">
         <span>Load Test History</span>
       </v-btn>
-      <LoginDialog v-if="$route.path === '/'"></LoginDialog>
+      <v-btn @click="authenticate" flat class="mr-2">
+        <span>Control Panel</span>
+      </v-btn>
+      <LoginDialog ref="loginDialog"></LoginDialog>
     </v-toolbar>
 
     <v-content>
@@ -25,10 +28,29 @@
 
 <script>
 import LoginDialog from "@/components/LoginDialog";
+import VERIFY_AUTH from "@/graphql/VerifyAuth.gql";
 
 export default {
   components: { LoginDialog },
   name: "App",
+  methods: {
+    async authenticate() {
+      const token = localStorage.getItem("jwt_token");
+      if (token) {
+        const { data } = await this.$apollo.query({
+          query: VERIFY_AUTH,
+          variables: {
+            token,
+          },
+        });
+        if (data.verifyAuth) {
+          this.$router.push({ name: "control" });
+          return;
+        }
+      }
+      this.$refs.loginDialog.display();
+    },
+  },
 };
 </script>
 
