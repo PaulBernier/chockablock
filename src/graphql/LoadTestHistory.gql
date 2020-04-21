@@ -20,9 +20,8 @@ query loadTestHistory($lastId: String, $pageSize: Int!) {
       mainVersion
     }
     generatorConfig {
-      ... on ConstantLoadConfig {
-        eps
-      }
+      eps
+      nbEntries
     }
   }
 }

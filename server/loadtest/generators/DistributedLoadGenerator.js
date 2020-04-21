@@ -29,9 +29,19 @@ class DistributedLoadGenerator {
     lac.startLoad(jobs);
   }
 
+  getChainIdChunks(nbChunks) {
+    const chunkSize = Math.ceil(this.chainIds.length / nbChunks);
+    return chunk(this.chainIds, chunkSize);
+  }
+
   stop() {
     this.loadAgentCoordinator.stopLoad();
   }
 }
+
+const chunk = (arr, size) =>
+  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    arr.slice(i * size, i * size + size)
+  );
 
 module.exports = DistributedLoadGenerator;

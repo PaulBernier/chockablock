@@ -29,9 +29,8 @@ query {
       }
     }
     generatorConfig {
-      ... on ConstantLoadConfig {
-        eps
-      }
+      eps
+      nbEntries
     }
   }
 }

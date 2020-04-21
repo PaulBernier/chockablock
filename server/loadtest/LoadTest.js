@@ -3,6 +3,10 @@ class LoadTest {
     Object.assign(this, obj);
   }
 
+  isSelfStopping() {
+    return this.type === "burst";
+  }
+
   startBy(user) {
     this.start = {
       user,

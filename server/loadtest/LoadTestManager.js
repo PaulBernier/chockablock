@@ -1,5 +1,6 @@
 const EventEmitter = require("events");
 const ConstantLoadGenerator = require("./generators/ConstantLoadGenerator");
+const BurstLoadGenerator = require("./generators/BurstLoadGenerator");
 const LoadTest = require("./LoadTest");
 const { getAuthoritySetStats } = require("./authority-set");
 const { FactomCli, Entry, Chain } = require("factom");
@@ -39,12 +40,13 @@ class LoadTestManager extends EventEmitter {
       throw new Error("A load test is already running");
     }
 
-    // Doesn't validate type specific configuration (i.e not loadConfig.typeConfig)
+    // Doesn't validate type specific configuration (i.e not loadConfig.typedConfig)
     this.validateGenericLoadConfig(loadConfig);
 
     // Chains creation
     const chainIds = await createChains(this.cli, loadConfig.nbOfChains);
 
+    let typedConfig;
     switch (loadConfig.type) {
       case "constant":
         this.loadGenerator = new ConstantLoadGenerator(
@@ -52,6 +54,15 @@ class LoadTestManager extends EventEmitter {
           chainIds,
           loadConfig.entrySizeRange
         );
+        typedConfig = loadConfig.typedConfig.constant;
+        break;
+      case "burst":
+        this.loadGenerator = new BurstLoadGenerator(
+          this.loadAgentCoordinator,
+          chainIds,
+          loadConfig.entrySizeRange
+        );
+        typedConfig = loadConfig.typedConfig.burst;
         break;
       default:
         throw new Error(`Unknown load generator type [${loadConfig.type}]`);
@@ -62,15 +73,20 @@ class LoadTestManager extends EventEmitter {
     loadTest.type = loadConfig.type;
     loadTest.chainIds = chainIds;
     loadTest.entrySizeRange = loadConfig.entrySizeRange;
-    loadTest.generatorConfig = loadConfig.typeConfig;
+    loadTest.generatorConfig = typedConfig;
     loadTest.agentsCount = this.loadAgentCoordinator.getConnectedAgents().length;
     // Save authority set stats at the start of the loadtest
     loadTest.authoritySet = await getAuthoritySetStats();
 
-    await this.loadGenerator.run(loadConfig.typeConfig);
+    await this.loadGenerator.run(typedConfig);
     console.log("Load generator now running");
 
     this.loadTest = loadTest;
+
+    if (this.loadTest.isSelfStopping()) {
+      this.loadTest.stopBy("AUTO");
+    }
+
     await this.loadTestChanged();
   }
 

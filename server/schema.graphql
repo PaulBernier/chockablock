@@ -29,7 +29,7 @@ input LoadConfigInput {
   type: String!
   nbOfChains: Int!
   entrySizeRange: IntRangeInput!
-  typeConfig: ConstantLoadConfigInput
+  typedConfig: TypedLoadConfigInput!
 }
 
 input IntRangeInput {
@@ -37,8 +37,17 @@ input IntRangeInput {
   max: Int!
 }
 
+input TypedLoadConfigInput {
+  constant: ConstantLoadConfigInput
+  burst: BurstLoadConfigInput
+}
+
 input ConstantLoadConfigInput {
   eps: Float!
+}
+
+input BurstLoadConfigInput {
+  nbEntries: Int!
 }
 
 ###########
@@ -60,7 +69,7 @@ type LoadTest {
   entrySizeRange: IntRange!
   chainIds: [String!]!
   agentsCount: Int!
-  generatorConfig: ConstantLoadConfig!
+  generatorConfig: LoadConfig!
   authoritySet: AuthoritySetInfo
 }
 
@@ -77,9 +86,11 @@ type NodeVersion {
   count: Int!
 }
 
-type ConstantLoadConfig {
-  eps: Float!
+type LoadConfig {
+  eps: Float
+  nbEntries: Int
 }
+
 
 type StartStopEvent {
   user: String!

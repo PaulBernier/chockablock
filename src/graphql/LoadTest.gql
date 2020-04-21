@@ -29,9 +29,8 @@ query loadTest($id: String) {
       }
     }
     generatorConfig {
-      ... on ConstantLoadConfig {
-        eps
-      }
+      eps
+      nbEntries
     }
   }
 }

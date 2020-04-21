@@ -1,9 +1,9 @@
 <template>
   <v-form @submit.prevent="startLoad">
     <v-layout wrap text-xs-center xs12>
-      <v-flex xs12>
+      <v-flex xs12 lg6 px-3>
         <v-layout wrap>
-          <v-flex xs12 lg4 px-3>
+          <v-flex xs12>
             <v-text-field
               v-model.number="minEntrySize"
               label="MIN entry size"
@@ -14,7 +14,7 @@
               step="1"
             ></v-text-field>
           </v-flex>
-          <v-flex xs12 lg4 px-3>
+          <v-flex xs12>
             <v-text-field
               v-model.number="maxEntrySize"
               label="MAX entry size"
@@ -25,7 +25,7 @@
               step="1"
             ></v-text-field>
           </v-flex>
-          <v-flex xs12 lg4 px-3>
+          <v-flex xs12>
             <v-text-field
               v-model.number="nbOfChains"
               label="Number of chains"
@@ -37,16 +37,39 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-flex xs12 lg4 offset-lg4 px-3>
-        <v-text-field
-          prepend-inner-icon="speed"
-          v-model.number="eps"
-          label="EPS"
-          min="0"
-          step="0.1"
-          box
-          type="number"
-        ></v-text-field>
+      <v-flex xs12 lg6 px-3>
+        <v-layout wrap>
+          <v-flex xs12>
+            <v-select
+              :items="loadTypes"
+              v-model="type"
+              box
+              label="Load type"
+            ></v-select>
+          </v-flex>
+          <v-flex xs12 v-show="type === 'constant'">
+            <v-text-field
+              prepend-inner-icon="speed"
+              v-model.number="constantEps"
+              label="EPS"
+              min="0"
+              step="0.1"
+              box
+              type="number"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs12 v-show="type === 'burst'">
+            <v-text-field
+              prepend-inner-icon="speed"
+              v-model.number="burstNbEntries"
+              label="Number of entries"
+              min="1"
+              step="1"
+              box
+              type="number"
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
       </v-flex>
 
       <v-flex xs12>
@@ -71,10 +94,16 @@ export default {
   props: ["agentsCount"],
   data() {
     return {
+      loadTypes: [
+        { text: "Constant", value: "constant" },
+        { text: "Burst", value: "burst" },
+      ],
+      type: "constant",
       nbOfChains: 50,
       minEntrySize: 128,
       maxEntrySize: 1024,
-      eps: 1,
+      constantEps: 1,
+      burstNbEntries: 100,
       loading: false,
     };
   },
@@ -89,22 +118,27 @@ export default {
         // Clear previous error message if any
         this.$emit("error", "");
         this.loading = true;
-        await this.$apollo.mutate({
+        const { data } = await this.$apollo.mutate({
           mutation: START_TEST,
           variables: {
             loadConfig: {
-              type: "constant",
               entrySizeRange: {
                 min: this.minEntrySize,
                 max: this.maxEntrySize,
               },
               nbOfChains: this.nbOfChains,
-              typeConfig: {
-                eps: this.eps,
+              type: this.type,
+              typedConfig: {
+                constant: { eps: this.constantEps },
+                burst: { nbEntries: this.burstNbEntries },
               },
             },
           },
         });
+        this.$emit(
+          "snack",
+          `Load test successfully started (ID: ${data.startTest._id})`
+        );
       } catch (e) {
         this.$emit("error", e.message);
       } finally {

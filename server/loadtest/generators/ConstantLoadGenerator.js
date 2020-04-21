@@ -8,12 +8,11 @@ class ConstantLoadGenerator extends DistributedLoadGenerator {
   }
 
   buildAgentJobs({ eps }, agentCount) {
-    const jobs = [];
-    const chunkSize = Math.ceil(this.chainIds.length / agentCount);
-    const chainIdChunks = chunk(this.chainIds, chunkSize);
+    const chainIdChunks = this.getChainIdChunks(agentCount);
 
     const agentEps = eps / agentCount;
 
+    const jobs = [];
     for (let i = 0; i < agentCount; ++i) {
       jobs.push({
         type: "constant",
@@ -29,10 +28,5 @@ class ConstantLoadGenerator extends DistributedLoadGenerator {
     return jobs;
   }
 }
-
-const chunk = (arr, size) =>
-  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-    arr.slice(i * size, i * size + size)
-  );
 
 module.exports = ConstantLoadGenerator;

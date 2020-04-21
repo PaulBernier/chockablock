@@ -29,9 +29,8 @@ subscription {
       }
     }
     generatorConfig {
-      ... on ConstantLoadConfig {
-        eps
-      }
+      eps
+      nbEntries
     }
   }
 }
