@@ -15,7 +15,7 @@ class LoadAgentCoordinator extends EventEmitter {
     this.wss = new WebSocket.Server({ port: 4007 });
 
     this.wss.on("connection", function connection(ws, req) {
-      const agentName = req.headers.agent_name || "";
+      const agentName = req.headers.agentname || "";
       console.log(`New agent connected [${agentName}]`);
       ws.isAlive = true;
       ws.agentName = agentName;
