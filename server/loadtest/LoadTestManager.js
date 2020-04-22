@@ -19,7 +19,7 @@ class LoadTestManager extends EventEmitter {
 
   async init() {
     const latestLoadTest = await this.db
-      .collection("loadtests")
+      .collection("loadtests_v2")
       .findOne({}, { sort: { _id: -1 } });
 
     if (latestLoadTest) {
@@ -126,10 +126,10 @@ class LoadTestManager extends EventEmitter {
   async loadTestChanged() {
     if (this.loadTest._id) {
       await this.db
-        .collection("loadtests")
+        .collection("loadtests_v2")
         .replaceOne({ _id: this.loadTest._id }, this.loadTest);
     } else {
-      await this.db.collection("loadtests").insertOne(this.loadTest);
+      await this.db.collection("loadtests_v2").insertOne(this.loadTest);
     }
 
     // Emit event for GraphQL subscriptions (via PubSub)

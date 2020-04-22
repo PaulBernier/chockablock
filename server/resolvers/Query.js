@@ -21,7 +21,7 @@ async function authoritySetInfo(parent, { token }) {
 
 async function loadTest(parent, { id }, { db }) {
   if (ObjectID.isValid(id)) {
-    return db.collection("loadtests").findOne({ _id: new ObjectID(id) });
+    return db.collection("loadtests_v2").findOne({ _id: new ObjectID(id) });
   }
 
   return null;
@@ -30,7 +30,7 @@ async function loadTest(parent, { id }, { db }) {
 async function loadTestHistory(parent, { id, pageSize }, { db }) {
   const query = ObjectID.isValid(id) ? { _id: { $lt: new ObjectID(id) } } : {};
   return db
-    .collection("loadtests")
+    .collection("loadtests_v2")
     .find(query)
     .sort("_id", -1)
     .limit(pageSize)
