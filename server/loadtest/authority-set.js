@@ -26,10 +26,6 @@ async function getAuthoritySetStats() {
     }
   });
 
-  if (notFound.size > 0) {
-    console.log(`Identities not found:`, notFound);
-  }
-
   const mainVersion = Object.entries(
     groupBy([...auditVersions, ...leaderVersions])
   ).sort((a, b) => b[1].length - a[1].length)[0][0];
