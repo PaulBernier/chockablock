@@ -80,6 +80,7 @@ type AuthoritySetInfo {
   mainVersion: String!
   auditVersions: [NodeVersion!]!
   leaderVersions: [NodeVersion!]!
+  identitiesNotFound: [String!]!
 }
 
 type NodeVersion {

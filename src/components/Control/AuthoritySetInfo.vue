@@ -7,13 +7,19 @@
         </v-flex>
       </v-layout>
       <v-layout wrap v-else>
-        <v-flex xs12>
-          <p class="font-weight-bold primary--text">
-            Current authority set composition:
-          </p>
+        <v-flex xs12 mb-3 class="font-weight-bold primary--text">
+          Current authority set composition:
         </v-flex>
-        <v-flex xs12>
+        <v-flex xs12 mb-3>
           <AuthoritySet :authoritySet="authoritySetInfo"></AuthoritySet>
+        </v-flex>
+        <v-flex xs12 v-if="authoritySetInfo.identitiesNotFound.length > 0">
+          <div>Identities not found:</div>
+          <ul>
+            <li v-for="id in authoritySetInfo.identitiesNotFound" :key="id">
+              {{ id }}
+            </li>
+          </ul>
         </v-flex>
       </v-layout>
     </v-container>

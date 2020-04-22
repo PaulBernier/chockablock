@@ -61,6 +61,7 @@ async function getAuthoritySetStats() {
     mainVersion,
     auditVersions: auditVersionsStats,
     leaderVersions: leaderVersionsStats,
+    identitiesNotFound: [...notFound],
   };
 }
 
