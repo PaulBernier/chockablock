@@ -70,7 +70,7 @@
             </v-flex>
             <v-flex xs12 class="subheading">
               <AuthoritySet
-                :authoritySet="laodTest.authoritySet"
+                :authoritySet="loadTest.authoritySet"
               ></AuthoritySet>
             </v-flex>
           </v-layout>
