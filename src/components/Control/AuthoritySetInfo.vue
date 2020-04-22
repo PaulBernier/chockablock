@@ -1,0 +1,41 @@
+<template>
+  <v-sheet elevation="2">
+    <v-container>
+      <v-layout wrap v-if="$apollo.queries.authoritySetInfo.loading">
+        <v-flex xs12 text-xs-center>
+          <v-progress-circular indeterminate></v-progress-circular>
+        </v-flex>
+      </v-layout>
+      <v-layout wrap v-else>
+        <v-flex xs12>
+          <p class="font-weight-bold primary--text">
+            Current authority set composition:
+          </p>
+        </v-flex>
+        <v-flex xs12>
+          <AuthoritySet :authoritySet="authoritySetInfo"></AuthoritySet>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </v-sheet>
+</template>
+
+<script>
+import AuthoritySet from "@/components/AuthoritySet";
+
+import AUTH_SET_INFO from "@/graphql/AuthoritySetInfo.gql";
+
+export default {
+  components: { AuthoritySet },
+  data() {
+    return {
+      authoritySetInfo: {},
+    };
+  },
+  apollo: {
+    authoritySetInfo: {
+      query: AUTH_SET_INFO,
+    },
+  },
+};
+</script>

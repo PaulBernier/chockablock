@@ -1,0 +1,14 @@
+query {
+  authoritySetInfo {
+    leaders
+      audits
+      auditVersions {
+        version
+        count
+      }
+      leaderVersions {
+        version
+        count
+      }
+  }
+}

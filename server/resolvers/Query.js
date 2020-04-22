@@ -1,5 +1,6 @@
 const { ObjectID } = require("mongodb");
 const jwt = require("jsonwebtoken");
+const { getAuthoritySetStats } = require("../loadtest/authority-set");
 
 function latestLoadTest(parent, args, { loadTestManager }) {
   return loadTestManager.loadTest;
@@ -12,6 +13,10 @@ async function verifyAuth(parent, { token }) {
   } catch (e) {
     return false;
   }
+}
+
+async function authoritySetInfo(parent, { token }) {
+  return await getAuthoritySetStats();
 }
 
 async function loadTest(parent, { id }, { db }) {
@@ -74,6 +79,7 @@ function agents(parent, args, { loadAgentCoordinator }) {
 }
 
 module.exports = {
+  authoritySetInfo,
   verifyAuth,
   loadTest,
   latestLoadTest,

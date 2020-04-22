@@ -69,26 +69,9 @@
               Authority Set
             </v-flex>
             <v-flex xs12 class="subheading">
-              <div>
-                <span class="font-weight-bold">
-                  Leaders: {{ loadTest.authoritySet.leaders }}
-                </span>
-              </div>
-              <ul>
-                <li v-for="v in leaderVersions" :key="v.version">
-                  {{ v.version }}: {{ v.count }}
-                </li>
-              </ul>
-              <div>
-                <span class="font-weight-bold">
-                  Audits: {{ loadTest.authoritySet.audits }}
-                </span>
-              </div>
-              <ul>
-                <li v-for="v in auditVersions" :key="v.version">
-                  {{ v.version }}: {{ v.count }}
-                </li>
-              </ul>
+              <AuthoritySet
+                :authoritySet="laodTest.authoritySet"
+              ></AuthoritySet>
             </v-flex>
           </v-layout>
         </v-container>
@@ -99,13 +82,14 @@
 
 <script>
 import TypedLoadConfigList from "@/components/TypedLoadConfigList";
+import AuthoritySet from "@/components/AuthoritySet";
 
 import EC_BALANCE from "@/graphql/EcBalance.gql";
 import EC_BALANCE_CHANGED from "@/graphql/EcBalanceChanged.gql";
 
 export default {
   props: ["loadTest"],
-  components: { TypedLoadConfigList },
+  components: { AuthoritySet, TypedLoadConfigList },
   data() {
     return {
       ecBalance: { address: "", balance: 0 },
@@ -120,26 +104,6 @@ export default {
           return { ecBalance: subscriptionData.data.ecBalanceChanged };
         },
       },
-    },
-  },
-  computed: {
-    auditVersions() {
-      return this.loadTest.authoritySet.auditVersions
-        .map(function (d) {
-          const copy = { ...d };
-          delete copy.__typename;
-          return copy;
-        })
-        .sort((a, b) => b.count - a.count);
-    },
-    leaderVersions() {
-      return this.loadTest.authoritySet.leaderVersions
-        .map(function (d) {
-          const copy = { ...d };
-          delete copy.__typename;
-          return copy;
-        })
-        .sort((a, b) => b.count - a.count);
     },
   },
 };

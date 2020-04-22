@@ -25,26 +25,7 @@
           Authority Set:
         </v-flex>
         <v-flex xs12 class="subheading">
-          <div>
-            <span class="font-weight-bold">
-              Leaders: {{ loadTest.authoritySet.leaders }}
-            </span>
-          </div>
-          <ul>
-            <li v-for="v in leaderVersions" :key="v.version">
-              {{ v.version }}: {{ v.count }}
-            </li>
-          </ul>
-          <div>
-            <span class="font-weight-bold">
-              Audits: {{ loadTest.authoritySet.audits }}
-            </span>
-          </div>
-          <ul>
-            <li v-for="v in auditVersions" :key="v.version">
-              {{ v.version }}: {{ v.count }}
-            </li>
-          </ul>
+          <AuthoritySet :authoritySet="loadTest.authoritySet"></AuthoritySet>
         </v-flex>
       </v-layout>
     </v-container>
@@ -55,33 +36,16 @@
 import moment from "moment";
 
 import TypedLoadConfigList from "@/components/TypedLoadConfigList";
+import AuthoritySet from "@/components/AuthoritySet";
 
 export default {
   props: ["loadTest"],
-  components: { TypedLoadConfigList },
+  components: { AuthoritySet, TypedLoadConfigList },
   computed: {
     duration() {
       const start = moment(this.loadTest.start.timestamp * 1000);
       const end = moment(this.loadTest.end.timestamp * 1000);
       return moment.duration(end.diff(start)).humanize();
-    },
-    auditVersions() {
-      return this.loadTest.authoritySet.auditVersions
-        .map(function (d) {
-          const copy = { ...d };
-          delete copy.__typename;
-          return copy;
-        })
-        .sort((a, b) => b.count - a.count);
-    },
-    leaderVersions() {
-      return this.loadTest.authoritySet.leaderVersions
-        .map(function (d) {
-          const copy = { ...d };
-          delete copy.__typename;
-          return copy;
-        })
-        .sort((a, b) => b.count - a.count);
     },
   },
 };

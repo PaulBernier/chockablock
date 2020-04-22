@@ -1,4 +1,5 @@
 type Query {
+  authoritySetInfo: AuthoritySetInfo!
   verifyAuth(token: String!): Boolean!
   latestLoadTest: LoadTest
   loadTest(id: String): LoadTest
