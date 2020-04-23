@@ -43,19 +43,21 @@ export default {
     },
     epsChartData() {
       const labels = [],
-        data = [];
+        epsData = [],
+        entryCountData = [];
 
       for (let i = 0; i < this.history.length; ++i) {
         const e = this.history[i];
         labels.push(e.height.toString());
+        entryCountData.push(e.entryCount);
 
         if (i === this.history.length - 1) {
-          data.push(
+          epsData.push(
             e.entryCount /
               (this.blockStatHistory.nextBlockStartTime - e.timestamp)
           );
         } else {
-          data.push(
+          epsData.push(
             e.entryCount / (this.history[i + 1].timestamp - e.timestamp)
           );
         }
@@ -66,13 +68,25 @@ export default {
         datasets: [
           {
             label: "Average Entry Per Second",
+            yAxisID: "left-y-axis",
             borderColor: "#F4B75D",
             borderWidth: 1,
             pointBackgroundColor: "#F4B75D",
             fill: false,
             pointRadius: 4,
             pointHoverRadius: 5,
-            data,
+            data: epsData,
+          },
+          {
+            label: "Entry count",
+            yAxisID: "right-y-axis",
+            borderColor: "#F7D7A8",
+            borderWidth: 1,
+            pointBackgroundColor: "#F7D7A8",
+            fill: false,
+            pointRadius: 4,
+            pointHoverRadius: 5,
+            data: entryCountData,
           },
         ],
       };

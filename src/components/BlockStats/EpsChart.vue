@@ -15,6 +15,20 @@ export default {
       },
       responsive: true,
       maintainAspectRatio: false,
+      scales: {
+        yAxes: [
+          {
+            id: "left-y-axis",
+            type: "linear",
+            position: "left",
+          },
+          {
+            id: "right-y-axis",
+            type: "linear",
+            position: "right",
+          },
+        ],
+      },
     });
   },
 };
