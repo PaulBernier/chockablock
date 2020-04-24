@@ -19,21 +19,7 @@ const jwt = require("jsonwebtoken");
   );
   const blockchainMonitor = require("./blockchain_monitor")(pubsub, db);
 
-  // Auth
-
-  function getUser(req) {
-    try {
-      const { name, roles } = jwt.verify(
-        req.request.get("Authorization"),
-        process.env.JWT_SECRET
-      );
-
-      return { name, roles };
-    } catch (e) {
-      return null;
-    }
-  }
-
+  // GraphQL server
   const server = new GraphQLServer({
     typeDefs: resolve(__dirname, "schema.graphql"),
     resolvers: require("./resolvers/resolvers")(db),
@@ -74,7 +60,21 @@ const jwt = require("jsonwebtoken");
     console.log(`Server is running on http://localhost:4000`)
   );
 
+  // Serve frontend
   const publicPath = resolve(__dirname, "../www");
   server.express.use("/", history());
   server.express.use(express.static(publicPath));
 })();
+
+function getUser(req) {
+  try {
+    const { name, roles } = jwt.verify(
+      req.request.get("Authorization"),
+      process.env.JWT_SECRET
+    );
+
+    return { name, roles };
+  } catch (e) {
+    return null;
+  }
+}
