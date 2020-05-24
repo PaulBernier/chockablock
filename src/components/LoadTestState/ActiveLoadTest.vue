@@ -20,7 +20,6 @@
         <v-container>
           <v-layout wrap text-xs-center>
             <v-flex xs12 class="display-3 primary--text" mb-4>
-              <!-- TODO: make generic -->
               {{ loadTest.generatorConfig.eps }} EPS
             </v-flex>
             <v-flex xs12 class="subheading">Current target</v-flex>
