@@ -44,7 +44,8 @@ class LoadTestManager extends EventEmitter {
     this.validateGenericLoadConfig(loadConfig);
 
     // Chains creation
-    const chainIds = await createChains(this.cli, loadConfig.nbOfChains);
+    const runId = uuidv4();
+    const chainIds = await createChains(this.cli, runId, loadConfig.nbOfChains);
 
     let typedConfig;
     switch (loadConfig.type) {
@@ -69,6 +70,7 @@ class LoadTestManager extends EventEmitter {
     }
 
     const loadTest = new LoadTest();
+    loadTest._id = runId;
     loadTest.startBy(user);
     loadTest.type = loadConfig.type;
     loadTest.chainIds = chainIds;
@@ -124,23 +126,19 @@ class LoadTestManager extends EventEmitter {
   }
 
   async loadTestChanged() {
-    if (this.loadTest._id) {
-      await this.db
-        .collection("loadtests_v2")
-        .replaceOne({ _id: this.loadTest._id }, this.loadTest);
-    } else {
-      await this.db.collection("loadtests_v2").insertOne(this.loadTest);
-    }
+    await this.db
+      .collection("loadtests_v2")
+      .update({ _id: this.loadTest._id }, this.loadTest, { upsert: true });
 
     // Emit event for GraphQL subscriptions (via PubSub)
     this.emit("LOAD_TEST_CHANGED", this.loadTest);
   }
 }
 
-async function createChains(cli, nb) {
+async function createChains(cli, runId, nb) {
   console.log(`Creating ${nb} chains...`);
 
-  const chains = new Array(nb).fill(uuidv4()).map(buildChain);
+  const chains = new Array(nb).fill(runId).map(buildChain);
 
   const created = await cli.add(chains, EC_ADDRESS, { concurrency: 20 });
 

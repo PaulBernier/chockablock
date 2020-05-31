@@ -79,16 +79,16 @@ export default {
     loadTestHistory: {
       query: LOAD_TEST_HISTORY,
       variables: {
-        lastId: "",
+        timestamp: null,
         pageSize: PAGE_SIZE,
       },
     },
   },
   computed: {
-    lastId() {
+    lastTimestamp() {
       return this.loadTestHistory.length === 0
-        ? ""
-        : this.loadTestHistory[this.loadTestHistory.length - 1]._id;
+        ? null
+        : this.loadTestHistory[this.loadTestHistory.length - 1].start.timestamp;
     },
   },
   methods: {
@@ -108,7 +108,7 @@ export default {
     showMore() {
       this.$apollo.queries.loadTestHistory.fetchMore({
         variables: {
-          lastId: this.lastId,
+          timestamp: this.lastTimestamp,
           pageSize: PAGE_SIZE,
         },
         // Transform the previous result with new data

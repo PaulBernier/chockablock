@@ -20,19 +20,16 @@ async function authoritySetInfo(parent, { token }) {
 }
 
 async function loadTest(parent, { id }, { db }) {
-  if (ObjectID.isValid(id)) {
-    return db.collection("loadtests_v2").findOne({ _id: new ObjectID(id) });
-  }
-
-  return null;
+  const _id = ObjectID.isValid(id) ? new ObjectID(id) : id;
+  return db.collection("loadtests_v2").findOne({ _id });
 }
 
-async function loadTestHistory(parent, { id, pageSize }, { db }) {
-  const query = ObjectID.isValid(id) ? { _id: { $lt: new ObjectID(id) } } : {};
+async function loadTestHistory(parent, { timestamp, pageSize }, { db }) {
+  const query = timestamp ? { "start.timestamp": { $lt: timestamp } } : {};
   return db
     .collection("loadtests_v2")
     .find(query)
-    .sort("_id", -1)
+    .sort("start.timestamp", -1)
     .limit(pageSize)
     .toArray();
 }

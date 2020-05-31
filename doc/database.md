@@ -67,3 +67,4 @@ loadtests_v2 {
 db.users.createIndex( { "name": 1 }, { unique: true } )
 db.blocks.createIndex( { "height": 1 }, { unique: true } )
 db.blocks.createIndex( { "timestamp": 1 })
+db["loadtests_v2"].createIndex( { "start.timestamp": 1 })

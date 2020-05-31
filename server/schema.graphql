@@ -3,7 +3,7 @@ type Query {
   verifyAuth(token: String!): Boolean!
   latestLoadTest: LoadTest
   loadTest(id: String): LoadTest
-  loadTestHistory(id: String, pageSize: Int!): [LoadTest!]!
+  loadTestHistory(timestamp: Int, pageSize: Int!): [LoadTest!]!
   latestBlockStatHistory: BlockStatHistory!
   blockStatHistory(startTimestamp: Int!, endTimestamp: Int!): BlockStatHistory!
   ecBalance: EcBalance!

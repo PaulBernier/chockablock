@@ -1,5 +1,5 @@
-query loadTestHistory($lastId: String, $pageSize: Int!) {
-  loadTestHistory(id: $lastId, pageSize: $pageSize) {
+query loadTestHistory($timestamp: Int, $pageSize: Int!) {
+  loadTestHistory(timestamp: $timestamp, pageSize: $pageSize) {
     _id
     start {
       user
