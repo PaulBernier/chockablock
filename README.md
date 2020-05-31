@@ -58,15 +58,37 @@ pm2 reload ecosystem.config.js --env production
 
 This will serve static files (UI) and GraphQL server on port 4000. Websocket server (for agents to connect to) is on port 4007.
 
-## Running the stack locally for development
+## Development
 
+### Project structure
 
+This is a monorepo containing both frontend and backend. Folder `server` contains backend code (Node.js/GraphQL) and `src` contains the frontend code (Vue.js). See `doc/database.md` for information on the database structure.
+
+### Running the stack locally
+
+Create a file `.env` at the root. Fill it with:
 ```bash
-npm i # Install dependencies
-docker start mongodb # Start local MongoDB Docker container
-# Run the following commands in parallel (separate terminals)
-npm run serve # for frontend development
-npm run start # for backend development
+JWT_SECRET="5902964580"
+EC_ADDRESS="Es32PjobTxPTd73dohEFRegMFRLv3X5WZ4FXEwNN8kE2pMDfeMym"
 ```
 
-`npm run serve` and `npm run start` will handle hot reloading both for the frontend and the backend.
+You then need to credit the address `EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD` with some EC:
+```bash
+factom-cli importaddress Fs3E9gV6DXsYzf7Fqx1fVBQPQXV695eP3k5XbmHEZVRLkMdD9qCK
+factom-cli buyec FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD 1000000
+```
+
+Now to launch the local stack:
+```bash
+factomd -network=LOCAL -blktime=60 # Run a local factom network with a 60s block time
+docker run --name mongodb -p 27017:27017 -d mongo:4.1-bionic # Start local MongoDB Docker container
+
+npm i # Install dependencies
+# Run the following commands in parallel (separate terminals)
+npm run serve:backend
+npm run serve:frontend
+```
+
+`npm run serve:frontend` and `npm run serve:backend` will handle hot reloading both for the frontend and the backend.
+
+ChockaBlock UI is available at http://localhost:4000/ and the GraphQL playground is at http://localhost:4000/graphql.
