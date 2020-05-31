@@ -4,7 +4,7 @@ const BurstLoadGenerator = require("./generators/BurstLoadGenerator");
 const LoadTest = require("./LoadTest");
 const { getAuthoritySetStats } = require("./authority-set");
 const { FactomCli, Entry, Chain } = require("factom");
-const uuidv4 = require("uuid/v4");
+const { v4: uuidv4 } = require("uuid");
 
 const EC_ADDRESS = process.env.EC_ADDRESS;
 
