@@ -97,6 +97,8 @@ npm run serve:frontend
 `npm run serve:frontend` and `npm run serve:backend` will handle hot reloading both for the frontend and the backend.
 ChockaBlock UI is available at http://localhost:8080/ and the GraphQL playground is at http://localhost:4000/graphql.
 
+You probably also wants to run a local chockagent to apply load: https://github.com/PaulBernier/chockagent#run-an-agent-locally-for-development
+
 To create an admin user locally:
 
 ```bash
