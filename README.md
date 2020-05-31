@@ -15,6 +15,8 @@ Technology used:
 
 This repository contains the code for the GraphQL server, the web frontend UI and the websocket server to communicate with agents. Agent source code can be found [here](https://github.com/PaulBernier/chockagent).
 
+Note that ChockaBlock also has a dependency on https://fct.tools API to fetch authority set information.
+
 ## Deploying ChockaBlock
 
 Have a look at `deploy.sh` script for a basic way to deploy ChockaBlock and at the associated Nginx configs in `doc/nginx-config`.
@@ -25,7 +27,7 @@ To build the frontend:
 ```bash
 npm run build
 ```
-The frontend will be built in a `dist` folder. It needs to be moved to `www` folder which is where the server is expecting to serve static assets from.
+The frontend will be built in a `dist` folder. It needs to be moved to `www` folder which is where the server app is expecting to serve static assets from.
 
 ### Database
 
@@ -78,11 +80,14 @@ factom-cli importaddress Fs3E9gV6DXsYzf7Fqx1fVBQPQXV695eP3k5XbmHEZVRLkMdD9qCK
 factom-cli buyec FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q EC2vXWYkAPduo3oo2tPuzA44Tm7W6Cj7SeBr3fBnzswbG5rrkSTD 1000000
 ```
 
-Now to launch the local stack:
+Launch local factom node and MongoDB:
 ```bash
 factomd -network=LOCAL -blktime=60 # Run a local factom network with a 60s block time
 docker run --name mongodb -p 27017:27017 -d mongo:4.1-bionic # Start local MongoDB Docker container
+```
 
+Launch ChockaBlock frontend and backend in dev mode:
+```bash
 npm i # Install dependencies
 # Run the following commands in parallel (separate terminals)
 npm run serve:backend
@@ -90,5 +95,15 @@ npm run serve:frontend
 ```
 
 `npm run serve:frontend` and `npm run serve:backend` will handle hot reloading both for the frontend and the backend.
+ChockaBlock UI is available at http://localhost:8080/ and the GraphQL playground is at http://localhost:4000/graphql.
 
-ChockaBlock UI is available at http://localhost:4000/ and the GraphQL playground is at http://localhost:4000/graphql.
+To create an admin user locally:
+
+```bash
+# Get a MongoDB shell in the Docker container
+docker exec -it mongodb bash
+mongo
+use chocka
+# Create an admin user with 'admin' as password
+db.users.save({name: "admin", password: "$2b$10$qfRebpOZcyXTFo0ZRnYBSedf.4RevfLhpQlOEj21JQJVvY6QSndpO", roles: ["admin"]})
+```

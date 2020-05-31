@@ -60,10 +60,14 @@ const jwt = require("jsonwebtoken");
     console.log(`Server is running on http://localhost:4000`)
   );
 
-  // Serve frontend
-  const publicPath = resolve(__dirname, "../www");
-  server.express.use("/", history());
-  server.express.use(express.static(publicPath));
+  // Serve frontend from www folder in production
+  // (for dev the frontend is served separately by vue-cli-service to
+  // benefit from hot reloading)
+  if (process.env.NODE_ENV === "production") {
+    const publicPath = resolve(__dirname, "../www");
+    server.express.use("/", history());
+    server.express.use(express.static(publicPath));
+  }
 })();
 
 function getUser(req) {
