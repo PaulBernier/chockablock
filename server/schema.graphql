@@ -31,6 +31,7 @@ input LoadConfigInput {
   nbOfChains: Int!
   entrySizeRange: IntRangeInput!
   typedConfig: TypedLoadConfigInput!
+  selectedAgents: [String!]!
 }
 
 input IntRangeInput {

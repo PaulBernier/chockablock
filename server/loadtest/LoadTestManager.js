@@ -47,27 +47,26 @@ class LoadTestManager extends EventEmitter {
     const runId = uuidv4();
     const chainIds = await createChains(this.cli, runId, loadConfig.nbOfChains);
 
-    let typedConfig;
+    let typedConfig, LoadGenerator;
     switch (loadConfig.type) {
       case "constant":
-        this.loadGenerator = new ConstantLoadGenerator(
-          this.loadAgentCoordinator,
-          chainIds,
-          loadConfig.entrySizeRange
-        );
+        LoadGenerator = ConstantLoadGenerator;
         typedConfig = loadConfig.typedConfig.constant;
         break;
       case "burst":
-        this.loadGenerator = new BurstLoadGenerator(
-          this.loadAgentCoordinator,
-          chainIds,
-          loadConfig.entrySizeRange
-        );
+        LoadGenerator = BurstLoadGenerator;
         typedConfig = loadConfig.typedConfig.burst;
         break;
       default:
         throw new Error(`Unknown load generator type [${loadConfig.type}]`);
     }
+
+    this.loadGenerator = new LoadGenerator(
+      this.loadAgentCoordinator,
+      chainIds,
+      loadConfig.entrySizeRange,
+      loadConfig.selectedAgents
+    );
 
     const loadTest = new LoadTest();
     loadTest._id = runId;
@@ -76,7 +75,7 @@ class LoadTestManager extends EventEmitter {
     loadTest.chainIds = chainIds;
     loadTest.entrySizeRange = loadConfig.entrySizeRange;
     loadTest.generatorConfig = typedConfig;
-    loadTest.agentsCount = this.loadAgentCoordinator.getConnectedAgents().length;
+    loadTest.agentsCount = loadConfig.selectedAgents.length;
     // Save authority set stats at the start of the loadtest
     loadTest.authoritySet = await getAuthoritySetStats();
 
@@ -94,6 +93,10 @@ class LoadTestManager extends EventEmitter {
 
   validateGenericLoadConfig(loadConfig) {
     const { nbOfChains, entrySizeRange } = loadConfig;
+
+    if (loadConfig.selectedAgents.length === 0) {
+      throw new Error("No agent selected");
+    }
 
     if (!Number.isInteger(nbOfChains) || nbOfChains <= 0) {
       throw new Error(

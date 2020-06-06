@@ -53,7 +53,7 @@ class LoadAgentCoordinator extends EventEmitter {
       }));
   }
 
-  startLoad(jobs) {
+  startLoad(jobs, agentNames) {
     const agentCount = this.getConnectedAgents().length;
     if (jobs.length > agentCount) {
       throw new Error(
@@ -63,7 +63,11 @@ class LoadAgentCoordinator extends EventEmitter {
 
     let i = 0;
     this.wss.clients.forEach(function each(client) {
-      if (client.readyState === WebSocket.OPEN && i < jobs.length) {
+      if (
+        agentNames.has(client.agentName) &&
+        client.readyState === WebSocket.OPEN &&
+        i < jobs.length
+      ) {
         client.send(
           JSON.stringify({
             command: "start-load",

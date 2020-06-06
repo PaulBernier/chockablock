@@ -82,6 +82,9 @@
           color="primary"
           >start loadtest</v-btn
         >
+        <div v-show="!canBeStarted" class="font-italic font-weight-bold">
+          Select at least one agent
+        </div>
       </v-flex>
     </v-layout>
   </v-form>
@@ -91,7 +94,7 @@
 import START_TEST from "@/graphql/StartTest.gql";
 
 export default {
-  props: ["agentsCount"],
+  props: ["selectedAgents"],
   data() {
     return {
       loadTypes: [
@@ -109,7 +112,7 @@ export default {
   },
   computed: {
     canBeStarted() {
-      return this.agentsCount > 0;
+      return this.selectedAgents.length > 0;
     },
   },
   methods: {
@@ -128,6 +131,7 @@ export default {
               },
               nbOfChains: this.nbOfChains,
               type: this.type,
+              selectedAgents: this.selectedAgents,
               typedConfig: {
                 constant: { eps: this.constantEps },
                 burst: { nbEntries: this.burstNbEntries },

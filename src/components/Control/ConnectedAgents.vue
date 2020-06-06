@@ -11,13 +11,19 @@
       <v-layout wrap v-else>
         <v-flex xs12 mb-2>
           <div class="font-weight-bold primary--text">
-            Agents curently connected ({{ agents.length }}):
+            Select agents ({{ agents.length }} available):
           </div>
         </v-flex>
         <v-flex xs12>
-          <ul>
+          <ul class="no-bullet">
             <li v-for="a in agents" :key="a.name">
-              {{ a.name }}
+              <v-checkbox
+                v-model="selected"
+                :value="a.name"
+                :label="a.name"
+                color="primary"
+                :hide-details="true"
+              ></v-checkbox>
             </li>
           </ul>
         </v-flex>
@@ -34,6 +40,7 @@ export default {
   data() {
     return {
       agents: [],
+      selected: [],
     };
   },
   apollo: {
@@ -48,9 +55,20 @@ export default {
     },
   },
   watch: {
+    selected() {
+      this.$emit("update:selectedAgents", this.selected);
+    },
     agents() {
-      this.$emit("update:agentsCount", this.agents.length);
+      const set = new Set(this.agents.map((a) => a.name));
+      // deselect agents that disconnected
+      this.selected = this.selected.filter((s) => set.has(s));
     },
   },
 };
 </script>
+
+<style scoped>
+.no-bullet {
+  list-style: none;
+}
+</style>

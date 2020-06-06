@@ -6,7 +6,7 @@
           <v-layout wrap>
             <v-flex xs12 pa-2>
               <ConnectedAgents
-                :agentsCount.sync="agentsCount"
+                :selectedAgents.sync="selectedAgents"
               ></ConnectedAgents>
             </v-flex>
             <v-flex xs12 pa-2>
@@ -32,7 +32,7 @@
                     v-show="!active"
                     @error="errorMesage = $event"
                     @snack="displaySnack"
-                    :agentsCount="agentsCount"
+                    :selectedAgents="selectedAgents"
                   ></StartLoad>
                 </v-container>
               </v-sheet>
@@ -76,7 +76,7 @@ export default {
     return {
       snackbar: false,
       snackMessage: "",
-      agentsCount: 0,
+      selectedAgents: [],
       errorMesage: "",
     };
   },
