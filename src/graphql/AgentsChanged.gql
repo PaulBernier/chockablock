@@ -1,5 +1,7 @@
 subscription {
   agentsChanged {
     name
+    latestUpdateTime
+    blockHeight
   }
 }

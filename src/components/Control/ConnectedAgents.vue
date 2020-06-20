@@ -16,11 +16,15 @@
         </v-flex>
         <v-flex xs12>
           <ul class="no-bullet">
-            <li v-for="a in agents" :key="a.name">
+            <li
+              v-for="a in agentsUI"
+              :key="a.name"
+              :title="`Latest update: ${a.latestUpdateTime.toLocaleString()}`"
+            >
               <v-checkbox
                 v-model="selected"
                 :value="a.name"
-                :label="a.name"
+                :label="`${a.name} (height: ${a.blockHeightText})`"
                 color="primary"
                 :hide-details="true"
               ></v-checkbox>
@@ -52,6 +56,15 @@ export default {
           return { agents: subscriptionData.data.agentsChanged };
         },
       },
+    },
+  },
+  computed: {
+    agentsUI() {
+      return this.agents.map((a) => ({
+        name: a.name,
+        blockHeightText: a.blockHeight ? a.blockHeight.toLocaleString() : "-",
+        latestUpdateTime: new Date(a.latestUpdateTime * 1000),
+      }));
     },
   },
   watch: {

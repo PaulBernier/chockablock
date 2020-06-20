@@ -54,9 +54,6 @@
 </template>
 
 <script>
-import AGENTS from "@/graphql/Agents.gql";
-import AGENTS_CHANGED from "@/graphql/AgentsChanged.gql";
-
 import LoadTestState from "@/components/LoadTestState";
 import ConnectedAgents from "./Control/ConnectedAgents";
 import AuthoritySetInfo from "./Control/AuthoritySetInfo";

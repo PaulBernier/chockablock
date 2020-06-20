@@ -19,6 +19,33 @@ class LoadAgentCoordinator extends EventEmitter {
       console.log(`New agent connected [${agentName}]`);
       ws.isAlive = true;
       ws.agentName = agentName;
+      ws.latestUpdateTime = Math.floor(Date.now() / 1000);
+
+      // On events
+      ws.on("message", function incoming(data) {
+        try {
+          let changed = false;
+          const message = JSON.parse(data.toString());
+
+          switch (message.type) {
+            case "blockheight":
+              if (ws.blockHeight !== message.payload) {
+                changed = true;
+                ws.blockHeight = message.payload;
+              }
+              break;
+            default:
+              console.error(`Unknown message type: ${message.type}`);
+          }
+
+          if (changed) {
+            ws.latestUpdateTime = message.timestamp;
+            that._agentsChanged();
+          }
+        } catch (e) {
+          console.error("Failed to processing incoming message: ", e);
+        }
+      });
 
       ws.on("pong", heartbeat);
       ws.on("close", () => {
@@ -50,6 +77,8 @@ class LoadAgentCoordinator extends EventEmitter {
       .filter((client) => client.readyState === WebSocket.OPEN)
       .map((c) => ({
         name: c.agentName,
+        blockHeight: c.blockHeight,
+        latestUpdateTime: c.latestUpdateTime,
       }));
   }
 
@@ -99,8 +128,8 @@ class LoadAgentCoordinator extends EventEmitter {
     });
   }
 
+  // Emit event for GraphQL subscriptions (via PubSub)
   async _agentsChanged() {
-    // Emit event for GraphQL subscriptions (via PubSub)
     this.emit("AGENTS_CHANGED", this.getConnectedAgents());
   }
 }
