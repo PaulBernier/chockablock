@@ -24,24 +24,21 @@ class LoadAgentCoordinator extends EventEmitter {
       // On events
       ws.on("message", function incoming(data) {
         try {
-          let changed = false;
           const message = JSON.parse(data.toString());
 
           switch (message.type) {
             case "blockheight":
               if (ws.blockHeight !== message.payload) {
-                changed = true;
                 ws.blockHeight = message.payload;
               }
               break;
             default:
               console.error(`Unknown message type: ${message.type}`);
+              return;
           }
 
-          if (changed) {
-            ws.latestUpdateTime = message.timestamp;
-            that._agentsChanged();
-          }
+          ws.latestUpdateTime = message.timestamp;
+          that._agentsChanged();
         } catch (e) {
           console.error("Failed to processing incoming message: ", e);
         }
