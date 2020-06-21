@@ -30,6 +30,7 @@ describe("LoadTestManager class", function () {
   });
 
   it("Should start burst load", async function () {
+    this.timeout(5000);
     const loadAgentCoordinator = sinon.createStubInstance(
       LoadAgentCoordinator,
       {
@@ -38,6 +39,9 @@ describe("LoadTestManager class", function () {
       }
     );
     const manager = new LoadTestManager({ db, loadAgentCoordinator });
+
+    const spy = sinon.spy();
+    manager.on("LOAD_TEST_CHANGED", spy);
 
     const mock = sinon.mock(manager.cli);
     mock
@@ -60,13 +64,28 @@ describe("LoadTestManager class", function () {
 
     await manager.start({ user: "admin", loadConfig });
 
+    // Verify factomd add has been called at least once
     mock.verify();
+
     assert.isNotNull(manager.loadTest);
     assert.isFalse(manager.loadTest.isActive()); // self stopping load type
     assert.instanceOf(manager.loadGenerator, BurstLoadGenerator);
+
+    // Verify event has been emitted
+    assert.isTrue(spy.called);
+
+    // Verify insertion into db
+    const latestLoadTest = await db
+      .collection("loadtests_v2")
+      .findOne({}, { sort: { "start.timestamp": -1 } });
+    assert.isNotNull(latestLoadTest);
+    assert.equal(latestLoadTest._id, manager.loadTest._id);
+    assert.isObject(latestLoadTest.end);
   });
 
   it("Should start constant load", async function () {
+    this.timeout(5000);
+
     const loadAgentCoordinator = sinon.createStubInstance(
       LoadAgentCoordinator,
       {
@@ -75,6 +94,9 @@ describe("LoadTestManager class", function () {
       }
     );
     const manager = new LoadTestManager({ db, loadAgentCoordinator });
+
+    const spy = sinon.spy();
+    manager.on("LOAD_TEST_CHANGED", spy);
 
     const mock = sinon.mock(manager.cli);
     mock
@@ -97,12 +119,31 @@ describe("LoadTestManager class", function () {
 
     await manager.start({ user: "admin", loadConfig });
 
+    // Verify factomd add has been called at least once
     mock.verify();
+
     assert.isNotNull(manager.loadTest);
     assert.isTrue(manager.loadTest.isActive());
     assert.instanceOf(manager.loadGenerator, ConstantLoadGenerator);
 
+    // Verify event has been emitted
+    assert.isTrue(spy.called);
+
+    // Verify insertion into db
+    let latestLoadTest = await db
+      .collection("loadtests_v2")
+      .findOne({}, { sort: { "start.timestamp": -1 } });
+    assert.isNotNull(latestLoadTest);
+    assert.equal(latestLoadTest._id, manager.loadTest._id);
+    assert.isUndefined(latestLoadTest.end);
+
     await manager.stop("admin");
     assert.isFalse(manager.loadTest.isActive());
+
+    // Verify update into db
+    latestLoadTest = await db
+      .collection("loadtests_v2")
+      .findOne({}, { sort: { "start.timestamp": -1 } });
+    assert.isObject(latestLoadTest.end);
   });
 });

@@ -20,7 +20,7 @@ class LoadTestManager extends EventEmitter {
   async init() {
     const latestLoadTest = await this.db
       .collection("loadtests_v2")
-      .findOne({}, { sort: { _id: -1 } });
+      .findOne({}, { sort: { "start.timestamp": -1 } });
 
     if (latestLoadTest) {
       this.loadTest = new LoadTest(latestLoadTest);

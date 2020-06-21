@@ -54,7 +54,7 @@ class LoadAgentCoordinator extends EventEmitter {
     });
 
     // Keep alive connection with agents
-    setInterval(() => {
+    this.keepAliveIntervalId = setInterval(() => {
       this.wss.clients.forEach(function each(ws) {
         if (ws.isAlive === false) {
           console.log(`Terminating connection with ${ws.agentName}`);
@@ -67,6 +67,11 @@ class LoadAgentCoordinator extends EventEmitter {
         ws.ping(noop);
       });
     }, 30000);
+  }
+
+  close() {
+    clearInterval(this.keepAliveIntervalId);
+    this.wss.close(() => console.log("WebSocket server closed"));
   }
 
   getConnectedAgents() {
