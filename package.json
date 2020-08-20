@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.0.0",
     "bluebird": "^3.7.2",
     "chart.js": "^2.9.3",
     "chartjs-plugin-annotation": "^0.5.7",
